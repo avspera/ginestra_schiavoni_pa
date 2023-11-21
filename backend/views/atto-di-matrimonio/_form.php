@@ -64,9 +64,6 @@ use kartik\date\DatePicker;
                     'templateResult' => new JsExpression('function(client) { return client.text; }'),
                     'templateSelection' => new JsExpression('function (client) { return client.text; }'),
                 ],
-                'pluginEvents' => [
-                    "select2:select" => "function(item) { getQuotes(item.params.data.id)}",
-                ]
             ])->label("Nome");
             ?>
         </div>
@@ -107,9 +104,6 @@ use kartik\date\DatePicker;
                     'templateResult' => new JsExpression('function(client) { return client.text; }'),
                     'templateSelection' => new JsExpression('function (client) { return client.text; }'),
                 ],
-                'pluginEvents' => [
-                    "select2:select" => "function(item) { getQuotes(item.params.data.id)}",
-                ]
             ])->label("Nome");
             ?>
         </div>

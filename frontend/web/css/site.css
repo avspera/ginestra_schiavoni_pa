@@ -101,3 +101,11 @@ a.desc:after {
 {
     text-decoration: none;
 }
+
+.navbar-brand img {
+    height: 70px!important;
+}
+
+.jumbotron{
+    margin-top:50px;
+}

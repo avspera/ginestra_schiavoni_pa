@@ -1,52 +1,44 @@
 <?php
 
-namespace frontend\controllers;
+namespace backend\controllers;
 
-use common\models\AttoDiMatrimonio;
-use common\models\AttoDiMatrimonioSearch;
+use common\models\Indirizzo;
+use common\models\IndirizzoSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-use yii\filters\AccessControl;
 
 /**
- * AttoDiMatrimonioController implements the CRUD actions for AttoDiMatrimonio model.
+ * IndirizzoController implements the CRUD actions for Indirizzo model.
  */
-class AttoDiMatrimonioController extends Controller
+class IndirizzoController extends Controller
 {
     /**
      * @inheritDoc
      */
     public function behaviors()
     {
-        return [
-            'access' => [
-                'class' => AccessControl::class,
-                'rules' => [
-                    [
-                        'actions' => ['index', 'create'],
-                        'allow' => true,
-                        'roles' => ['@'],
+        return array_merge(
+            parent::behaviors(),
+            [
+                'verbs' => [
+                    'class' => VerbFilter::className(),
+                    'actions' => [
+                        'delete' => ['POST'],
                     ],
                 ],
-            ],
-            'verbs' => [
-                'class' => VerbFilter::class,
-                'actions' => [
-                    'logout' => ['post'],
-                ],
-            ],
-        ];
+            ]
+        );
     }
 
     /**
-     * Lists all AttoDiMatrimonio models.
+     * Lists all Indirizzo models.
      *
      * @return string
      */
     public function actionIndex()
     {
-        $searchModel = new AttoDiMatrimonioSearch();
+        $searchModel = new IndirizzoSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
 
         return $this->render('index', [
@@ -56,7 +48,7 @@ class AttoDiMatrimonioController extends Controller
     }
 
     /**
-     * Displays a single AttoDiMatrimonio model.
+     * Displays a single Indirizzo model.
      * @param int $id ID
      * @return string
      * @throws NotFoundHttpException if the model cannot be found
@@ -69,13 +61,13 @@ class AttoDiMatrimonioController extends Controller
     }
 
     /**
-     * Creates a new AttoDiMatrimonio model.
+     * Creates a new Indirizzo model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return string|\yii\web\Response
      */
     public function actionCreate()
     {
-        $model = new AttoDiMatrimonio();
+        $model = new Indirizzo();
 
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {
@@ -91,7 +83,7 @@ class AttoDiMatrimonioController extends Controller
     }
 
     /**
-     * Updates an existing AttoDiMatrimonio model.
+     * Updates an existing Indirizzo model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param int $id ID
      * @return string|\yii\web\Response
@@ -111,7 +103,7 @@ class AttoDiMatrimonioController extends Controller
     }
 
     /**
-     * Deletes an existing AttoDiMatrimonio model.
+     * Deletes an existing Indirizzo model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param int $id ID
      * @return \yii\web\Response
@@ -125,15 +117,15 @@ class AttoDiMatrimonioController extends Controller
     }
 
     /**
-     * Finds the AttoDiMatrimonio model based on its primary key value.
+     * Finds the Indirizzo model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param int $id ID
-     * @return AttoDiMatrimonio the loaded model
+     * @return Indirizzo the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = AttoDiMatrimonio::findOne(['id' => $id])) !== null) {
+        if (($model = Indirizzo::findOne(['id' => $id])) !== null) {
             return $model;
         }
 

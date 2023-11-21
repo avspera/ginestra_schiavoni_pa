@@ -34,10 +34,12 @@ class ParcheggioResidenti extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id_cittadino', 'id_indirizzo', 'created_at', 'created_by'], 'required'],
+            [['id_cittadino', 'id_indirizzo', 'created_at', 'created_by', 'targa'], 'required'],
             [['id_cittadino', 'id_indirizzo', 'qnt_auto', 'created_by', 'updated_by', 'payed'], 'integer'],
-            [['created_at', 'updated_at'], 'safe'],
+            [['created_at', 'updated_at', 'veicolo', 'carta_circolazione', 'carta_identita'], 'safe'],
             [['price'], 'number'],
+            [['carta_identita', 'carta_circolazione'], 'file', 'skipOnEmpty' => true, 'extensions' => 'pdf'],
+            [['veicolo'], 'string'],
         ];
     }
 
@@ -57,6 +59,10 @@ class ParcheggioResidenti extends \yii\db\ActiveRecord
             'updated_by' => 'Modificato da',
             'price' => 'Prezzo',
             'payed' => 'Pagato',
+            'targa' => "Targa",
+            'veicolo' => "Veicolo",
+            'carta_identita' => "Carta di identità",
+            'carta_circolazione' => "Carta di circolazione"
         ];
     }
 

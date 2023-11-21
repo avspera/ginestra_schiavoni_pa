@@ -2,51 +2,43 @@
 
 namespace frontend\controllers;
 
-use common\models\AttoDiMatrimonio;
-use common\models\AttoDiMatrimonioSearch;
+use common\models\ValutazioneServizio;
+use common\models\ValutazioneServizioSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-use yii\filters\AccessControl;
 
 /**
- * AttoDiMatrimonioController implements the CRUD actions for AttoDiMatrimonio model.
+ * ValutazioneServizioController implements the CRUD actions for ValutazioneServizio model.
  */
-class AttoDiMatrimonioController extends Controller
+class ValutazioneServizioController extends Controller
 {
     /**
      * @inheritDoc
      */
     public function behaviors()
     {
-        return [
-            'access' => [
-                'class' => AccessControl::class,
-                'rules' => [
-                    [
-                        'actions' => ['index', 'create'],
-                        'allow' => true,
-                        'roles' => ['@'],
+        return array_merge(
+            parent::behaviors(),
+            [
+                'verbs' => [
+                    'class' => VerbFilter::className(),
+                    'actions' => [
+                        'delete' => ['POST'],
                     ],
                 ],
-            ],
-            'verbs' => [
-                'class' => VerbFilter::class,
-                'actions' => [
-                    'logout' => ['post'],
-                ],
-            ],
-        ];
+            ]
+        );
     }
 
     /**
-     * Lists all AttoDiMatrimonio models.
+     * Lists all ValutazioneServizio models.
      *
      * @return string
      */
     public function actionIndex()
     {
-        $searchModel = new AttoDiMatrimonioSearch();
+        $searchModel = new ValutazioneServizioSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
 
         return $this->render('index', [
@@ -56,7 +48,7 @@ class AttoDiMatrimonioController extends Controller
     }
 
     /**
-     * Displays a single AttoDiMatrimonio model.
+     * Displays a single ValutazioneServizio model.
      * @param int $id ID
      * @return string
      * @throws NotFoundHttpException if the model cannot be found
@@ -69,13 +61,13 @@ class AttoDiMatrimonioController extends Controller
     }
 
     /**
-     * Creates a new AttoDiMatrimonio model.
+     * Creates a new ValutazioneServizio model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return string|\yii\web\Response
      */
     public function actionCreate()
     {
-        $model = new AttoDiMatrimonio();
+        $model = new ValutazioneServizio();
 
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {
@@ -91,7 +83,7 @@ class AttoDiMatrimonioController extends Controller
     }
 
     /**
-     * Updates an existing AttoDiMatrimonio model.
+     * Updates an existing ValutazioneServizio model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param int $id ID
      * @return string|\yii\web\Response
@@ -111,7 +103,7 @@ class AttoDiMatrimonioController extends Controller
     }
 
     /**
-     * Deletes an existing AttoDiMatrimonio model.
+     * Deletes an existing ValutazioneServizio model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param int $id ID
      * @return \yii\web\Response
@@ -125,15 +117,15 @@ class AttoDiMatrimonioController extends Controller
     }
 
     /**
-     * Finds the AttoDiMatrimonio model based on its primary key value.
+     * Finds the ValutazioneServizio model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param int $id ID
-     * @return AttoDiMatrimonio the loaded model
+     * @return ValutazioneServizio the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = AttoDiMatrimonio::findOne(['id' => $id])) !== null) {
+        if (($model = ValutazioneServizio::findOne(['id' => $id])) !== null) {
             return $model;
         }
 

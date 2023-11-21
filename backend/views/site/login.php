@@ -5,7 +5,7 @@
 /** @var \common\models\LoginForm $model */
 
 use yii\bootstrap5\ActiveForm;
-use yii\bootstrap5\Html;
+use yii\helpers\Html;
 
 $this->title = 'Login';
 ?>

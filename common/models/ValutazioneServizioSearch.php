@@ -4,12 +4,12 @@ namespace common\models;
 
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use common\models\ParcheggioResidenti;
+use common\models\ValutazioneServizio;
 
 /**
- * ParcheggioResidentiSearch represents the model behind the search form of `common\models\ParcheggioResidenti`.
+ * ValutazioneServizioSearch represents the model behind the search form of `common\models\ValutazioneServizio`.
  */
-class ParcheggioResidentiSearch extends ParcheggioResidenti
+class ValutazioneServizioSearch extends ValutazioneServizio
 {
     /**
      * {@inheritdoc}
@@ -17,9 +17,8 @@ class ParcheggioResidentiSearch extends ParcheggioResidenti
     public function rules()
     {
         return [
-            [['id', 'id_cittadino', 'id_indirizzo', 'qnt_auto', 'created_by', 'updated_by', 'payed'], 'integer'],
-            [['created_at', 'updated_at', 'veicolo', 'targa'], 'safe'],
-            [['price'], 'number'],
+            [['id', 'id_cittadino', 'overall_rating', 'satisfaction_reason', 'angry_reason'], 'integer'],
+            [['nome_servizio', 'notes'], 'safe'],
         ];
     }
 
@@ -41,7 +40,7 @@ class ParcheggioResidentiSearch extends ParcheggioResidenti
      */
     public function search($params)
     {
-        $query = ParcheggioResidenti::find();
+        $query = ValutazioneServizio::find();
 
         // add conditions that should always apply here
 
@@ -61,15 +60,13 @@ class ParcheggioResidentiSearch extends ParcheggioResidenti
         $query->andFilterWhere([
             'id' => $this->id,
             'id_cittadino' => $this->id_cittadino,
-            'id_indirizzo' => $this->id_indirizzo,
-            'qnt_auto' => $this->qnt_auto,
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
-            'created_by' => $this->created_by,
-            'updated_by' => $this->updated_by,
-            'price' => $this->price,
-            'payed' => $this->payed,
+            'overall_rating' => $this->overall_rating,
+            'satisfaction_reason' => $this->satisfaction_reason,
+            'angry_reason' => $this->angry_reason,
         ]);
+
+        $query->andFilterWhere(['like', 'nome_servizio', $this->nome_servizio])
+            ->andFilterWhere(['like', 'notes', $this->notes]);
 
         return $dataProvider;
     }
