@@ -4,14 +4,14 @@ use yii\helpers\Html;
 use yii\widgets\DetailView;
 
 /** @var yii\web\View $this */
-/** @var common\models\AttoDiMatrimonio $model */
+/** @var common\models\AlboPretorio $model */
 
 $this->title = $model->id;
-$this->params['breadcrumbs'][] = ['label' => 'Atto Di Matrimonios', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Albo Pretorios', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>
-<div class="atto-di-matrimonio-view">
+<div class="albo-pretorio-view">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
@@ -30,27 +30,18 @@ $this->params['breadcrumbs'][] = $this->title;
         'model' => $model,
         'attributes' => [
             'id',
-            'id_coniuge_uno',
-            'id_coniuge_due',
-            'data_matrimonio',
-            'id_residenza',
-            'padre_coniuge_uno',
-            'madre_coniuge_uno',
-            'padre_coniuge_due',
-            'madre_coniuge_due',
+            'numero_atto',
+            'anno',
+            'id_tipologia',
+            'id_settore',
+            'numero_affissione',
+            'data_pubblicazione',
             'created_at',
             'updated_at',
             'created_by',
             'updated_by',
-            'tipo_rito',
-            'luogo_matrimonio',
-            'regime_matrimoniale',
-            'titolo_studio_coniuge_uno',
-            'titolo_studio_coniuge_due',
-            'posizione_professionale_coniuge_uno',
-            'posizione_professionale_coniuge_due',
-            'condizione_non_professionale_coniuge_uno',
-            'condizione_non_professionale_coniuge_due',
+            'attachments:ntext',
+            'note:ntext',
         ],
     ]) ?>
 

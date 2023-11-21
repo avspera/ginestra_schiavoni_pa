@@ -5,6 +5,7 @@ namespace common\components;
 use Yii;
 use common\models\User;
 use common\models\Cittadino;
+use common\models\AlboPretorio;
 
 class Utils
 {
@@ -102,5 +103,11 @@ class Utils
     public static function formatDateForDb($value){
         $incoming = explode("-", $value);
         return $incoming[2]."-".$incoming[1]."-".$incoming[0];
+    }
+
+    public static function getListaAnni(){
+        $alboPretorio = AlboPretorio::find()->select(["anno"])->orderBy(["anno" => SORT_DESC])->distinct()->all();
+
+        return array_values($alboPretorio);
     }
 }

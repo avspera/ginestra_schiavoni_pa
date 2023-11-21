@@ -10,23 +10,15 @@ $this->title = Yii::$app->name;
 <div class="site-index">
 
     <div class="container">
-        <div class="jumbotron text-center bg-transparent">
-            <h1 class="display-4">Comune di Ginestra degli Schiavoni</h1>
-
-            <p class="lead">Gestione telematica</p>
-
-            <?= Html::img(Yii::getAlias("@web") . "/images/logo.png") ?>
-        </div>
-
         <div class="body-content">
 
             <div class="row">
                 <div class="col-lg-4">
-                    <h2>Atti - Albo pretorio</h2>
+                    <h2>Albo pretorio</h2>
 
                     <p class="text-justify">In questa sezione puoi gestire l'albo pretorio del Comune</p>
 
-                    <p><a class="btn btn-outline-secondary" href="<?= Url::to(["atti/index"]) ?>">Vedi tutti &raquo;</a></p>
+                    <p><a class="btn btn-outline-secondary" href="<?= Url::to(["albo-pretorio/index"]) ?>">Vedi tutti &raquo;</a></p>
                 </div>
                 <div class="col-lg-4">
                     <h2>Matrimoni</h2>

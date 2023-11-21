@@ -78,18 +78,19 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
 
     public function beforeSave($insert)
     {
-        if (parent::beforeSave($insert)) {
-            if ($this->isNewRecord) {
-                $this->auth_key = \Yii::$app->security->generateRandomString();
-                $this->created_at = date("Y-m-d H:i:s");
-                // $this->created_by = Yii::$app->user->identity->id;
-                $this->created_by = 1;
-            }else{
-                $this->updated_at = date("Y-m-d H:i:s");
-            }
-            return true;
+        if (!parent::beforeSave($insert)) {
+            return false;
         }
-        return false;
+
+        if ($this->isNewRecord) {
+            $this->auth_key = \Yii::$app->security->generateRandomString();
+            $this->created_at = date("Y-m-d H:i:s");
+            // $this->created_by = Yii::$app->user->identity->id;
+            $this->created_by = 1;
+        } else {
+            $this->updated_at = date("Y-m-d H:i:s");
+        }
+        return true;
     }
 
     public function isAdmin()
