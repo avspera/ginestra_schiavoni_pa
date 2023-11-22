@@ -5,10 +5,16 @@ use yii\helpers\Html;
 /** @var yii\web\View $this */
 /** @var common\models\AlboPretorio $model */
 
-$this->title = 'Update Albo Pretorio: ' . $model->id;
-$this->params['breadcrumbs'][] = ['label' => 'Albo Pretorios', 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => $model->id, 'url' => ['view', 'id' => $model->id]];
-$this->params['breadcrumbs'][] = 'Update';
+$this->title = 'Modifica Albo Pretorio: ' . $model->id;
+$this->params['breadcrumbs'][] = [
+    'label' => "Albo pretorio",
+    'template' => "<li class='breadcrumb-item'><span class='separator'>/</span>{link}</li>",
+    'url' => ["index"]
+];
+$this->params['breadcrumbs'][] = [
+    'label' => $this->title,
+    'template' => "<li class='breadcrumb-item'>" . $this->title . "</li>",
+];
 ?>
 <div class="albo-pretorio-update">
 

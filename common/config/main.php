@@ -14,9 +14,6 @@ return [
         ],
         'assetManager' => [
             'bundles' => [
-                'yii\web\JqueryAsset' => [
-                    'js' => []
-                ],
                 'yii\bootstrap\BootstrapPluginAsset' => [
                     'js' => []
                 ],

@@ -10,7 +10,7 @@ use Yii;
  * @property int $id
  * @property int $id_coniuge_uno
  * @property int $id_coniuge_due
- * @property int $data_matrimonio
+ * @property string $data_matrimonio
  * @property int $id_residenza
  * @property string|null $padre_coniuge_uno
  * @property string|null $madre_coniuge_uno
@@ -31,6 +31,8 @@ use Yii;
  * @property int|null $condizione_non_professionale_coniuge_due
  * @property int $approved,
  * @property int $published
+ * @property int|null $published_by,
+ * @property int|null $id_albo_pretorio
  */
 class AttoDiMatrimonio extends \yii\db\ActiveRecord
 {
@@ -96,8 +98,10 @@ class AttoDiMatrimonio extends \yii\db\ActiveRecord
     {
         return [
             [['id_coniuge_uno', 'id_coniuge_due', 'data_matrimonio', 'id_residenza', 'created_at', 'created_by', 'regime_matrimoniale'], 'required'],
-            [['id_coniuge_uno', 'id_coniuge_due', 'data_matrimonio', 'id_residenza', 'created_by', 'updated_by', 'tipo_rito', 'regime_matrimoniale', 'titolo_studio_coniuge_uno', 'titolo_studio_coniuge_due', 'posizione_professionale_coniuge_uno', 'posizione_professionale_coniuge_due', 'condizione_non_professionale_coniuge_uno', 'condizione_non_professionale_coniuge_due'], 'integer'],
+            [['id_coniuge_uno', 'id_coniuge_due', 'id_residenza', 'created_by', 'updated_by', 'tipo_rito', 'regime_matrimoniale', 'approved_by', 'published_by', 'id_albo_pretorio',
+                'titolo_studio_coniuge_uno', 'titolo_studio_coniuge_due', 'posizione_professionale_coniuge_uno', 'posizione_professionale_coniuge_due', 'condizione_non_professionale_coniuge_uno', 'condizione_non_professionale_coniuge_due'], 'integer'],
             [['created_at', 'updated_at'], 'safe'],
+            [['data_matrimonio'], 'string'],
             [['padre_coniuge_uno', 'madre_coniuge_uno', 'padre_coniuge_due', 'madre_coniuge_due', 'luogo_matrimonio'], 'string', 'max' => 255],
         ];
     }
@@ -113,10 +117,10 @@ class AttoDiMatrimonio extends \yii\db\ActiveRecord
             'id_coniuge_due' => 'Coniuge Due',
             'data_matrimonio' => 'Data Matrimonio',
             'id_residenza' => 'Residenza',
-            'padre_coniuge_uno' => 'Padre',
-            'madre_coniuge_uno' => 'Madre',
-            'padre_coniuge_due' => 'Padre',
-            'madre_coniuge_due' => 'Madre',
+            'padre_coniuge_uno' => 'Padre Coniuge uno',
+            'madre_coniuge_uno' => 'Madre Coniuge uno',
+            'padre_coniuge_due' => 'Padre Coniuge due',
+            'madre_coniuge_due' => 'Madre Coniuge due',
             'created_at' => 'Creato il',
             'updated_at' => 'Aggiornato il',
             'created_by' => 'Creato da',
@@ -124,14 +128,17 @@ class AttoDiMatrimonio extends \yii\db\ActiveRecord
             'tipo_rito' => 'Tipo Rito',
             'luogo_matrimonio' => 'Luogo Matrimonio',
             'regime_matrimoniale' => 'Regime Matrimoniale',
-            'titolo_studio_coniuge_uno' => 'Titolo Studio',
-            'titolo_studio_coniuge_due' => 'Titolo Studio',
-            'posizione_professionale_coniuge_uno' => 'Posizione Professionale',
-            'posizione_professionale_coniuge_due' => 'Posizione Professionale',
-            'condizione_non_professionale_coniuge_uno' => 'Condizione Non Professionale',
-            'condizione_non_professionale_coniuge_due' => 'Condizione Non Professionale',
+            'titolo_studio_coniuge_uno' => 'Titolo Studio Coniuge uno',
+            'titolo_studio_coniuge_due' => 'Titolo Studio Coniuge due',
+            'posizione_professionale_coniuge_uno' => 'Posizione Professionale Coniuge uno',
+            'posizione_professionale_coniuge_due' => 'Posizione Professionale Coniuge due',
+            'condizione_non_professionale_coniuge_uno' => 'Condizione Non Professionale Coniuge uno',
+            'condizione_non_professionale_coniuge_due' => 'Condizione Non Professionale Coniuge due',
             'approved' => "Approvato",
-            'published' => "Pubblicato"
+            'published' => "Pubblicato",
+            'approved_by' => "Approvato da",
+            'published_by' => "Pubblicato da",
+            'id_albo_pretorio' => "Rif Albo Pretorio"
         ];
     }
 
@@ -157,7 +164,7 @@ class AttoDiMatrimonio extends \yii\db\ActiveRecord
 
     public function getTipoRito()
     {
-        return isset($this->tipo_rito_choices[$this->tipo_rito]) ? $this->tipo_rito_choices[$this->tipo_rito] : "";
+        return isset($this->tipo_rito_choices[$this->tipo_rito]) ? $this->tipo_rito_choices[$this->tipo_rito] : "-";
     }
 
     public function getRegimeMatrimoniale()
@@ -167,16 +174,16 @@ class AttoDiMatrimonio extends \yii\db\ActiveRecord
 
     public function getTitoloStudio($label)
     {
-        return isset($this->titolo_studio_choices[$label]) ? $this->titolo_studio_choices[$label] : "";
+        return isset($this->titolo_studio_choices[$label]) ? $this->titolo_studio_choices[$label] : "-";
     }
 
     public function getPosizioneProfessionale($label)
     {
-        return isset($this->posizione_professionale_choices[$label]) ? $this->posizione_professionale_choices[$label] : "";
+        return isset($this->posizione_professionale_choices[$label]) ? $this->posizione_professionale_choices[$label] : "-";
     }
 
     public function getCondizioneNonProfessionale($label)
     {
-        return isset($this->condizione_non_professionale_choices[$label]) ? $this->condizione_non_professionale_choices[$label] : "";
+        return isset($this->condizione_non_professionale_choices[$label]) ? $this->condizione_non_professionale_choices[$label] : "-";
     }
 }

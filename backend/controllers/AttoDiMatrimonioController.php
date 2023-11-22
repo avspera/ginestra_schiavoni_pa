@@ -2,11 +2,13 @@
 
 namespace backend\controllers;
 
+use common\models\AlboPretorio;
 use common\models\AttoDiMatrimonio;
 use common\models\AttoDiMatrimonioSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use common\components\Utils;
 
 /**
  * AttoDiMatrimonioController implements the CRUD actions for AttoDiMatrimonio model.
@@ -56,8 +58,61 @@ class AttoDiMatrimonioController extends Controller
     public function actionView($id)
     {
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'model' => $this->findModel($id)
         ]);
+    }
+
+    public function actionApprove($id)
+    {
+        $model = $this->findModel($id);
+
+        $model->approved = 1;
+        $model->approved_by = \Yii::$app->user->identity->id;
+
+        if ($model->save(false)) {
+            \Yii::$app->session->setFlash("success", "Atto di matrimonio approvato correttamente");
+        } else {
+            \Yii::$app->session->setFlash("warning", "Ops...c'è stato qualche problema");
+        }
+
+        return $this->redirect(\Yii::$app->request->referrer);
+    }
+
+    public function actionPublish($id)
+    {
+        $model = $this->findModel($id);
+
+        $latestAtto = AlboPretorio::find()->select(["numero_atto", "numero_affissione"])->orderBy(["numero_atto" => SORT_DESC])->one();
+
+        $model->published = 1;
+        $model->published_by = \Yii::$app->user->identity->id;
+        if ($model->save(false)) {
+            /**
+             * 'numero_atto', 'anno', 'id_tipologia', 'data_pubblicazione', 'created_at', 'created_by', 'titolo'
+             */
+            $alboPretorio = new AlboPretorio();
+            $alboPretorio->titolo = "Pubblicazione di Matrimonio del " . Utils::formatDate($model->data_matrimonio);
+            $alboPretorio->numero_atto = !empty($latestAtto) ? $latestAtto->numero_atto + 1 : 1;
+            $alboPretorio->numero_affissione = !empty($latestAtto) ? $latestAtto->numero_affissione + 1 : 1;
+            $alboPretorio->anno = date("Y");
+            $alboPretorio->id_tipologia = $alboPretorio->tipologia_matrimonio;
+            $alboPretorio->data_pubblicazione = date("Y-m-d H:i:s");
+            $alboPretorio->sorgente = $alboPretorio->sorgente_matrimonio;
+            $alboPretorio->id_atto_matrimonio = $model->id;
+            $alboPretorio->data_fine_pubblicazione = date('Y-m-d', strtotime($alboPretorio->data_pubblicazione . ' + 8 days'));
+
+            if ($alboPretorio->save(false)) {
+                \Yii::$app->session->setFlash("success", "Atto di matrimonio pubblicato correttamente nell'albo pretorio");
+                $model->id_albo_pretorio = $alboPretorio->id;
+                $model->save(false);
+            } else {
+                \Yii::$app->session->setFlash("warning", "Ops...non riesco a pubblicare l'atto di matrimonio nell'albo pretorio");
+            }
+        } else {
+            \Yii::$app->session->setFlash("warning", "Ops...non riesco a salvare l'atto di matrimonio");
+        }
+
+        return $this->redirect(\Yii::$app->request->referrer);
     }
 
     /**
@@ -111,7 +166,14 @@ class AttoDiMatrimonioController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        $model = $this->findModel($id);
+        if ($model->published) {
+            \Yii::$app->session->setFlash("error", "Non puoi cancellare un atto di matrimonio pubblicato");
+            return $this->redirect($this->request->referrer);
+        }
+
+        $model->delete();
+        \Yii::$app->session->setFlash("success", "Operazione completata correttamente");
 
         return $this->redirect(['index']);
     }

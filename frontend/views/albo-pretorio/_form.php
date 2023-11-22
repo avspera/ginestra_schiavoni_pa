@@ -18,8 +18,6 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'id_tipologia')->textInput() ?>
 
-    <?= $form->field($model, 'id_settore')->textInput() ?>
-
     <?= $form->field($model, 'numero_affissione')->textInput() ?>
 
     <?= $form->field($model, 'data_pubblicazione')->textInput() ?>

@@ -5,16 +5,20 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\grid\ActionColumn;
 use yii\grid\GridView;
+use common\components\Utils;
 
 /** @var yii\web\View $this */
 /** @var common\models\AttoDiMatrimonioSearch $searchModel */
 /** @var yii\data\ActiveDataProvider $dataProvider */
 
 $this->title = 'Atti Di Matrimonio';
-$this->params['breadcrumbs'][] = $this->title;
+$this->params['breadcrumbs'][] = [
+    'label' => $this->title,
+    'template' => "<li class='breadcrumb-item'><span class='separator'>/</span>" . $this->title . "</li>",
+];
 ?>
 <div class="atto-di-matrimonio-index">
-    
+
     <?= $this->render('_search', ['model' => $searchModel]); ?>
 
     <div class="card card-success" style="margin-top:10px;">
@@ -25,22 +29,22 @@ $this->params['breadcrumbs'][] = $this->title;
                 'columns' => [
                     ['class' => 'yii\grid\SerialColumn'],
                     'id',
-                    'id_coniuge_uno',
-                    'id_coniuge_due',
+                    [
+                        'attribute' => 'id_coniuge_uno',
+                        'value' => function ($model) {
+                            return Html::a(Utils::getCittadino($model->id_coniuge_uno), Url::to(["cittadino/view", "id" => $model->id_coniuge_uno]));
+                        },
+                        'format' => "raw"
+                    ],
+                    [
+                        'attribute' => 'id_coniuge_due',
+                        'value' => function ($model) {
+                            return Html::a(Utils::getCittadino($model->id_coniuge_due), Url::to(["cittadino/view", "id" => $model->id_coniuge_due]));
+                        },
+                        'format' => "raw"
+                    ],
                     'data_matrimonio:date',
                     'created_at:datetime',
-                    //'updated_at',
-                    //'created_by',
-                    //'updated_by',
-                    //'tipo_rito',
-                    //'luogo_matrimonio',
-                    //'regime_matrimoniale',
-                    //'titolo_studio_coniuge_uno',
-                    //'titolo_studio_coniuge_due',
-                    //'posizione_professionale_coniuge_uno',
-                    //'posizione_professionale_coniuge_due',
-                    //'condizione_non_professionale_coniuge_uno',
-                    //'condizione_non_professionale_coniuge_due',
                     [
                         'class' => ActionColumn::className(),
                         'urlCreator' => function ($action, AttoDiMatrimonio $model, $key, $index, $column) {

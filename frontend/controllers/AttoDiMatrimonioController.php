@@ -24,9 +24,14 @@ class AttoDiMatrimonioController extends Controller
                 'class' => AccessControl::class,
                 'rules' => [
                     [
-                        'actions' => ['index', 'create'],
+                        'actions' => ['create'],
                         'allow' => true,
                         'roles' => ['@'],
+                    ],
+                    [
+                        'actions' => ['view', 'index'],
+                        'allow' => true,
+                        'roles' => ['?'],
                     ],
                 ],
             ],

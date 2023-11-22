@@ -3,6 +3,7 @@
 namespace common\models;
 
 use Yii;
+use common\models\AttoDiMatrimonio;
 
 /**
  * This is the model class for table "albo_pretorio".
@@ -11,7 +12,6 @@ use Yii;
  * @property int $numero_atto
  * @property string $anno
  * @property int $id_tipologia
- * @property int $id_settore
  * @property int|null $numero_affissione
  * @property string $data_pubblicazione
  * @property string $created_at
@@ -22,24 +22,32 @@ use Yii;
  * @property string|null $note
  * @property string $titolo
  * @property string|null $data_fine_pubblicazione
+ * @property int|null $sorgente
+ * @property int|null $id_atto_matrimonio
  */
 class AlboPretorio extends \yii\db\ActiveRecord
 {
+    public $tipologia_matrimonio = 12;
+    public $sorgente_matrimonio = 1;
     public $tipologia_choices = [
-        0 => "Avviso",
-        1 => "Convocazione di Consiglio",
-        2 => "Deliberazione del Consiglio Comunale",
-        3 => "Deliberazione della Giunta Comunale",
-        4 => "Determinazione",
-        5 => "Manifesto Elettorale",
-        6 => "Ordinanze",
-        7 => "Pubblicazioni di Matrimonio",
-        8 => "Protocollo",
-        9 => "Rilascio permessi di costruire"
+        1 => "Abusivismo Edilizio",
+        2 => "Altri Enti",
+        3 => "Avvisi",
+        4 => "Bandi e Gare",
+        5 => "Decreti",
+        6 => "Deliberazione di Giunta",
+        7 => "Deliberazione di Consiglio",
+        8 => "Determine",
+        9 => "Elettorale",
+        10 => "Ordinanze",
+        11 => "Permessi di Costruire",
+        12 => "Pubblicazioni di Matrimonio",
+        13 => "Pubblicazioni Ufficio Tecnico"
     ];
 
-    public $settore_choices = [
-        0 => "STOCAZZO"
+    public $sorgente_choices = [
+        0 => "Interno",
+        1 => "Atto di matrimonio"
     ];
 
     /**
@@ -56,10 +64,11 @@ class AlboPretorio extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['numero_atto', 'anno', 'id_tipologia', 'id_settore', 'data_pubblicazione', 'created_at', 'created_by', 'titolo'], 'required'],
-            [['numero_atto', 'id_tipologia', 'id_settore', 'numero_affissione', 'created_by', 'updated_by'], 'integer'],
-            [['anno', 'data_pubblicazione', 'created_at', 'updated_at', 'data_fine_pubblicazione'], 'safe'],
-            [['attachments', 'note', 'titolo', 'data_fine_pubblicazione'], 'string'],
+            [['numero_atto', 'anno', 'id_tipologia', 'data_pubblicazione', 'created_at', 'created_by', 'titolo'], 'required'],
+            [['numero_atto', 'id_tipologia', 'numero_affissione', 'created_by', 'updated_by', 'sorgente', "id_atto_matrimonio"], 'integer'],
+            [['anno', 'data_pubblicazione', 'created_at', 'updated_at', 'data_fine_pubblicazione', 'sorgente', 'id_atto_matrimonio'], 'safe'],
+            [['note', 'titolo', 'data_fine_pubblicazione'], 'string'],
+            [['attachments'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg, pdf', 'maxSize' => 1024 * 1024 * 2],
         ];
     }
 
@@ -73,7 +82,6 @@ class AlboPretorio extends \yii\db\ActiveRecord
             'numero_atto' => 'Numero Atto',
             'anno' => 'Anno',
             'id_tipologia' => 'Tipologia',
-            'id_settore' => 'Settore',
             'numero_affissione' => 'Numero Affissione',
             'data_pubblicazione' => 'Data Pubblicazione',
             'created_at' => 'Creato il',
@@ -83,7 +91,9 @@ class AlboPretorio extends \yii\db\ActiveRecord
             'attachments' => 'Allegati',
             'note' => 'Note',
             'titolo' => "Titolo",
-            'data_fine_pubblicazione' => "Data fine pubblicazione"
+            'data_fine_pubblicazione' => "Data fine pubblicazione",
+            'sorgente' => "Sorgente",
+            'id_atto_matrimonio' => "Atto di matrimonio"
         ];
     }
 
@@ -100,14 +110,39 @@ class AlboPretorio extends \yii\db\ActiveRecord
 
         return parent::beforeSave($insert);
     }
-    
+
     public function getTipologia()
     {
         return isset($this->tipologia_choices[$this->id_tipologia]) ? $this->tipologia_choices[$this->id_tipologia] : "-";
     }
 
-    public function getSettore()
+    public function getSorgente()
     {
-        return isset($this->settore_choices[$this->id_settore]) ? $this->settore_choices[$this->id_settore] : "-";
+        return isset($this->sorgente_choices[$this->sorgente]) ? $this->sorgente_choices[$this->sorgente] : "-";
+    }
+
+    public function getAttoDiMatrimonio()
+    {
+        $atto = AttoDiMatrimonio::findOne(["id" => $this->id_atto_matrimonio]);
+        return $atto;
+    }
+
+    public function uploadFiles($attachments)
+    {
+        $path = Yii::getAlias('@frontend') . '/web/uploads/albo-pretorio/';
+
+        $dbInsert = [];
+        foreach ($attachments as $value) {
+            $filename = time() . '-' . $value->baseName . '.' . $value->extension;
+            if ($value->saveAs($path . $filename)) {
+                $dbInsert[] = $filename;
+            }
+        }
+
+        if (!empty($dbInsert)) {
+            return json_encode($dbInsert);
+        }
+
+        return false;
     }
 }

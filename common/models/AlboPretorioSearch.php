@@ -17,7 +17,7 @@ class AlboPretorioSearch extends AlboPretorio
     public function rules()
     {
         return [
-            [['id', 'numero_atto', 'id_tipologia', 'id_settore', 'numero_affissione', 'created_by', 'updated_by'], 'integer'],
+            [['id', 'numero_atto', 'id_tipologia', 'numero_affissione', 'created_by', 'updated_by'], 'integer'],
             [['anno', 'data_pubblicazione', 'created_at', 'updated_at', 'attachments', 'note', 'titolo', 'data_fine_pubblicazione'], 'safe'],
         ];
     }
@@ -62,15 +62,15 @@ class AlboPretorioSearch extends AlboPretorio
             'numero_atto' => $this->numero_atto,
             'anno' => $this->anno,
             'id_tipologia' => $this->id_tipologia,
-            'id_settore' => $this->id_settore,
             'numero_affissione' => $this->numero_affissione,
             'data_pubblicazione' => $this->data_pubblicazione,
-            'data_fine_pubblicazione' => $this->data_fine_pubblicazione,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
             'created_by' => $this->created_by,
             'updated_by' => $this->updated_by,
         ]);
+
+        $query->andFilterWhere([">=", "data_fine_pubblicazione", date("Y-m-d")]);
 
         $query->andFilterWhere(['like', 'attachments', $this->attachments])
             ->andFilterWhere(['like', 'note', $this->note])

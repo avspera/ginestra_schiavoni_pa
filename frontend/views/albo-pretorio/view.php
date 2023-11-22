@@ -33,7 +33,6 @@ $this->params['breadcrumbs'][] = $this->title;
             'numero_atto',
             'anno',
             'id_tipologia',
-            'id_settore',
             'numero_affissione',
             'data_pubblicazione',
             'created_at',

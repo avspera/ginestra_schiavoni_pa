@@ -7,6 +7,7 @@ use frontend\assets\AppAsset;
 use common\widgets\Alert;
 use yii\widgets\Breadcrumbs;
 use yii\helpers\Html;
+use yii\helpers\Url;
 
 AppAsset::register($this);
 ?>
@@ -125,10 +126,10 @@ AppAsset::register($this);
                                         </div>
                                         <div class="menu-wrapper">
                                             <ul class="navbar-nav">
-                                                <li class="nav-item active"><a class="nav-link" href="#" aria-current="page"><span>Albo pretorio</span></a></li>
-                                                <li class="nav-item"><a class="nav-link" href="#" aria-disabled="true"><span>Pubblicazioni di Matrimonio</span></a></li>
-                                                <li class="nav-item"><a class="nav-link" href="#"><span>Contravvenzioni</span></a></li>
-                                                <li class="nav-item"><a class="nav-link" href="#"><span>Parcheggio residenti</span></a></li>
+                                                <li class="nav-item active"><a class="nav-link" href="<?= Url::to(["albo-pretorio/index"]) ?>" aria-current="page"><span>Albo pretorio</span></a></li>
+                                                <li class="nav-item"><a class="nav-link" href="<?= Url::to(["atti-di-matrimonio/index"]) ?>" aria-disabled="true"><span>Pubblicazioni di Matrimonio</span></a></li>
+                                                <li class="nav-item"><a class="nav-link" href="<?= Url::to(["contravvenzioni/index"]) ?>"><span>Contravvenzioni</span></a></li>
+                                                <li class="nav-item"><a class="nav-link" href="<?= Url::to(["parcheggio-residenti/index"]) ?>"><span>Parcheggio residenti</span></a></li>
                                             </ul>
                                         </div>
                                     </div>
@@ -195,7 +196,6 @@ AppAsset::register($this);
                             </p>
                             <div class="link-list-wrapper">
                                 <ul class="footer-list link-list clearfix">
-                                    <li><a class="list-item" href="#" title="Vai alla pagina: Posta Elettronica Certificata">Posta Elettronica Certificata</a></li>
                                     <li>
                                         <a class="list-item" href="#" title="Vai alla pagina: URP - Ufficio Relazioni con il Pubblico">URP - Ufficio Relazioni con il Pubblico</a>
                                     </li>
@@ -226,12 +226,13 @@ AppAsset::register($this);
                     <li class="list-inline-item"><a href="#" title="Note Legali">Note legali</a></li>
                     <li class="list-inline-item"><a href="#" title="Privacy-Cookies">Privacy policy</a></li>
                     <li class="list-inline-item"><a href="#" title="Mappa del sito">Mappa del sito</a></li>
+                    <li class="list-inline-item"><a href="<?= Url::to(["backend/login"]) ?>" title="Accedi all'area privata">Accedi all'area privata</a></li>
                 </ul>
             </div>
         </div>
 
     </footer>
-
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <?php $this->endBody() ?>
 </body>
 

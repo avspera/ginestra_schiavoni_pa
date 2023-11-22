@@ -21,7 +21,8 @@
         "italia/spid-php-lib": "^0.35.0",
         "kartik-v/yii2-widget-datepicker": "dev-master",
         "kartik-v/yii2-widget-select2": "dev-master",
-        "kartik-v/yii2-widget-fileinput": "dev-master"
+        "kartik-v/yii2-widget-fileinput": "dev-master",
+        "yii2tech/csv-grid": "^1.0"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.1.0",

@@ -6,6 +6,7 @@ use Yii;
 use common\models\User;
 use common\models\Cittadino;
 use common\models\AlboPretorio;
+use common\models\Indirizzo;
 
 class Utils
 {
@@ -41,7 +42,13 @@ class Utils
     public static function getCittadino($id)
     {
         $cittadino = Cittadino::findOne(["id" => $id]);
-        return !empty($cittadino) ? $cittadino->nome." ".$cittadino->cognome : "-";
+        return !empty($cittadino) ? $cittadino->nome . " " . $cittadino->cognome : "-";
+    }
+
+    public static function getResidenza($id)
+    {
+        $indirizzo = Indirizzo::findOne(["id" => $id]);
+        return !empty($indirizzo) ? $indirizzo->via . ", " . $indirizzo->civico." - ".$indirizzo->cap." ".$indirizzo->provincia : "-" ;
     }
 
     /**
@@ -100,14 +107,19 @@ class Utils
         isset($value) ? date('Y-m-d H:i:s', strtotime($value)) : NULL;
     }
 
-    public static function formatDateForDb($value){
+    public static function formatDateForDb($value)
+    {
         $incoming = explode("-", $value);
-        return $incoming[2]."-".$incoming[1]."-".$incoming[0];
+        return $incoming[2] . "-" . $incoming[1] . "-" . $incoming[0];
     }
 
-    public static function getListaAnni(){
+    public static function getListaAnni()
+    {
         $alboPretorio = AlboPretorio::find()->select(["anno"])->orderBy(["anno" => SORT_DESC])->distinct()->all();
-
-        return array_values($alboPretorio);
+        $out = [];
+        foreach ($alboPretorio as $item) {
+            $out[$item->anno] = $item->anno;
+        }
+        return $out;
     }
 }

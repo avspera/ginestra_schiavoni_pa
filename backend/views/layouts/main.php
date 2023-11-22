@@ -107,7 +107,44 @@ AppAsset::register($this);
             <?= Breadcrumbs::widget([
                 'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
             ]) ?>
-            <?= Alert::widget() ?>
+            <?php if (Yii::$app->session->hasFlash("success")) {
+                $flashMessage = YIi::$app->session->getFlash("success");
+             ?>
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <?= $flashMessage ?>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Chiudi avviso">
+                        <svg class="icon">
+                            <use href="/bootstrap-italia/svg/sprites.svg#it-close"></use>
+                        </svg>
+                    </button>
+                </div>
+            <?php } ?>
+
+            <?php if (Yii::$app->session->hasFlash("warning")) {
+                $flashMessage = YIi::$app->session->getFlash("warning");
+            ?>
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <strong>Attenzione</strong> <?= $flashMessage ?>.
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Chiudi avviso">
+                        <svg class="icon">
+                            <use href="/bootstrap-italia/svg/sprites.svg#it-close"></use>
+                        </svg>
+                    </button>
+                </div>
+            <?php } ?>
+
+            <?php if (Yii::$app->session->hasFlash("error")) {
+                $flashMessage = YIi::$app->session->getFlash("error");
+            ?>
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <strong>Attenzione</strong> <?= $flashMessage ?>.
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Chiudi avviso">
+                        <svg class="icon">
+                            <use href="/bootstrap-italia/svg/sprites.svg#it-close"></use>
+                        </svg>
+                    </button>
+                </div>
+            <?php } ?>
             <?= $content ?>
         </div>
     </main>

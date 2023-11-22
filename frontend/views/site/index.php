@@ -20,7 +20,7 @@ $this->title = Yii::$app->name;
                             <div class="card-header border-0 p-0">
                             </div>
                             <div class="card-body p-0 my-2">
-                                <h3 class="green-title-big t-primary mb-8"><a href="<?= Url::to(["atti/index"]) ?>" class="text-decoration-none" data-element="service-link">Albo Pretorio </a></h3>
+                                <h3 class="green-title-big t-primary mb-8"><a href="<?= Url::to(["albo-pretorio/index"]) ?>" class="text-decoration-none" data-element="service-link">Albo Pretorio </a></h3>
                                 <p class="text-paragraph">In questa sezione puoi consultare l'albo pretorio del Comune</p>
                             </div>
                         </div>

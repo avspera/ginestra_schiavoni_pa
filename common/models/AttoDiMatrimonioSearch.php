@@ -17,8 +17,9 @@ class AttoDiMatrimonioSearch extends AttoDiMatrimonio
     public function rules()
     {
         return [
-            [['id', 'id_coniuge_uno', 'id_coniuge_due', 'data_matrimonio', 'id_residenza', 'created_by', 'updated_by', 'tipo_rito', 'regime_matrimoniale', 'titolo_studio_coniuge_uno', 'titolo_studio_coniuge_due', 'posizione_professionale_coniuge_uno', 'posizione_professionale_coniuge_due', 'condizione_non_professionale_coniuge_uno', 'condizione_non_professionale_coniuge_due'], 'integer'],
+            [['id', 'id_coniuge_uno', 'id_coniuge_due', 'id_residenza', 'created_by', 'updated_by', 'tipo_rito', 'regime_matrimoniale', 'titolo_studio_coniuge_uno', 'titolo_studio_coniuge_due', 'posizione_professionale_coniuge_uno', 'posizione_professionale_coniuge_due', 'condizione_non_professionale_coniuge_uno', 'condizione_non_professionale_coniuge_due'], 'integer'],
             [['padre_coniuge_uno', 'madre_coniuge_uno', 'padre_coniuge_due', 'madre_coniuge_due', 'created_at', 'updated_at', 'luogo_matrimonio'], 'safe'],
+            [['data_matrimonio'], 'string']
         ];
     }
 
