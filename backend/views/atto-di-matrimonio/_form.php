@@ -119,7 +119,7 @@ use kartik\date\DatePicker;
 
     <div class="row" style="margin-top:10px;">
         <div class="form-group">
-            <?= Html::submitButton('Salva', ['class' => 'btn btn-success float-end']) ?>
+            <?= Html::submitButton('Salva', ['class' => 'btn btn-xs btn-success float-end']) ?>
         </div>
     </div>
 

@@ -1,6 +1,7 @@
 <?php
 
 use yii\helpers\Html;
+use yii\helpers\Url;
 use yii\widgets\ActiveForm;
 
 /** @var yii\web\View $this */
@@ -42,8 +43,8 @@ use yii\widgets\ActiveForm;
     <?php // echo $form->field($model, 'updated') ?>
 
     <div class="form-group">
-        <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>
-        <?= Html::resetButton('Reset', ['class' => 'btn btn-outline-secondary']) ?>
+        <?= Html::submitButton('Search', ['class' => 'btn btn-xs btn-primary']) ?>
+        <?= Html::a('Reset', Url::to(["index"]), ['class' => 'btn btn-xs btn-outline-secondary']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

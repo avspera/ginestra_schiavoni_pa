@@ -12,46 +12,56 @@ use common\components\Utils;
 /** @var yii\data\ActiveDataProvider $dataProvider */
 
 $this->title = 'Contravvenzioni';
-$this->params['breadcrumbs'][] = $this->title;
+$this->params['breadcrumbs'][] = [
+    'label' => $this->title,
+    'template' => "<li class='breadcrumb-item'><span class='separator'>/</span>{link}</li>",
+    'url' => ["index"]
+];
 ?>
 <div class="contravvenzione-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
-    <p>
-        <?= Html::a('Aggiungi Contravvenzione', ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
+    <?= $this->render('_search', ['model' => $searchModel]); ?>
 
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+    <div class="card-wrapper card-space">
+        <div class="card card-bg card-big no-after">
+            <div class="card-body lightgrey-bg-c1">
+                <?= Html::a('Aggiungi Nuovo', ['create'], ['class' => 'btn btn-xs btn-success']) ?>
+                <div class="row mt-3">
+                    <div class="table table-responsive">
+                        <?= GridView::widget([
+                            'dataProvider' => $dataProvider,
 
-    <?= GridView::widget([
-        'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
-        'columns' => [
-            'id',
-            [
-                'attribute' => 'amount',
-                'value' => function($model){
-                    return Utils::formatCurrency($model->amount);
-                }
-            ],
-            'articolo_codice',
-            'data_accertamento:datetime',
-            'targa',
-            [
-                'attribute' => 'payed',
-                'value' => $searchModel->payed ? "SI" : "NO"
-            ],
-            'data_pagamento:datetime',
-            'created_at:datetime',
-            [
-                'class' => ActionColumn::className(),
-                'urlCreator' => function ($action, Contravvenzione $model, $key, $index, $column) {
-                    return Url::toRoute([$action, 'id' => $model->id]);
-                 }
-            ]
-        ],
-    ]); ?>
-
-
+                            'columns' => [
+                                'id',
+                                [
+                                    'attribute' => 'amount',
+                                    'value' => function ($model) {
+                                        return Utils::formatCurrency($model->amount);
+                                    }
+                                ],
+                                'articolo_codice',
+                                'data_accertamento:datetime',
+                                'targa',
+                                [
+                                    'attribute' => 'payed',
+                                    'value' => $searchModel->payed ? "SI" : "NO",
+                                    'filter' => [0 => "NO", 1 => "SI"]
+                                ],
+                                'data_pagamento:datetime',
+                                'created_at:datetime',
+                                [
+                                    'class' => ActionColumn::className(),
+                                    'urlCreator' => function ($action, Contravvenzione $model, $key, $index, $column) {
+                                        return Url::toRoute([$action, 'id' => $model->id]);
+                                    }
+                                ]
+                            ],
+                        ]); ?>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

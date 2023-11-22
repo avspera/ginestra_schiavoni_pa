@@ -9,7 +9,7 @@ $this->title = Yii::$app->name;
 ?>
 <div class="site-index">
     <div class="container">
-       
+
         <div class="body-content" style="margin-top:10px">
 
             <div class="row">
@@ -22,6 +22,7 @@ $this->title = Yii::$app->name;
                             <div class="card-body p-0 my-2">
                                 <h3 class="green-title-big t-primary mb-8"><a href="<?= Url::to(["albo-pretorio/index"]) ?>" class="text-decoration-none" data-element="service-link">Albo Pretorio </a></h3>
                                 <p class="text-paragraph">In questa sezione puoi consultare l'albo pretorio del Comune</p>
+                                <p><a class="btn btn-outline-secondary" href="<?= Url::to(["albo-pretorio/index"]); ?>" data-focus-mouse="false">Consulta »</a></p>
                             </div>
                         </div>
                     </div>
@@ -35,6 +36,7 @@ $this->title = Yii::$app->name;
                             <div class="card-body p-0 my-2">
                                 <h3 class="green-title-big t-primary mb-8"><a href="<?= Url::to(["atto-di-matrimonio/index"]) ?>" class="text-decoration-none" data-element="service-link">Pubblicazioni di Matrimonio</a></h3>
                                 <p class="text-paragraph">In questa sezione puoi inoltrare la richiesta di pubblicazione di matrimonio.</p>
+                                <p><a class="btn btn-outline-secondary" href="<?= Url::to(["atto-di-matrimonio/index"]); ?>" data-focus-mouse="false">Richiedi pubblicazione »</a></p>
                             </div>
                         </div>
                     </div>
@@ -51,6 +53,7 @@ $this->title = Yii::$app->name;
                             <div class="card-body p-0 my-2">
                                 <h3 class="green-title-big t-primary mb-8"><a href="<?= Url::to(["contravvenzioni/index"]) ?>" class="text-decoration-none" data-element="service-link">Contravvenzioni</a></h3>
                                 <p class="text-paragraph">In questa sezione puoi pagare le contravvenzioni della Polizia Municipale.</p>
+                                <p><a class="btn btn-outline-secondary" href="<?= Url::to(["contravvenzione/index"]); ?>" data-focus-mouse="false">Cerca »</a></p>
                             </div>
                         </div>
                     </div>
@@ -64,6 +67,7 @@ $this->title = Yii::$app->name;
                             <div class="card-body p-0 my-2">
                                 <h3 class="green-title-big t-primary mb-8"><a href="<?= Url::to(["parcheggio-residenti/index"]) ?>" class="text-decoration-none" data-element="service-link">Parcheggio residenti</a></h3>
                                 <p class="text-paragraph">In questa sezione puoi fare richiesta di contrassegno del parcheggio per residenti.</p>
+                                <p><a class="btn btn-outline-secondary" href="<?= Url::to(["parcheggio-residenti/index"]); ?>" data-focus-mouse="false">Richiedi »</a></p>
                             </div>
                         </div>
                     </div>

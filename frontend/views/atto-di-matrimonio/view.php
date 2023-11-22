@@ -29,7 +29,7 @@ $this->params['breadcrumbs'][] = [
 
     <p>
         <?php if (strpos($referrer, "albo-pretorio") !== false) { ?>
-            <?= Html::a("Torna indietro", Url::to(["albo-pretorio/index"]), ["class" => "btn btn-primary"]) ?>
+            <?= Html::a("Torna indietro", Url::to(["albo-pretorio/index"]), ["class" => "btn btn-xs btn-primary"]) ?>
         <?php } ?>
     </p>
     <?= DetailView::widget([

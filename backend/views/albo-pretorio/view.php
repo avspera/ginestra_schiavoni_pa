@@ -26,12 +26,12 @@ $this->params['breadcrumbs'][] = [
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Modifica', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a('Modifica', ['update', 'id' => $model->id], ['class' => 'btn btn-xs btn-primary']) ?>
         <?php if (!empty($attoDiMatrimonio)) { ?>
             <?= Html::a('Vai all\'Atto', Url::to(['atto-di-matrimonio/view', 'id' => $attoDiMatrimonio->id]), ['class' => 'btn btn-info']) ?>
         <?php } ?>
         <?= Html::a('Cancella', ['delete', 'id' => $model->id], [
-            'class' => 'btn btn-danger',
+            'class' => 'btn btn-xs btn-danger',
             'data' => [
                 'confirm'   => 'Sei sicuro di voler cancellare questo elemento?',
                 'method'    => 'post',

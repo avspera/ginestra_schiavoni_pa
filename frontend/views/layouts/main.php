@@ -26,76 +26,60 @@ AppAsset::register($this);
 <body class="d-flex flex-column h-100">
     <?php $this->beginBody() ?>
 
-    <header>
-        <?php
-        // NavBar::begin([
-        //     'brandLabel' => Yii::$app->name,
-        //     'brandImage' => Yii::getAlias("@web")."/images/logo.png",
-        //     'brandUrl' => Yii::$app->homeUrl,
-        //     'options' => [
-        //         'class' => 'navbar navbar-expand-md navbar-light bg-light fixed-top',
-        //     ],
-        // ]);
-        // $menuItems = [
-        //     // ['label' => 'Home', 'url' => ['/site/index']],
-        //     ['label' => 'Atti', 'url' => ['/atto-di-matrimonio/index']],
-        //     ['label' => 'Pubblicazioni matrimonio', 'url' => ['/atto-di-matrimonio/index']],
-        //     ['label' => 'Parcheggi residenti', 'url' => ['/parcheggio-residenti/index']],
-        //     ['label' => 'Multe', 'url' => ['/contravvenzioni/index']],
-        // ];
-
-        // echo Nav::widget([
-        //     'options' => ['class' => 'navbar-nav me-auto mb-2 mb-md-0'],
-        //     'items' => $menuItems,
-        // ]);
-        // if (Yii::$app->user->isGuest) {
-        //     echo Html::tag('div',Html::a('Login',['/site/login'],['class' => ['btn btn-link login text-decoration-none']]),['class' => ['d-flex']]);
-        // } else {
-        //     echo Html::beginForm(['/site/logout'], 'post', ['class' => 'd-flex'])
-        //         . Html::submitButton(
-        //             'Logout (' . Yii::$app->user->identity->username . ')',
-        //             ['class' => 'btn btn-link logout text-decoration-none']
-        //         )
-        //         . Html::endForm();
-        // }
-        // NavBar::end();
-        ?>
-        <header class="it-header-wrapper it-shadow">
-            <div class="it-nav-wrapper">
-                <div class="it-header-center-wrapper theme-light">
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-12">
-                                <div class="it-header-center-content-wrapper">
-                                    <div class="it-brand-wrapper">
-                                        <a href="/">
-                                            <?= Html::img(Yii::getAlias("@web") . "/images/logo.png", ["class" => "icon"]) ?>
-                                            <div class="it-brand-text">
-                                                <div class="it-brand-title">Comune di Ginestra Degli Schiavoni</div>
-                                                <div class="it-brand-tagline d-none d-md-block">Provincia di Benevento</div>
-                                            </div>
-                                        </a>
-                                    </div>
-                                    <div class="it-right-zone">
-                                        <div class="it-socials d-none d-md-flex">
-                                            <span>Seguici su</span>
-                                            <ul>
-                                                <li>
-                                                    <a href="#" aria-label="Facebook" target="_blank">
-                                                        <svg class="icon">
-                                                            <use href="/bootstrap-italia/svg/sprites.svg#it-facebook"></use>
-                                                        </svg>
-                                                    </a>
-                                                </li>
-                                            </ul>
+    <header class="it-header-wrapper it-shadow">
+        <div class="it-header-slim-wrapper">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="it-header-slim-wrapper-content">
+                            <a class="d-none d-lg-block navbar-brand" href="#">Provincia di Benenvento</a>
+                            <div class="it-header-slim-right-zone">
+                                <div class="it-access-top-wrapper">
+                                    <a class="btn btn-xs btn-primary btn-sm" href="#">Accedi</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="it-nav-wrapper">
+            <div class="it-header-center-wrapper theme-light">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="it-header-center-content-wrapper">
+                                <div class="it-brand-wrapper">
+                                    <a href="/">
+                                        <?= Html::img(Yii::getAlias("@web") . "/images/logo.png", ["class" => "icon"]) ?>
+                                        <div class="it-brand-text">
+                                            <div class="it-brand-title">Comune di Ginestra Degli Schiavoni</div>
+                                            <div class="it-brand-tagline d-none d-md-block">Provincia di Benevento</div>
                                         </div>
-                                        <div class="it-search-wrapper">
-                                            <span class="d-none d-md-block">Cerca</span>
-                                            <a class="search-link rounded-icon" aria-label="Cerca nel sito" href="#">
-                                                <svg class="icon">
-                                                    <use href="/bootstrap-italia/svg/sprites.svg#it-search"></use>
+                                    </a>
+                                </div>
+                                <div class="it-right-zone">
+                                    <div class="it-socials d-none d-md-flex">
+                                        <span>Seguici su</span>
+                                        <ul>
+                                            <li>
+                                                <a href="#" aria-label="Facebook" target="_blank">
+                                                    <svg class="icon">
+                                                        <use href="/bootstrap-italia/svg/sprites.svg#it-facebook"></use>
+                                                    </svg>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="it-search-wrapper">
+                                        <div class="search-link form-group" id="search-container">
+                                            <label for="autocomplete-regioni" class="visually-hidden">Cerca nel sito</label>
+                                            <input type="search" class="autocomplete" placeholder="Testo da cercare" id="autocomplete-regioni" name="autocomplete-regioni" data-bs-autocomplete='[{"text":"Abruzzo","link":"#"},{"text":"Basilicata","link":"#"},{"text":"Calabria","link":"#"},{"text":"Campania","link":"#"},{"text":"Emilia Romagna","link":"#"},{"text":"Friuli Venezia Giulia","link":"#"},{"text":"Lazio","link":"#"},{"text":"Liguria","link":"#"},{"text":"Lombardia","link":"#"},{"text":"Marche","link":"#"},{"text":"Molise","link":"#"},{"text":"Piemonte","link":"#"},{"text":"Puglia","link":"#"},{"text":"Sardegna","link":"#"},{"text":"Sicilia","link":"#"},{"text":"Toscana","link":"#"},{"text":"Trentino Alto Adige","link":"#"},{"text":"Umbria","link":"#"},{"text":"Valle d’Aosta","link":"#"},{"text":"Veneto","link":"#"}]'>
+                                            <span class="autocomplete-icon" aria-hidden="true">
+                                                <svg class="icon icon-sm">
+                                                    <use href="/bootstrap-italia/dist/svg/sprites.svg#it-search"></use>
                                                 </svg>
-                                            </a>
+                                            </span>
                                         </div>
                                     </div>
                                 </div>
@@ -103,43 +87,44 @@ AppAsset::register($this);
                         </div>
                     </div>
                 </div>
-                <div class="it-header-navbar-wrapper theme-light-desk">
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-12">
-                                <!--start nav-->
-                                <nav class="navbar navbar-expand-lg has-megamenu" aria-label="Navigazione principale">
-                                    <button class="custom-navbar-toggler" type="button" aria-controls="navC2" aria-expanded="false" aria-label="Mostra/Nascondi la navigazione" data-bs-toggle="navbarcollapsible" data-bs-target="#navC2">
-                                        <svg class="icon">
-                                            <use href="/bootstrap-italia/svg/sprites.svg#it-burger"></use>
-                                        </svg>
-                                    </button>
-                                    <div class="navbar-collapsable" id="navC2" style="display: none;">
-                                        <div class="overlay" style="display: none;"></div>
-                                        <div class="close-div">
-                                            <button class="btn close-menu" type="button">
-                                                <span class="visually-hidden">Nascondi la navigazione</span>
-                                                <svg class="icon">
-                                                    <use href="/bootstrap-italia/svg/sprites.svg#it-close-big"></use>
-                                                </svg>
-                                            </button>
-                                        </div>
-                                        <div class="menu-wrapper">
-                                            <ul class="navbar-nav">
-                                                <li class="nav-item active"><a class="nav-link" href="<?= Url::to(["albo-pretorio/index"]) ?>" aria-current="page"><span>Albo pretorio</span></a></li>
-                                                <li class="nav-item"><a class="nav-link" href="<?= Url::to(["atti-di-matrimonio/index"]) ?>" aria-disabled="true"><span>Pubblicazioni di Matrimonio</span></a></li>
-                                                <li class="nav-item"><a class="nav-link" href="<?= Url::to(["contravvenzioni/index"]) ?>"><span>Contravvenzioni</span></a></li>
-                                                <li class="nav-item"><a class="nav-link" href="<?= Url::to(["parcheggio-residenti/index"]) ?>"><span>Parcheggio residenti</span></a></li>
-                                            </ul>
-                                        </div>
+            </div>
+            <div class="it-header-navbar-wrapper theme-light-desk">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-12">
+                            <!--start nav-->
+                            <nav class="navbar navbar-expand-lg has-megamenu" aria-label="Navigazione principale">
+                                <button class="custom-navbar-toggler" type="button" aria-controls="navC2" aria-expanded="false" aria-label="Mostra/Nascondi la navigazione" data-bs-toggle="navbarcollapsible" data-bs-target="#navC2">
+                                    <svg class="icon">
+                                        <use href="/bootstrap-italia/svg/sprites.svg#it-burger"></use>
+                                    </svg>
+                                </button>
+                                <div class="navbar-collapsable" id="navC2" style="display: none;">
+                                    <div class="overlay" style="display: none;"></div>
+                                    <div class="close-div">
+                                        <button class="btn close-menu" type="button">
+                                            <span class="visually-hidden">Nascondi la navigazione</span>
+                                            <svg class="icon">
+                                                <use href="/bootstrap-italia/svg/sprites.svg#it-close-big"></use>
+                                            </svg>
+                                        </button>
                                     </div>
-                                </nav>
-                            </div>
+                                    <div class="menu-wrapper">
+                                        <ul class="navbar-nav">
+                                            <li class="nav-item active"><a class="nav-link" href="<?= Url::to(["albo-pretorio/index"]) ?>" aria-current="page"><span>Albo pretorio</span></a></li>
+                                            <li class="nav-item"><a class="nav-link" href="<?= Url::to(["atti-di-matrimonio/index"]) ?>" aria-disabled="true"><span>Pubblicazioni di Matrimonio</span></a></li>
+                                            <li class="nav-item"><a class="nav-link" href="<?= Url::to(["contravvenzioni/index"]) ?>"><span>Contravvenzioni</span></a></li>
+                                            <li class="nav-item"><a class="nav-link" href="<?= Url::to(["parcheggio-residenti/index"]) ?>"><span>Parcheggio residenti</span></a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </nav>
                         </div>
                     </div>
                 </div>
             </div>
-        </header>
+        </div>
+    </header>
     </header>
 
     <main role="main" class="flex-shrink-0">

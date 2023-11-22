@@ -33,7 +33,7 @@ $this->params['breadcrumbs'][] = [
                         <h1><?= Html::encode($this->title) ?></h1>
                         <?php
                         if (!$model->payed) {
-                            echo '<a href="' . Url::to(["pay", "id" => $model->id]) . '" class="btn btn-success btn-xs btn-icon" role="button" aria-disabled="true">
+                            echo '<a href="' . Url::to(["pay", "id" => $model->id]) . '" class="btn btn-xs btn-success btn-xs btn-icon" role="button" aria-disabled="true">
                                 <svg class="icon icon-white">
                                     <use
                                     xlink:href="/bootstrap-italia/svg/sprites.svg#it-card"
@@ -56,7 +56,9 @@ $this->params['breadcrumbs'][] = [
                                         return strtoupper($model->targa);
                                     }
                                 ],
-                                'data_accertamento:datetime',
+                                'data_accertamento:date',
+                                'orario_accertamento:time',
+                                'luogo',
                                 'punti_patente',
                                 [
                                     'attribute' => 'payed',
@@ -65,6 +67,12 @@ $this->params['breadcrumbs'][] = [
                                 ],
                                 'data_pagamento:datetime',
                                 'ricevuta_pagamento',
+                                [
+                                    'attribute' => "strumento",
+                                    'value' => function($model){
+                                        return $model->getStrumento();
+                                    }
+                                ],
                                 'created_at:datetime',
                                 [
                                     'attribute' => 'created_by',

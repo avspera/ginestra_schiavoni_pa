@@ -4,6 +4,7 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\ActiveForm;
 use common\components\Utils;
+use common\models\AlboPretorio;
 
 /** @var yii\web\View $this */
 /** @var common\models\AlboPretorioSearch $model */
@@ -38,19 +39,26 @@ $anni_list = Utils::getListaAnni();
                     <div class="row">
                         <div class="form-group d-inline-flex col-md-3 col-xs-12">
                             <div class="form-control select-wrapper p-0">
-                                <label for="id_tipologia">Tipologia</label>
+                                <label class="control-label active" for="id_tipologia">Tipologia</label>
                                 <select id="albopretoriosearch-id_tipologia" name="AlboPretorioSearch[id_tipologia]">
                                     <option value="">Tutti</option>
-                                    <?php foreach ($model->tipologia_choices as $key => $value) { ?>
-                                        <option <?= $model->id_tipologia == $key ? "selected" : "" ?> value="<?= $key ?>"><?= $value ?></option>
+                                    <?php foreach ($model->tipologia_choices as $key => $value) {
+                                        $count = AlboPretorio::find()->where(["id_tipologia" => $key])->count();
+                                        if($count > 0){
+                                            $label = $value . " (".$count.")";
+                                        }else{
+                                            $label = $value;
+                                        }
+                                    ?>
+                                        <option <?= $model->id_tipologia == $key ? "selected" : "" ?> value="<?= $key ?>"><?= $label ?></option>
                                     <?php } ?>
                                 </select>
                             </div>
                         </div>
 
-                        <div class="form-group d-inline-flex col-md-3 col-xs-12">
+                        <div class="form-group col-md-3 col-xs-12">
                             <div class="form-control select-wrapper p-0">
-                                <label for="anno">Anno</label>
+                                <label class="control-label active" for="anno">Anno</label>
                                 <select id="albopretoriosearch-anno" name="AlboPretorioSearch[anno]">
                                     <option value="">Tutti</option>
                                     <?php foreach ($anni_list as $item) { ?>
@@ -62,30 +70,30 @@ $anni_list = Utils::getListaAnni();
 
                         <div class="col-md-4">
                             <div class="form-group field-albopretoriosearch-oggetto">
-                                <label class="control-label" for="albopretoriosearch-oggetto">Oggetto</label>
-                                <input type="text" id="albopretoriosearch-oggetto" class="form-control" name="AlboPretorioSearch[oggetto]" data-focus-mouse="false">
+                                <label class="control-label active" for="albopretoriosearch-oggetto">Oggetto</label>
+                                <input type="text" value="<?= $model->titolo ?>" id="albopretoriosearch-oggetto" class="form-control" name="AlboPretorioSearch[oggetto]" data-focus-mouse="false">
                             </div>
                         </div>
                     </div>
 
                     <div class="row">
-                        <div class="col-md-3">
+                        <div class="col-md-4">
                             <div class="form-group field-albopretoriosearch-numero_affissione">
-                                <label class="control-label" for="albopretoriosearch-numero_affissione">Numero Affissione</label>
-                                <input type="text" id="albopretoriosearch-numero_affissione" class="form-control" name="AlboPretorioSearch[numero_affissione]" data-focus-mouse="false">
+                                <label class="control-label active" for="albopretoriosearch-numero_affissione">Numero Affissione</label>
+                                <input type="text" value="<?= $model->numero_affissione ?>" id="albopretoriosearch-numero_affissione" class="form-control" name="AlboPretorioSearch[numero_affissione]" data-focus-mouse="false">
                             </div>
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-md-4">
                             <div class="form-group field-albopretoriosearch-numero_atto">
-                                <label class="control-label" for="albopretoriosearch-numero_atto">Numero Atto</label>
-                                <input type="text" id="albopretoriosearch-numero_atto" class="form-control" name="AlboPretorioSearch[numero_atto]" data-focus-mouse="false">
+                                <label class="control-label active" for="albopretoriosearch-numero_atto">Numero Atto</label>
+                                <input type="text" value="<?= $model->numero_atto ?>" id="albopretoriosearch-numero_atto" class="form-control" name="AlboPretorioSearch[numero_atto]" data-focus-mouse="false">
                             </div>
                         </div>
 
-                        <div class="col-md-3">
+                        <div class="col-md-4">
                             <div class="form-group field-albopretoriosearch-data_pubblicazione">
-                                <label class="active" for="dateStandard">Data pubblicazione</label>
-                                <input type="date" id="albopretoriosearch-data_pubblicazione" max="<?= date("Y-m-d") ?>" name="AlboPretorioSearch[data_pubblicazione]">
+                                <label class="control-label active" for="dateStandard">Data pubblicazione</label>
+                                <input value="<?= !empty($model->data_pubblicazione) ? date("Y-m-d", strtotime($model->data_pubblicazione)) : "" ?>" type="date" id="albopretoriosearch-data_pubblicazione" max="<?= date("Y-m-d") ?>" name="AlboPretorioSearch[data_pubblicazione]">
                             </div>
                         </div>
                     </div>
@@ -94,9 +102,9 @@ $anni_list = Utils::getListaAnni();
                 <div class="float-start col-md-6 col-xs-12">
                     <div class="form-group">
                         <div class="py-1">
-                            <?= Html::submitButton('Cerca', ['class' => 'btn btn-primary m-1']) ?>
-                            <?= Html::a('Annulla', Url::to(["index"]), ['class' => 'btn btn-outline-secondary m-1']) ?>
-                            <?= Html::button("Scarica in formato csv", ["class" => "btn btn-outline-success m-1", "onclick" => "javascript:exportData()"]) ?>
+                            <?= Html::submitButton('Cerca', ['class' => 'btn btn-xs btn-primary m-1']) ?>
+                            <?= Html::a('Annulla', Url::to(["index"]), ['class' => 'btn btn-xs btn-outline-secondary m-1']) ?>
+                            <?= Html::button("Scarica in formato csv", ["class" => "btn btn-xs btn-outline-success m-1", "onclick" => "javascript:exportData()"]) ?>
                         </div>
                     </div>
 

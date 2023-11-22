@@ -12,57 +12,69 @@ use common\components\Utils;
 /** @var yii\data\ActiveDataProvider $dataProvider */
 
 $this->title = 'Parcheggio Residenti';
-$this->params['breadcrumbs'][] = $this->title;
+$this->params['breadcrumbs'][] = [
+    'label' => $this->title,
+    'template' => "<li class='breadcrumb-item'><span class='separator'>/</span>" . $this->title . "</li>",
+];
 ?>
 <div class="parcheggio-residenti-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
-    <p>
-        <?= Html::a('Aggiungi Parcheggio Residenti', ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
+    <?= $this->render('_search', ['model' => $searchModel]); ?>
 
-    <?php // echo $this->render('_search', ['model' => $searchModel]); 
-    ?>
+    <div class="card-wrapper card-space">
+        <div class="card card-bg card-big no-after">
+            <div class="card-body lightgrey-bg-c1">
+                <?= Html::a('Aggiungi Nuovo', ['create'], ['class' => 'btn btn-xs btn-success']) ?>
+                <div class="row mt-3">
+                    <div class="table table-responsive">
+                        <?= GridView::widget([
+                            'dataProvider' => $dataProvider,
+                            'columns' => [
+                                'id',
+                                [
+                                    'attribute' => 'id_cittadino',
+                                    'value' => function ($model) {
+                                        return Utils::getCittadino($model->id_cittadino);
+                                    }
+                                ],
+                                'indirizzo',
+                                'qnt_auto',
+                                [
+                                    'attribute' => "price",
+                                    'value' => function ($model) {
+                                        return Utils::formatCurrency($model->price);
+                                    }
+                                ],
+                                [
+                                    'attribute' => 'durata',
+                                    'value' => function ($model) {
+                                        return $model->getDurata();
+                                    }
+                                ],
+                                [
+                                    'attribute' => 'payed',
+                                    "value" => function ($model) {
+                                        return $model->payed ? "SI" : "NO";
+                                    }
+                                ],
+                                'created_at',
+                                //'updated_at',
+                                //'created_by',
+                                //'updated_by',
 
-    <?= GridView::widget([
-        'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
-        'columns' => [
-            'id',
-            [
-                'attribute' => 'id_cittadino',
-                'value' => function ($model) {
-                    return Utils::getCittadino($model->id_cittadino);
-                }
-            ],
-            'id_indirizzo',
-            'qnt_auto',
-            [
-                'attribute' => "price",
-                'value' => function ($model) {
-                    return Utils::formatCurrency($model->price);
-                }
-            ],
-            [
-                'attribute' => 'payed',
-                "value" => function ($model) {
-                    return $model->payed ? "SI" : "NO";
-                }
-            ],
-            'created_at',
-            //'updated_at',
-            //'created_by',
-            //'updated_by',
-
-            [
-                'class' => ActionColumn::className(),
-                'urlCreator' => function ($action, ParcheggioResidenti $model, $key, $index, $column) {
-                    return Url::toRoute([$action, 'id' => $model->id]);
-                }
-            ],
-        ],
-    ]); ?>
-
-
+                                [
+                                    'class' => ActionColumn::className(),
+                                    'urlCreator' => function ($action, ParcheggioResidenti $model, $key, $index, $column) {
+                                        return Url::toRoute([$action, 'id' => $model->id]);
+                                    }
+                                ],
+                            ],
+                        ]); ?>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

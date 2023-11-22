@@ -19,7 +19,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="card-wrapper">
         <div class="card card-success">
             <div class="card-header">
-                <?= Html::a('Aggiungi nuovo utente', ['create'], ['class' => 'btn btn-success']) ?>
+                <?= Html::a('Aggiungi nuovo utente', ['create'], ['class' => 'btn btn-xs btn-success']) ?>
             </div>
             <div class="card-body">
                 <?= GridView::widget([

@@ -29,6 +29,7 @@ use Yii;
  * @property string|null $updated_at
  * @property int $created_by
  * @property int|null $updated_by
+ * @property string $spid_reference
  */
 class Cittadino extends \yii\db\ActiveRecord
 {
@@ -60,9 +61,9 @@ class Cittadino extends \yii\db\ActiveRecord
     {
         return [
             [['nome', 'cognome', 'data_di_nascita', 'comune_di_nascita', 'documento_di_identita', 'tipo_documento', 'email', 'created_by', "created_at"], 'required'],
-            [['documento_di_identita', 'last_login', 'updated_at', "updated_by"], 'safe'],
+            [['documento_di_identita', 'last_login', 'updated_at', "updated_by", "spid_reference"], 'safe'],
             [['tipo_documento', 'eta', 'stato_civile'], 'integer'],
-            [['nome', 'cognome', 'data_di_nascita', 'comune_di_nascita', 'email', 'professione', 'comune_di_residenza', 'indirizzo_di_residenza', 'last_login'], 'string', 'max' => 255],
+            [['nome', 'cognome', 'data_di_nascita', 'comune_di_nascita', 'email', 'professione', 'comune_di_residenza', 'indirizzo_di_residenza', 'last_login', 'spid_reference'], 'string', 'max' => 255],
             [['cittadinanza'], 'string', 'max' => 3],
             [['codice_fiscale'], 'string', 'max' => 16],
             [['telefono'], 'string', 'max' => 20],
@@ -95,7 +96,8 @@ class Cittadino extends \yii\db\ActiveRecord
             'telefono' => 'Telefono',
             'created_at' => "Aggiunto il",
             'updated_at' => "Modificato il",
-            'last_login' => "Ultimo accesso"
+            'last_login' => "Ultimo accesso",
+            'spid_reference' => "ID SPID"
         ];
     }
 

@@ -1,6 +1,7 @@
 <?php
 
 use yii\helpers\Html;
+use yii\helpers\Url;
 use yii\widgets\ActiveForm;
 
 /** @var yii\web\View $this */
@@ -15,31 +16,45 @@ use yii\widgets\ActiveForm;
         'method' => 'get',
     ]); ?>
 
-    <?= $form->field($model, 'id') ?>
+    <div class="card-wrapper card-space">
+        <div class="card card-bg card-big no-after">
+            <div class="card-body p-3 p-md-5 lightgrey-bg-c1">
+                <div class="mb-4">
+                    <div class="float-start col-md-6 mb-0 mb-md-5">
+                        <span class="card-title h4">Cerca</span>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
 
-    <?= $form->field($model, 'amount') ?>
+                <div class="row">
+                    <div class="form-group col-md-2 col-xs-12">
+                        <?= $form->field($model, 'id')->label("ID", ["class" => "control-label active"]) ?>
+                    </div>
 
-    <?= $form->field($model, 'articolo_codice') ?>
+                    <div class="form-group col-md-2 col-xs-12">
+                        <?= $form->field($model, 'amount')->label("Importo", ["class" => "control-label active"]) ?>
+                    </div>
 
-    <?= $form->field($model, 'data_accertamento') ?>
+                    <div class="form-group col-md-2 col-xs-12">
+                        <?= $form->field($model, 'articolo_codice')->label("Articolo codice", ["class" => "control-label active"]) ?>
+                    </div>
 
-    <?= $form->field($model, 'created_at') ?>
+                    <div class="form-group col-md-3 col-xs-12">
+                        <?= $form->field($model, 'targa')->label("Targa", ["class" => "control-label active"]) ?>
+                    </div>
 
-    <?php // echo $form->field($model, 'targa') ?>
+                    <div class="form-group col-md-3 col-xs-12">
+                        <?= $form->field($model, 'data_accertamento')->textInput(["type" => "date", "max" => date("Y-m-d")])->label("Data di accertamento", ["class" => "control-label active"]) ?>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <?= Html::submitButton('Cerca', ['class' => 'btn btn-xs btn-primary']) ?>
+                    <?= Html::a('Annulla', Url::to(["index"]), ['class' => 'btn btn-xs btn-outline-secondary']) ?>
+                </div>
 
-    <?php // echo $form->field($model, 'punti_patente') ?>
+                <?php ActiveForm::end(); ?>
 
-    <?php // echo $form->field($model, 'payed') ?>
-
-    <?php // echo $form->field($model, 'data_pagamento') ?>
-
-    <?php // echo $form->field($model, 'ricevuta_pagamento') ?>
-
-    <div class="form-group">
-        <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>
-        <?= Html::resetButton('Reset', ['class' => 'btn btn-outline-secondary']) ?>
+            </div>
+        </div>
     </div>
-
-    <?php ActiveForm::end(); ?>
-
 </div>

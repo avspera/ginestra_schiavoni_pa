@@ -55,7 +55,7 @@ use yii\widgets\ActiveForm;
     <?= $form->field($model, 'condizione_non_professionale_coniuge_due')->textInput() ?>
 
     <div class="form-group">
-        <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
+        <?= Html::submitButton('Save', ['class' => 'btn btn-xs btn-success']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

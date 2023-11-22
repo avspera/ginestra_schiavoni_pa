@@ -6,8 +6,17 @@ use yii\helpers\Html;
 /** @var common\models\Contravvenzione $model */
 
 $this->title = 'Aggiungi Contravvenzione';
-$this->params['breadcrumbs'][] = ['label' => 'Contravvenzioni', 'url' => ['index']];
-$this->params['breadcrumbs'][] = $this->title;
+
+$this->params['breadcrumbs'][] = [
+    'label' => 'Contravvenzioni',
+    'template' => "<li class='breadcrumb-item'><span class='separator'>/</span>{link}</li>",
+    'url' => ["index"]
+];
+
+$this->params['breadcrumbs'][] = [
+    'label' => $this->title,
+    'template' => "<li class='breadcrumb-item'>" . $this->title . "</li>",
+];
 ?>
 <div class="contravvenzione-create">
 

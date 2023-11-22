@@ -84,9 +84,9 @@ use yii\widgets\ActiveForm;
 
                 <div class="row" style="margin-top:10px;">
                     <div class="col-md-12">
-                        <div class="form-group float-end">
-                            <?= Html::submitButton('Cerca', ['class' => 'btn btn-primary']) ?>
-                            <?= Html::a('Cancella Filtri', Url::to(["index"]), ['class' => 'btn btn-outline-secondary']) ?>
+                        <div class="form-group">
+                            <?= Html::submitButton('Cerca', ['class' => 'btn btn-xs btn-primary']) ?>
+                            <?= Html::a('Cancella Filtri', Url::to(["index"]), ['class' => 'btn btn-xs btn-outline-secondary']) ?>
                         </div>
                     </div>
                 </div>

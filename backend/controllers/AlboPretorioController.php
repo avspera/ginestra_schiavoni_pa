@@ -92,6 +92,9 @@ class AlboPretorioController extends Controller
         }
 
         $model->sorgente = 0;
+        $latestAlbo = AlboPretorio::find()->select(["numero_atto"])->orderBy(["numero_atto" => SORT_DESC])->one();
+        $model->numero_atto = !empty($latestAlbo) ? $latestAlbo->numero_atto+1 : 1;
+        $model->anno = date("Y");
         return $this->render('create', [
             'model' => $model,
         ]);
@@ -109,11 +112,15 @@ class AlboPretorioController extends Controller
         $model = $this->findModel($id);
         $prevAttachments = json_decode($model->attachments, true);
         if ($this->request->isPost && $model->load($this->request->post())) {
+            
             $model->attachments = UploadedFile::getInstances($model, 'attachments');
+            
             if (!empty($model->attachments)) {
                 $newAttachments = $model->uploadFiles($model->attachments);
                 $model->attachments = array_merge($prevAttachments, json_decode($newAttachments, true));
                 $model->attachments = json_encode($model->attachments);
+            } else {
+                $model->attachments = json_encode($prevAttachments);
             }
 
             if ($model->save(false)) {

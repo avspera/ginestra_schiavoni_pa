@@ -27,18 +27,18 @@ $this->params['breadcrumbs'][] = [
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Modifica', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a('Modifica', ['update', 'id' => $model->id], ['class' => 'btn btn-xs btn-primary']) ?>
         <?php if (!$model->approved) : ?>
             <?= Html::a('Approva', ['approve', 'id' => $model->id], ['class' => 'btn btn-info']) ?>
         <?php endif; ?>
         <?php if (!$model->published) { ?>
-            <?= Html::a('Pubblica', ['publish', 'id' => $model->id], ['class' => 'btn btn-success']) ?>
+            <?= Html::a('Pubblica', ['publish', 'id' => $model->id], ['class' => 'btn btn-xs btn-success']) ?>
         <?php } else { ?>
-            <?= Html::a('Vedi in albo pretorio', Url::to(['/albo-pretorio/view', 'id' => $model->id_albo_pretorio]), ['class' => 'btn btn-success']) ?>
+            <?= Html::a('Vedi in albo pretorio', Url::to(['/albo-pretorio/view', 'id' => $model->id_albo_pretorio]), ['class' => 'btn btn-xs btn-success']) ?>
         <?php } ?>
 
         <?= Html::a('Cancella', ['delete', 'id' => $model->id], [
-            'class' => 'btn btn-danger',
+            'class' => 'btn btn-xs btn-danger',
             'data' => [
                 'confirm' => 'Sicuro di voler cancellare questo elemento?',
                 'method' => 'post',

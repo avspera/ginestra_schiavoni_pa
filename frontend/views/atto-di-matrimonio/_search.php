@@ -60,8 +60,8 @@ use yii\widgets\ActiveForm;
     <?php // echo $form->field($model, 'condizione_non_professionale_coniuge_due') ?>
 
     <div class="form-group">
-        <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>
-        <?= Html::resetButton('Reset', ['class' => 'btn btn-outline-secondary']) ?>
+        <?= Html::submitButton('Search', ['class' => 'btn btn-xs btn-primary']) ?>
+        <?= Html::resetButton('Reset', ['class' => 'btn btn-xs btn-outline-secondary']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

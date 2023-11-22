@@ -35,7 +35,7 @@ use yii\widgets\ActiveForm;
     <?= $form->field($model, 'note')->textarea(['rows' => 6]) ?>
 
     <div class="form-group">
-        <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
+        <?= Html::submitButton('Save', ['class' => 'btn btn-xs btn-success']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

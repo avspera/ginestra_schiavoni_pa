@@ -25,13 +25,15 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'satisfaction_reason') ?>
 
-    <?php // echo $form->field($model, 'angry_reason') ?>
+    <?php // echo $form->field($model, 'angry_reason') 
+    ?>
 
-    <?php // echo $form->field($model, 'notes') ?>
+    <?php // echo $form->field($model, 'notes') 
+    ?>
 
     <div class="form-group">
-        <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>
-        <?= Html::resetButton('Reset', ['class' => 'btn btn-outline-secondary']) ?>
+        <?= Html::submitButton('Cerca', ['class' => 'btn btn-xs btn-primary']) ?>
+        <?= Html::a('Annulla', ['class' => 'btn btn-xs btn-outline-secondary']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

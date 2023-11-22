@@ -7,9 +7,18 @@ use common\components\Utils;
 /** @var yii\web\View $this */
 /** @var common\models\Contravvenzione $model */
 
-$this->title = $model->id." del ".Utils::formatDate($model->data_accertamento);
-$this->params['breadcrumbs'][] = ['label' => 'Contravvenzioni', 'url' => ['index']];
-$this->params['breadcrumbs'][] = $this->title;
+$this->title = $model->id . " del " . Utils::formatDate($model->data_accertamento);
+$this->params['breadcrumbs'][] = [
+    'label' => 'Contravvenzioni',
+    'template' => "<li class='breadcrumb-item'><span class='separator'>/</span>{link}</li>",
+    'url' => ["index"]
+];
+
+$this->params['breadcrumbs'][] = [
+    'label' => $this->title,
+    'template' => "<li class='breadcrumb-item'>" . $this->title . "</li>",
+];
+
 \yii\web\YiiAsset::register($this);
 ?>
 <div class="contravvenzione-view">
@@ -17,9 +26,9 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Modifica', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a('Modifica', ['update', 'id' => $model->id], ['class' => 'btn btn-xs btn-primary']) ?>
         <?= Html::a('Cancella', ['delete', 'id' => $model->id], [
-            'class' => 'btn btn-danger',
+            'class' => 'btn btn-xs btn-danger',
             'data' => [
                 'confirm' => 'Sicuro di voler cancellare questo elemento?',
                 'method' => 'post',
@@ -32,26 +41,44 @@ $this->params['breadcrumbs'][] = $this->title;
         'attributes' => [
             'id',
             [
+                'attribute' => 'strumento',
+                'value' => function($model){
+                    return $model->getStrumento();
+                }
+            ],
+            [
                 'attribute' => 'amount',
                 'value' => Utils::formatCurrency($model->amount)
             ],
             'articolo_codice',
-            'data_accertamento:datetime',
-            'targa',
+            'data_accertamento:date',
+            'orario_accertamento:time',
+            [
+                'attribute' => 'targa',
+                'value' => function ($model) {
+                    return strtoupper($model->targa);
+                }
+            ],
+            'luogo',
             'punti_patente',
-            'payed',
+            [
+                'attribute' => 'payed',
+                'value' => function ($model) {
+                    return $model->payed ? "SI" : "NO";
+                }
+            ],
             'data_pagamento:datetime',
             'ricevuta_pagamento',
             'created_at:datetime',
             'updated_at:datetime',
             [
-               'attribute' => 'created_by',
-               'value' => Utils::getCreatedBy($model->created_by)
+                'attribute' => 'created_by',
+                'value' => Utils::getCreatedBy($model->created_by)
             ],
             [
                 'attribute' => 'updated_by',
                 'value' => Utils::getCreatedBy($model->updated_by)
-             ],
+            ],
         ],
     ]) ?>
 

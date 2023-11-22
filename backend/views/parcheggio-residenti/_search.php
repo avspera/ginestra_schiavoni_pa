@@ -1,6 +1,7 @@
 <?php
 
 use yii\helpers\Html;
+use yii\helpers\Url;
 use yii\widgets\ActiveForm;
 
 /** @var yii\web\View $this */
@@ -15,30 +16,53 @@ use yii\widgets\ActiveForm;
         'method' => 'get',
     ]); ?>
 
-    <?= $form->field($model, 'id') ?>
+    <div class="card-wrapper card-space">
+        <div class="card card-bg card-big no-after">
+            <div class="card-body p-3 p-md-5 lightgrey-bg-c1">
+                <div class="mb-4">
+                    <div class="float-start col-md-6 mb-0 mb-md-5">
+                        <span class="card-title h4">Cerca</span>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+                <div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group field-parcheggio-residenti-targa">
+                                <label class="control-label active" for="parcheggio-residenti-targa">Targa</label>
+                                <input type="text" value="<?= $model->targa ?>" id="parcheggioresidentisearch-targa" class="form-control" name="ParcheggioResidentiSearch[targa]" data-focus-mouse="false">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group field-parcheggio-residenti-veicolo">
+                                <label class="control-label active" for="parcheggio-residenti-targa">Veicolo</label>
+                                <input type="text" value="<?= $model->veicolo ?>" id="parcheggioresidentisearch-veicolo" class="form-control" name="ParcheggioResidentiSearch[veicolo]" data-focus-mouse="false">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group field-parcheggio-residenti-indirizzo">
+                                <label class="control-label active" for="parcheggio-residenti-indirizzo">Indirizzo</label>
+                                <input type="text" value="<?= $model->indirizzo ?>" id="parcheggioresidentisearch-indirizzo" class="form-control" name="ParcheggioResidentiSearch[indirizzo]" data-focus-mouse="false">
+                            </div>
+                        </div>
+                    </div>
 
-    <?= $form->field($model, 'id_cittadino') ?>
+                    <div class="float-start col-md-6 col-xs-12">
+                        <div class="form-group">
+                            <div class="py-1">
+                                <?= Html::submitButton('Cerca', ['class' => 'btn btn-xs btn-primary m-1']) ?>
+                                <?= Html::a('Annulla', Url::to(["index"]), ['class' => 'btn btn-xs btn-outline-secondary m-1']) ?>
+                            </div>
+                        </div>
 
-    <?= $form->field($model, 'id_indirizzo') ?>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-    <?= $form->field($model, 'qnt_auto') ?>
-
-    <?= $form->field($model, 'created_at') ?>
-
-    <?php // echo $form->field($model, 'updated_at') ?>
-
-    <?php // echo $form->field($model, 'created_by') ?>
-
-    <?php // echo $form->field($model, 'updated_by') ?>
-
-    <?php // echo $form->field($model, 'price') ?>
-
-    <?php // echo $form->field($model, 'payed') ?>
-
-    <div class="form-group">
-        <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>
-        <?= Html::resetButton('Reset', ['class' => 'btn btn-outline-secondary']) ?>
     </div>
+
+
 
     <?php ActiveForm::end(); ?>
 

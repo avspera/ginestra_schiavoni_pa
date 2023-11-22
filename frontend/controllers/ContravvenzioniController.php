@@ -40,6 +40,7 @@ class ContravvenzioniController extends Controller
     public function actionIndex()
     {
         $searchModel = new ContravvenzioneSearch();
+        
         $dataProvider = $searchModel->search($this->request->queryParams);
 
         return $this->render('index', [

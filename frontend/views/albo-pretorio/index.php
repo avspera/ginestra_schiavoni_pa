@@ -15,7 +15,7 @@ $this->params['breadcrumbs'][] = [
 ];
 
 $models = $dataProvider->getModels();
-$latestUpdate = !empty($models[count($models) -1]) ? Utils::formatDate($models[count($models) -1]->data_pubblicazione) : "N/A";
+$latestUpdate = !empty($models[count($models) - 1]) ? Utils::formatDate($models[count($models) - 1]->data_pubblicazione) : "N/A";
 
 ?>
 <div class="albo-pretorio-index">
@@ -38,10 +38,12 @@ $latestUpdate = !empty($models[count($models) -1]) ? Utils::formatDate($models[c
                 </div>
             </div>
 
-            <?= ListView::widget([
-                'dataProvider' => $dataProvider,
-                'itemView' => '_item',
-            ]); ?>
+            <div class="table table-responsive">
+                <?= ListView::widget([
+                    'dataProvider' => $dataProvider,
+                    'itemView' => '_item',
+                ]); ?>
+            </div>
 
         </div>
 

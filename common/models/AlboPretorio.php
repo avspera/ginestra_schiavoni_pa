@@ -90,7 +90,7 @@ class AlboPretorio extends \yii\db\ActiveRecord
             'updated_by' => 'Modificato da',
             'attachments' => 'Allegati',
             'note' => 'Note',
-            'titolo' => "Titolo",
+            'titolo' => "Oggetto",
             'data_fine_pubblicazione' => "Data fine pubblicazione",
             'sorgente' => "Sorgente",
             'id_atto_matrimonio' => "Atto di matrimonio"

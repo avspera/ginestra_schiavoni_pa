@@ -7,6 +7,7 @@ use common\models\ParcheggioResidentiSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\web\UploadedFile;
 
 /**
  * ParcheggioResidentiController implements the CRUD actions for ParcheggioResidenti model.
@@ -60,6 +61,24 @@ class ParcheggioResidentiController extends Controller
         ]);
     }
 
+
+    public function actionApprove($id)
+    {
+        $model = $this->findModel($id);
+
+        $model->approved            = 1;
+        $model->approved_by         = \Yii::$app->user->identity->id;
+        $model->data_rilascio       = date("Y-m-d H:i:s");
+
+        if ($model->save(false)) {
+            \Yii::$app->session->setFlash("success", "Permesso parcheggio residenti approvato correttamente");
+        } else {
+            \Yii::$app->session->setFlash("warning", "Ops...c'è stato qualche problema");
+        }
+
+        return $this->redirect(\Yii::$app->request->referrer);
+    }
+
     /**
      * Creates a new ParcheggioResidenti model.
      * If creation is successful, the browser will be redirected to the 'view' page.
@@ -70,10 +89,27 @@ class ParcheggioResidentiController extends Controller
         $model = new ParcheggioResidenti();
 
         if ($this->request->isPost) {
-            if ($model->load($this->request->post()) && $model->save(false)) {
-                return $this->redirect(['view', 'id' => $model->id]);
-            } else {
-                \Yii::$app->session->setFlash('error', 'Ops...c\'è stato qualche problema. [PARK-105] <pre>' . json_encode($model->getErrors(), JSON_PRETTY_PRINT) . "</pre>");
+            if ($model->load($this->request->post())) {
+
+                $model->carta_identita = UploadedFile::getInstances($model, 'carta_identita');
+
+                if (!empty($model->carta_identita)) {
+                    $model->carta_identita = $model->uploadFiles($model->carta_identita);
+                } else {
+                    $model->carta_identita = NULL;
+                }
+                $model->carta_circolazione = UploadedFile::getInstances($model, 'carta_circolazione');
+                if (!empty($model->carta_circolazione)) {
+                    $model->carta_circolazione = $model->uploadFiles($model->carta_circolazione);
+                } else {
+                    $model->carta_circolazione = NULL;
+                }
+
+                if ($model->save(false)) {
+                    return $this->redirect(['view', 'id' => $model->id]);
+                } else {
+                    \Yii::$app->session->setFlash("error", "Ops...c'è stato qualche problema");
+                }
             }
         } else {
             $model->loadDefaultValues();
@@ -94,9 +130,40 @@ class ParcheggioResidentiController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        $prevCartaIdentita = json_decode($model->carta_identita, true);
+        $prevCartaCircolazione = json_decode($model->carta_circolazione, true);
+        if ($this->request->isPost && $model->load($this->request->post())) {
 
-        if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            $model->carta_identita = UploadedFile::getInstances($model, 'carta_identita');
+            if (!empty($model->carta_identita)) {
+                $newAttachments = $model->uploadFiles($model->carta_identita);
+                if (!empty($prevCartaIdentita)) {
+                    $model->carta_circolazione = array_merge($prevCartaIdentita, json_decode($newAttachments, true));
+                } else {
+                    $model->carta_circolazione = json_decode($newAttachments, true);
+                }
+                $model->carta_identita = json_encode($model->carta_identita);
+            } else {
+                $model->carta_identita = json_encode($prevCartaIdentita);
+            }
+
+            $model->carta_circolazione = UploadedFile::getInstances($model, 'carta_circolazione');
+            if (!empty($model->carta_circolazione)) {
+                $newAttachments = $model->uploadFiles($model->carta_circolazione);
+                if (!empty($prevCartaCircolazione)) {
+                    $model->carta_circolazione = array_merge($prevCartaCircolazione, json_decode($newAttachments, true));
+                } else {
+                    $model->carta_circolazione = json_decode($newAttachments, true);
+                }
+
+                $model->carta_circolazione = json_encode($model->carta_circolazione);
+            } else {
+                $model->carta_circolazione = json_encode($prevCartaCircolazione);
+            }
+
+            if ($model->save(false)) {
+                return $this->redirect(['view', 'id' => $model->id]);
+            }
         }
 
         return $this->render('update', [
