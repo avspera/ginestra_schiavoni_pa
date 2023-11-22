@@ -16,7 +16,6 @@ use yii\widgets\ActiveForm;
     <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]); ?>
 
     <div class="card shadow-sm px-4 pt-4 pb-4 rounded">
-        <span class="visually-hidden">Categoria:</span>
         <div class="card-header border-0 p-0">
         </div>
         <div class="card-body p-0 my-2">

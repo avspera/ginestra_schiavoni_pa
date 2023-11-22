@@ -91,7 +91,25 @@ AppAsset::register($this);
                                             <li class="nav-item"><a class="nav-link" href="<?= Url::to(["atto-di-matrimonio/index"]) ?>" aria-disabled="true"><span>Pubblicazioni di Matrimonio</span></a></li>
                                             <li class="nav-item"><a class="nav-link" href="<?= Url::to(["contravvenzioni/index"]) ?>"><span>Contravvenzioni</span></a></li>
                                             <li class="nav-item"><a class="nav-link" href="<?= Url::to(["parcheggio-residenti/index"]) ?>"><span>Parcheggio residenti</span></a></li>
-                                            <li class="nav-item"><a class="nav-link" href="<?= Url::to(["cittadino/index"]) ?>"><span>Anagrafica cittadini</span></a></li>
+                                            <li class="nav-item dropdown">
+                                                <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false" id="mainNavDropdown0">
+                                                    <span>Altro</span>
+                                                    <svg class="icon icon-xs">
+                                                        <use href="/bootstrap-italia/svg/sprites.svg#it-expand"></use>
+                                                    </svg>
+                                                </a>
+                                                <div class="dropdown-menu" role="region" aria-labelledby="mainNavDropdown0">
+                                                    <div class="link-list-wrapper">
+                                                        <ul class="link-list">
+                                                            <li class="nav-item"><a class="nav-link" href="<?= Url::to(["cittadino/index"]) ?>"><span>Anagrafica cittadini</span></a></li>
+                                                            <?php if (Yii::$app->user->identity->isAdmin()) : ?>
+                                                                <li class="nav-item"><a class="nav-link" href="<?= Url::to(["anagrafica-comune/index"]) ?>"><span>Comune</span></a></li>
+                                                            <?php endif; ?>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </li>
+
                                         </ul>
                                     </div>
                                 </div>
@@ -110,7 +128,7 @@ AppAsset::register($this);
             ]) ?>
             <?php if (Yii::$app->session->hasFlash("success")) {
                 $flashMessage = YIi::$app->session->getFlash("success");
-             ?>
+            ?>
                 <div class="alert alert-success alert-dismissible fade show" role="alert">
                     <?= $flashMessage ?>
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Chiudi avviso">
