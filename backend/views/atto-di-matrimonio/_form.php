@@ -26,15 +26,15 @@ use kartik\date\DatePicker;
                     'format' => "dd-mm-yyyy",
                     'orientation' => 'bottom'
                 ],
-            ]); ?>
+            ])->label("Data matrimonio", ["class" => "active control-label"]); ?>
         </div>
-        <div class="col-md-4"><?= $form->field($model, 'id_residenza')->textInput() ?></div>
-        <div class="col-md-4"><?= $form->field($model, 'tipo_rito')->dropDownList($model->tipo_rito_choices, ["prompt" => "Scegli"]) ?></div>
+        <div class="col-md-4"><?= $form->field($model, 'id_residenza')->textInput()->label("Residenza", ["class" => "active control-label"]) ?></div>
+        <div class="col-md-4"><?= $form->field($model, 'tipo_rito')->dropDownList($model->tipo_rito_choices, ["prompt" => "Scegli"])->label("Tipo di rito", ["class" => "active control-label"]) ?></div>
     </div>
 
     <div class="row">
         <div class="col-md-4"><?= $form->field($model, 'regime_matrimoniale')->dropDownList($model->regime_matrimoniale_choices, ["prompt" => "Scegli"]) ?></div>
-        <div class="col-md-4"><?= $form->field($model, 'luogo_matrimonio')->textInput(['maxlength' => true]) ?></div>
+        <div class="col-md-4"><?= $form->field($model, 'luogo_matrimonio')->textInput(['maxlength' => true])->label("Luogo matrimonio", ["class" => "active control-label"]) ?></div>
     </div>
 
 
@@ -42,7 +42,7 @@ use kartik\date\DatePicker;
         <h3>Coniuge Uno</h3>
     </div>
 
-    <div class="row">
+    <div class="row mt-3">
         <div class="col-md-4">
             <?= $form->field($model, 'id_coniuge_uno')->widget(Select2::classname(), [
                 'options' => [
@@ -64,25 +64,25 @@ use kartik\date\DatePicker;
                     'templateResult' => new JsExpression('function(client) { return client.text; }'),
                     'templateSelection' => new JsExpression('function (client) { return client.text; }'),
                 ],
-            ])->label("Nome");
+            ])->label("Nome", ["class" => "control-label active"]);
             ?>
         </div>
-        <div class="col-md-4"><?= $form->field($model, 'titolo_studio_coniuge_uno')->dropDownList($model->titolo_studio_choices, ["prompt" => "Scegli"]) ?></div>
-        <div class="col-md-4"><?= $form->field($model, 'posizione_professionale_coniuge_uno')->dropDownList($model->posizione_professionale_choices, ["prompt" => "Scegli"]) ?></div>
+        <div class="col-md-4"><?= $form->field($model, 'titolo_studio_coniuge_uno')->dropDownList($model->titolo_studio_choices, ["prompt" => "Scegli"])->label("Titolo di studio", ["class" => "control-label active"])?></div>
+        <div class="col-md-4"><?= $form->field($model, 'posizione_professionale_coniuge_uno')->dropDownList($model->posizione_professionale_choices, ["prompt" => "Scegli"])->label("Posizione professionale", ["class" => "control-label active"])?></div>
 
     </div>
 
     <div class="row">
-        <div class="col-md-4"><?= $form->field($model, 'condizione_non_professionale_coniuge_uno')->dropdownlist($model->condizione_non_professionale_choices, ["prompt" => "Scegli"]) ?></div>
-        <div class="col-md-4"><?= $form->field($model, 'padre_coniuge_uno')->textInput(['maxlength' => true]) ?></div>
-        <div class="col-md-4"><?= $form->field($model, 'madre_coniuge_uno')->textInput(['maxlength' => true]) ?></div>
+        <div class="col-md-4"><?= $form->field($model, 'condizione_non_professionale_coniuge_uno')->dropdownlist($model->condizione_non_professionale_choices, ["prompt" => "Scegli"])->label("Condizione non professionale", ["class" => "control-label active"])?></div>
+        <div class="col-md-4"><?= $form->field($model, 'padre_coniuge_uno')->textInput(['maxlength' => true])->label("Padre", ["class" => "control-label active"])?></div>
+        <div class="col-md-4"><?= $form->field($model, 'madre_coniuge_uno')->textInput(['maxlength' => true])->label("Madre", ["class" => "control-label active"])?></div>
     </div>
 
     <div class="row" style="margin-top:10px;">
         <h3>Coniuge Due</h3>
     </div>
 
-    <div class="row">
+    <div class="row mt-2">
         <div class="col-md-4">
             <?= $form->field($model, 'id_coniuge_due')->widget(Select2::classname(), [
                 'options' => [
@@ -104,17 +104,17 @@ use kartik\date\DatePicker;
                     'templateResult' => new JsExpression('function(client) { return client.text; }'),
                     'templateSelection' => new JsExpression('function (client) { return client.text; }'),
                 ],
-            ])->label("Nome");
+            ])->label("Nome", ["class" => "control-label active"])
             ?>
         </div>
-        <div class="col-md-4"><?= $form->field($model, 'titolo_studio_coniuge_due')->dropDownList($model->titolo_studio_choices, ["prompt" => "Scegli"]) ?></div>
-        <div class="col-md-4"><?= $form->field($model, 'posizione_professionale_coniuge_due')->dropDownList($model->posizione_professionale_choices, ["prompt" => "Scegli"]) ?></div>
+        <div class="col-md-4"><?= $form->field($model, 'titolo_studio_coniuge_due')->dropDownList($model->titolo_studio_choices, ["prompt" => "Scegli"])->label("Titolo di studio", ["class" => "control-label active"])?></div>
+        <div class="col-md-4"><?= $form->field($model, 'posizione_professionale_coniuge_due')->dropDownList($model->posizione_professionale_choices, ["prompt" => "Scegli"])->label("Posizione professionale", ["class" => "control-label active"])?></div>
     </div>
 
     <div class="row">
-        <div class="col-md-4"><?= $form->field($model, 'condizione_non_professionale_coniuge_due')->dropDownList($model->condizione_non_professionale_choices, ["prompt" => "Scegli"]) ?></div>
-        <div class="col-md-4"><?= $form->field($model, 'padre_coniuge_due')->textInput(['maxlength' => true]) ?></div>
-        <div class="col-md-4"><?= $form->field($model, 'madre_coniuge_due')->textInput(['maxlength' => true]) ?></div>
+        <div class="col-md-4"><?= $form->field($model, 'condizione_non_professionale_coniuge_due')->dropDownList($model->condizione_non_professionale_choices, ["prompt" => "Scegli"])->label("Condizione non professionale", ["class" => "control-label active"])?></div>
+        <div class="col-md-4"><?= $form->field($model, 'padre_coniuge_due')->textInput(['maxlength' => true])->label("Padre", ["class" => "control-label active"])?></div>
+        <div class="col-md-4"><?= $form->field($model, 'madre_coniuge_due')->textInput(['maxlength' => true])->label("Madre", ["class" => "control-label active"])?></div>
     </div>
 
     <div class="row" style="margin-top:10px;">

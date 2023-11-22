@@ -6,8 +6,15 @@ use yii\helpers\Html;
 /** @var common\models\Cittadino $model */
 
 $this->title = 'Aggiungi Cittadino';
-$this->params['breadcrumbs'][] = ['label' => 'Cittadini', 'url' => ['index']];
-$this->params['breadcrumbs'][] = $this->title;
+$this->params['breadcrumbs'][] = [
+    'label' => "Cittadini",
+    'template' => "<li class='breadcrumb-item'><span class='separator'>/</span>{link}</li>",
+    'url' => ["index"]
+];
+$this->params['breadcrumbs'][] = [
+    'label' => $this->title,
+    'template' => "<li class='breadcrumb-item'>".$this->title."</li>",
+];
 ?>
 <div class="cittadino-create">
 

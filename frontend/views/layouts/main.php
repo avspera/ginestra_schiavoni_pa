@@ -54,7 +54,7 @@ AppAsset::register($this);
                                         <?= Html::img(Yii::getAlias("@web") . "/images/logo.png", ["class" => "icon"]) ?>
                                         <div class="it-brand-text">
                                             <div class="it-brand-title">Comune di Ginestra Degli Schiavoni</div>
-                                            <div class="it-brand-tagline d-none d-md-block">Provincia di Benevento</div>
+                                            <div class="it-brand-tagline d-none d-md-block">Regione Campania</div>
                                         </div>
                                     </a>
                                 </div>
@@ -71,17 +71,14 @@ AppAsset::register($this);
                                             </li>
                                         </ul>
                                     </div>
-                                    <div class="it-search-wrapper">
-                                        <div class="search-link form-group" id="search-container">
-                                            <label for="autocomplete-regioni" class="visually-hidden">Cerca nel sito</label>
-                                            <input type="search" class="autocomplete" placeholder="Testo da cercare" id="autocomplete-regioni" name="autocomplete-regioni" data-bs-autocomplete='[{"text":"Abruzzo","link":"#"},{"text":"Basilicata","link":"#"},{"text":"Calabria","link":"#"},{"text":"Campania","link":"#"},{"text":"Emilia Romagna","link":"#"},{"text":"Friuli Venezia Giulia","link":"#"},{"text":"Lazio","link":"#"},{"text":"Liguria","link":"#"},{"text":"Lombardia","link":"#"},{"text":"Marche","link":"#"},{"text":"Molise","link":"#"},{"text":"Piemonte","link":"#"},{"text":"Puglia","link":"#"},{"text":"Sardegna","link":"#"},{"text":"Sicilia","link":"#"},{"text":"Toscana","link":"#"},{"text":"Trentino Alto Adige","link":"#"},{"text":"Umbria","link":"#"},{"text":"Valle d’Aosta","link":"#"},{"text":"Veneto","link":"#"}]'>
-                                            <span class="autocomplete-icon" aria-hidden="true">
-                                                <svg class="icon icon-sm">
-                                                    <use href="/bootstrap-italia/dist/svg/sprites.svg#it-search"></use>
-                                                </svg>
-                                            </span>
-                                        </div>
-                                    </div>
+                                    <!-- <div class="it-search-wrapper">
+                                        <span class="d-none d-md-block">Cerca</span>
+                                        <button class="search-link rounded-icon" type="button" data-bs-toggle="modal" data-bs-target="#search-modal" aria-label="Cerca nel sito" data-focus-mouse="false">
+                                            <svg class="icon">
+                                                <use href="/bootstrap-italia/svg/sprites.svg#it-search"></use>
+                                            </svg>
+                                        </button>
+                                    </div> -->
                                 </div>
                             </div>
                         </div>
@@ -125,7 +122,6 @@ AppAsset::register($this);
             </div>
         </div>
     </header>
-    </header>
 
     <main role="main" class="flex-shrink-0">
         <div class="container">
@@ -139,17 +135,7 @@ AppAsset::register($this);
         </div>
     </main>
 
-    <!-- <footer class="it-footer mt-auto py-3 text-muted">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-8">
-                    <p class="float-start">&copy; <?= Html::encode(Yii::$app->name) ?> <?= date('Y') ?></p>
-                    <p class="float-end">Powered by Apps&Projects S.r.l.s</p>
-                </div>
-            </div>
 
-        </div>
-    </footer> -->
     <footer class="it-footer">
         <div class="it-footer-main">
             <div class="container">
@@ -177,7 +163,7 @@ AppAsset::register($this);
                             <h4><a href="#" title="Vai alla pagina: Contatti">Contatti</a></h4>
                             <p>
                                 <strong>Comune di Ginestra Degli Schiavoni</strong><br>
-                                Via Porta Nuova 2 - 82020 Ginestra Degli Schiavoni Codice fiscale / P. IVA: 8000443062 / 00688690627
+                                Via Porta Nuova 2 - 82020 Ginestra Degli Schiavoni <br> Codice fiscale: 8000443062 <br> P. IVA: 00688690627
                             </p>
                             <div class="link-list-wrapper">
                                 <ul class="footer-list link-list clearfix">

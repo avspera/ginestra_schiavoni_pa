@@ -36,8 +36,8 @@ class Cittadino extends \yii\db\ActiveRecord
 
     public $tipo_documento_choices = [1 => "Carta di identità", 2 => "Patente di guida", 3 => "Passaporto"];
     public $stato_civile_choices = [
-        1 => "Celibe/Nubile", 
-        2 => "Coniugato/a", 
+        1 => "Celibe/Nubile",
+        2 => "Coniugato/a",
         3 => "Vedovo/a",
         4 => "Divorziato/a",
         9 => "Non classificabile/ignoto/n.c.",
@@ -45,7 +45,21 @@ class Cittadino extends \yii\db\ActiveRecord
         7 => "Stato libero a seguito di decesso della parte unita civilmente",
         8 => "Stato libero a seguito di scioglimento dell’unione"
     ];
-    
+
+    public $posizione_professionale_choices = [
+        0 => "Non applicabile (es: condizione non professionale)",
+        1 => "Dirigente",
+        2 => "Quadro/impiegato",
+        3 => "Operaio o assimilato",
+        4 => "Imprenditore, libero professionista",
+        5 => "Lavoratore in proprio",
+        6 => "Coadiuvante familiare/socio coop.",
+        7 => "Collaborazione coord-continuativa /Prestazione opera occasionale",
+        9 => "Non conosciuta/non fornita",
+        "A" => "Dirigente o impiegato (convenzione AIRE/ANPR)",
+        "B" => "Lavoratore dipendente (convenzione AIRE/ANPR)",
+    ];
+
     /**
      * {@inheritdoc}
      */
@@ -101,16 +115,17 @@ class Cittadino extends \yii\db\ActiveRecord
         ];
     }
 
-    public function beforeSave($insert){
+    public function beforeSave($insert)
+    {
 
-        if(!parent::beforeSave($insert)){
+        if (!parent::beforeSave($insert)) {
             return false;
         }
 
-        if($this->isNewRecord){
+        if ($this->isNewRecord) {
             $this->created_at = date("Y-m-d H:i:s");
             $this->created_by = isset(Yii::$app->user->identity->username) ? Yii::$app->user->identity->id : "self";
-        }else {
+        } else {
             $this->updated_at = date("Y-m-d H:i:s");
             $this->updated_by = Yii::$app->user->identity->username;
         }
@@ -118,11 +133,13 @@ class Cittadino extends \yii\db\ActiveRecord
         return true;
     }
 
-    public function getTipoDocumento(){
+    public function getTipoDocumento()
+    {
         return isset($this->tipo_documento_choices[$this->tipo_documento]) ? $this->tipo_documento_choices[$this->tipo_documento] : "";
     }
 
-    public function getStatoCivile(){
+    public function getStatoCivile()
+    {
         return isset($this->stato_civile_choices[$this->stato_civile]) ? $this->stato_civile_choices[$this->stato_civile] : "";
     }
 }

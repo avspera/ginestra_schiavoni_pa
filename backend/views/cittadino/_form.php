@@ -13,60 +13,39 @@ use kartik\date\DatePicker;
 
     <?php $form = ActiveForm::begin(); ?>
 
+    <div class="row mt-3">
+        <div class="col-md-4"><?= $form->field($model, 'nome')->textInput(['maxlength' => true])->label("Nome", ["class" => "control-label active"]) ?></div>
+        <div class="col-md-4"><?= $form->field($model, 'cognome')->textInput(['maxlength' => true])->label("Cognome", ["class" => "control-label active"]) ?></div>
+        <div class="col-md-4"><?= $form->field($model, 'email')->textInput(['maxlength' => true, "type" => "email"])->label("Email", ["class" => "control-label active"]) ?></div>
+    </div>
+
     <div class="row">
-        <div class="col-md-4"><?= $form->field($model, 'nome')->textInput(['maxlength' => true]) ?></div>
-        <div class="col-md-4"><?= $form->field($model, 'cognome')->textInput(['maxlength' => true]) ?></div>
-        <div class="col-md-4"><?= $form->field($model, 'email')->textInput(['maxlength' => true]) ?></div>
+        <div class="col-md-3"><?= $form->field($model, 'data_di_nascita')->textInput(["type" => "date"])->label("Data di nascita", ["class" => "control-label active"]); ?></div>
+        <div class="col-md-3"><?= $form->field($model, 'comune_di_nascita')->textInput(['maxlength' => true])->label("Comune di nascita", ["class" => "control-label active"]); ?></div>
+        <div class="col-md-3"><?= $form->field($model, 'tipo_documento')->dropDownList($model->tipo_documento_choices, ['prompt' => "Scegli"])->label("Tipo di documento", ["class" => "control-label active"]); ?></div>
+        <div class="col-md-3"><?= $form->field($model, 'documento_di_identita')->textInput(['maxlength' => true])->label("Numero documento", ["class" => "control-label active"]); ?></div>
     </div>
 
     <div class="row">
         <div class="col-md-3">
-            <?= $form->field($model, 'data_di_nascita')->widget(DatePicker::classname(), [
-                'options' => ['placeholder' => 'Seleziona data di nascita'],
-                'type' => DatePicker::TYPE_INPUT,
-                'pluginOptions' => [
-                    'autoclose' => true,
-                    'endDate' => "0d",
-                    'format' => "dd-mm-yyyy",
-                    'orientation' => 'bottom'
-                ],
-                'pluginEvents' => [
-                    'changeDate' => "function(e){
-                        if(e.date.getFullYear()){
-                            let year    = e.date.getFullYear();
-                            let currentYear = new Date().getFullYear();
-                            let eta     = currentYear - year;
-                            $('#cittadino-eta').val(eta);
-                        }
-                    }"
-                ]
-            ]); ?>
-        </div>
-        <div class="col-md-3"><?= $form->field($model, 'comune_di_nascita')->textInput(['maxlength' => true]) ?></div>
-        <div class="col-md-3"><?= $form->field($model, 'tipo_documento')->dropDownList($model->tipo_documento_choices, ['prompt' => "Scegli"]) ?></div>
-        <div class="col-md-3"><?= $form->field($model, 'documento_di_identita')->textInput(['maxlength' => true]) ?></div>
-    </div>
-
-    <div class="row">
-        <div class="col-md-3">
-            <?= $form->field($model, 'professione')->textInput(['maxlength' => true]) ?>
+            <?= $form->field($model, 'professione')->dropDownList($model->posizione_professionale_choices, ['prompt' => "Scegli"])->label("Professione", ["class" => "control-label active"]); ?>
         </div>
         <div class="col-md-3">
-            <?= $form->field($model, 'eta')->textInput(['maxlength' => true]) ?>
+            <?= $form->field($model, 'eta')->textInput(['maxlength' => true])->label("Età", ["class" => "control-label active"]) ?>
         </div>
         <div class="col-md-3">
-            <?= $form->field($model, 'telefono')->textInput(['maxlength' => true]) ?>
+            <?= $form->field($model, 'telefono')->textInput(['maxlength' => true])->label("Telefono", ["class" => "control-label active"]) ?>
         </div>
         <div class="col-md-3">
-            <?= $form->field($model, 'stato_civile')->dropDownList($model->stato_civile_choices, ["prompt" => "Scegli"]) ?>
+            <?= $form->field($model, 'stato_civile')->dropDownList($model->stato_civile_choices, ["prompt" => "Scegli"])->label("Stato civile", ["class" => "control-label active"]) ?>
         </div>
     </div>
 
     <div class="row">
-        <div class="col-md-3"><?= $form->field($model, 'comune_di_residenza')->textInput(['maxlength' => true]) ?></div>
-        <div class="col-md-3"><?= $form->field($model, 'indirizzo_di_residenza')->textInput(['maxlength' => true]) ?></div>
-        <div class="col-md-3"><?= $form->field($model, 'cittadinanza')->textInput(['maxlength' => true]) ?></div>
-        <div class="col-md-3"><?= $form->field($model, 'codice_fiscale')->textInput(['maxlength' => true]) ?></div>
+        <div class="col-md-3"><?= $form->field($model, 'comune_di_residenza')->textInput(['maxlength' => true])->label("Comune di residenza", ["class" => "control-label active"]) ?></div>
+        <div class="col-md-3"><?= $form->field($model, 'indirizzo_di_residenza')->textInput(['maxlength' => true])->label("Indirizzo di residenza", ["class" => "control-label active"]) ?></div>
+        <div class="col-md-3"><?= $form->field($model, 'cittadinanza')->textInput(['maxlength' => true])->label("Cittadinanza", ["class" => "control-label active"]) ?></div>
+        <div class="col-md-3"><?= $form->field($model, 'codice_fiscale')->textInput(['maxlength' => true])->label("Codice fiscale", ["class" => "control-label active"]) ?></div>
     </div>
 
     <div class="row" style="margin-top:10px;">

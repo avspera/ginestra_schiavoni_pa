@@ -38,7 +38,7 @@ AppAsset::register($this);
                                         <?= Html::img(Yii::getAlias("@web") . "/images/logo.png", ["class" => "icon"]) ?>
                                         <div class="it-brand-text">
                                             <div class="it-brand-title">Comune di Ginestra Degli Schiavoni</div>
-                                            <div class="it-brand-tagline d-none d-md-block">Provincia di Benevento</div>
+                                            <div class="it-brand-tagline d-none d-md-block">Regione Campania</div>
                                         </div>
                                     </a>
                                 </div>
@@ -91,6 +91,7 @@ AppAsset::register($this);
                                             <li class="nav-item"><a class="nav-link" href="<?= Url::to(["atto-di-matrimonio/index"]) ?>" aria-disabled="true"><span>Pubblicazioni di Matrimonio</span></a></li>
                                             <li class="nav-item"><a class="nav-link" href="<?= Url::to(["contravvenzioni/index"]) ?>"><span>Contravvenzioni</span></a></li>
                                             <li class="nav-item"><a class="nav-link" href="<?= Url::to(["parcheggio-residenti/index"]) ?>"><span>Parcheggio residenti</span></a></li>
+                                            <li class="nav-item"><a class="nav-link" href="<?= Url::to(["cittadino/index"]) ?>"><span>Anagrafica cittadini</span></a></li>
                                         </ul>
                                     </div>
                                 </div>
