@@ -20,6 +20,13 @@ AppAsset::register($this);
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <?php $this->registerCsrfMetaTags() ?>
     <title><?= Html::encode($this->title) ?></title>
+    <link rel="apple-touch-icon" sizes="180x180" href="<?= Yii::getAlias("@web") ?>/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="<?= Yii::getAlias("@web") ?>/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="<?= Yii::getAlias("@web") ?>/favicon/favicon-16x16.png">
+    <link rel="manifest" href="<?= Yii::getAlias("@web") ?>/favicon/site.webmanifest">
+    <link rel="mask-icon" href="<?= Yii::getAlias("@web") ?>/favicon/safari-pinned-tab.svg" color="#5bbad5">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="theme-color" content="#ffffff">
     <?php $this->head() ?>
 </head>
 
@@ -51,8 +58,8 @@ AppAsset::register($this);
                             <div class="it-header-center-content-wrapper">
                                 <div class="it-brand-wrapper">
                                     <a href="/">
-                                        <?= Html::img(Yii::getAlias("@web") . "/images/logo.png", ["class" => "icon"]) ?>
-                                        <div class="it-brand-text">
+                                        <?= Html::img(Yii::getAlias("@web") . "/images/logo.png", ["style" => "width: 50px;"]) ?>
+                                        <div class="it-brand-text" style="margin-left: 10px;">
                                             <div class="it-brand-title">Comune di Ginestra Degli Schiavoni</div>
                                             <div class="it-brand-tagline d-none d-md-block">Regione Campania</div>
                                         </div>
@@ -108,10 +115,28 @@ AppAsset::register($this);
                                     </div>
                                     <div class="menu-wrapper">
                                         <ul class="navbar-nav">
-                                            <li class="nav-item active"><a class="nav-link" href="<?= Url::to(["albo-pretorio/index"]) ?>" aria-current="page"><span>Albo pretorio</span></a></li>
-                                            <li class="nav-item"><a class="nav-link" href="<?= Url::to(["atti-di-matrimonio/index"]) ?>" aria-disabled="true"><span>Pubblicazioni di Matrimonio</span></a></li>
-                                            <li class="nav-item"><a class="nav-link" href="<?= Url::to(["contravvenzioni/index"]) ?>"><span>Contravvenzioni</span></a></li>
-                                            <li class="nav-item"><a class="nav-link" href="<?= Url::to(["parcheggio-residenti/index"]) ?>"><span>Parcheggio residenti</span></a></li>
+                                            <li class="nav-item active"><a class="nav-link <?= Yii::$app->controller->id == "albo-pretorio" ? "active" : "" ?>" href="<?= Url::to(["albo-pretorio/index"]) ?>" aria-current="page"><span>Albo pretorio</span></a></li>
+                                            <li class="nav-item"><a class="nav-link <?= Yii::$app->controller->id == "atto-di-matrimonio" ? "active" : "" ?>" href="<?= Url::to(["atto-di-matrimonio/index"]) ?>" aria-disabled="true"><span>Pubblicazioni di Matrimonio</span></a></li>
+                                            <li class="nav-item"><a class="nav-link <?= Yii::$app->controller->id == "contravvenzioni" ? "active" : "" ?>" href="<?= Url::to(["contravvenzioni/pre-pay"]) ?>"><span>Contravvenzioni</span></a></li>
+                                            <li class="nav-item"><a class="nav-link <?= Yii::$app->controller->id == "parcheggio-residenti" ? "active" : "" ?>" href="<?= Url::to(["parcheggio-residenti/index"]) ?>"><span>Parcheggio residenti</span></a></li>
+                                            <li class="nav-item dropdown">
+                                                <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false" id="mainNavDropdown1">
+                                                    <span>Assistenza</span>
+                                                    <svg class="icon icon-xs">
+                                                        <use href="/bootstrap-italia/svg/sprites.svg#it-expand"></use>
+                                                    </svg>
+                                                </a>
+                                                <div class="dropdown-menu" role="region" aria-labelledby="mainNavDropdown1">
+                                                    <div class="link-list-wrapper">
+                                                        <ul class="link-list">
+                                                            <li><a class="dropdown-item list-item" href="<?= Url::to(["assistenza/index"]) ?>"><span>Le tue richieste</span></a></li>
+                                                            <li><a class="dropdown-item list-item" href="<?= Url::to(["assistenza/create"]) ?>"><span>Richiedi online</span></a></li>
+                                                            <li><a class="dropdown-item list-item" href="<?= Url::to(["richiesta-appuntamento/create"]) ?>"><span>Prenota appuntamento in sede</span></a></li>
+                                                            <li><a class="dropdown-item list-item" href="<?= Url::to(["segnala-disservizio/create"]) ?>"><span>Segnala un disservizio</span></a></li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </li>
                                         </ul>
                                     </div>
                                 </div>
@@ -159,11 +184,16 @@ AppAsset::register($this);
                 </section>
                 <section class="py-4 border-white border-top">
                     <div class="row">
-                        <div class="col-lg-4 col-md-4 pb-2">
+                        <div class="col-lg-5 col-md-5 pb-2">
                             <h4><a href="#" title="Vai alla pagina: Contatti">Contatti</a></h4>
                             <p>
                                 <strong>Comune di Ginestra Degli Schiavoni</strong><br>
-                                Via Porta Nuova 2 - 82020 Ginestra Degli Schiavoni <br> Codice fiscale: 8000443062 <br> P. IVA: 00688690627
+                                Via Porta Nuova 2 - 82020 Ginestra Degli Schiavoni
+                            </p>
+                            <p>
+                                <span class="bold">PEC:</span> <a style="color:white" href="mailto:uff.amm.vo.moffa.ginestra@asmepec.it">uff.amm.vo.moffa.ginestra@asmepec.it</a><br>
+                                <span class="bold">P.Iva:</span> 00688690627<br>
+                                <span class="bold">C.F.:</span> 8000443062
                             </p>
                             <div class="link-list-wrapper">
                                 <ul class="footer-list link-list clearfix">
@@ -193,10 +223,10 @@ AppAsset::register($this);
             <div class="container">
                 <h3 class="visually-hidden">Sezione Link Utili</h3>
                 <ul class="it-footer-small-prints-list list-inline mb-0 d-flex flex-column flex-md-row">
-                    <li class="list-inline-item"><a href="#" title="Note Legali">Media policy</a></li>
+                    <!-- <li class="list-inline-item"><a href="#" title="Note Legali">Media policy</a></li> -->
                     <li class="list-inline-item"><a href="#" title="Note Legali">Note legali</a></li>
-                    <li class="list-inline-item"><a href="#" title="Privacy-Cookies">Privacy policy</a></li>
-                    <li class="list-inline-item"><a href="#" title="Mappa del sito">Mappa del sito</a></li>
+                    <li class="list-inline-item"><a href="<?= Url::to(["site/privacy"]) ?>" title="Privacy-Cookies">Privacy policy</a></li>
+                    <li class="list-inline-item"><a href="<?= Url::to(["site/map"]) ?>" title="Mappa del sito">Mappa del sito</a></li>
                     <li class="list-inline-item"><a href="<?= Url::to(["backend/login"]) ?>" title="Accedi all'area privata">Accedi all'area privata</a></li>
                 </ul>
             </div>

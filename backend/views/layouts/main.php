@@ -35,8 +35,8 @@ AppAsset::register($this);
                             <div class="it-header-center-content-wrapper">
                                 <div class="it-brand-wrapper">
                                     <a href="/">
-                                        <?= Html::img(Yii::getAlias("@web") . "/images/logo.png", ["class" => "icon"]) ?>
-                                        <div class="it-brand-text">
+                                        <?= Html::img(Yii::getAlias("@web") . "/images/logo.png", ["style" => "width: 50px;"]) ?>
+                                        <div class="it-brand-text" style="margin-left: 10px;">
                                             <div class="it-brand-title">Comune di Ginestra Degli Schiavoni</div>
                                             <div class="it-brand-tagline d-none d-md-block">Regione Campania</div>
                                         </div>
@@ -87,10 +87,10 @@ AppAsset::register($this);
                                     </div>
                                     <div class="menu-wrapper">
                                         <ul class="navbar-nav">
-                                            <li class="nav-item active"><a class="nav-link" href="<?= Url::to(["albo-pretorio/index"]) ?>" aria-current="page"><span>Albo pretorio</span></a></li>
-                                            <li class="nav-item"><a class="nav-link" href="<?= Url::to(["atto-di-matrimonio/index"]) ?>" aria-disabled="true"><span>Pubblicazioni di Matrimonio</span></a></li>
-                                            <li class="nav-item"><a class="nav-link" href="<?= Url::to(["contravvenzioni/index"]) ?>"><span>Contravvenzioni</span></a></li>
-                                            <li class="nav-item"><a class="nav-link" href="<?= Url::to(["parcheggio-residenti/index"]) ?>"><span>Parcheggio residenti</span></a></li>
+                                            <li class="nav-item active"><a class="nav-link <?= Yii::$app->controller->id == "albo-pretorio" ? "active" : "" ?>" href="<?= Url::to(["albo-pretorio/index"]) ?>" aria-current="page"><span>Albo pretorio</span></a></li>
+                                            <li class="nav-item"><a class="nav-link <?= Yii::$app->controller->id == "atto-di-matrimonio" ? "active" : "" ?>" href="<?= Url::to(["atto-di-matrimonio/index"]) ?>" aria-disabled="true"><span>Pubblicazioni di Matrimonio</span></a></li>
+                                            <li class="nav-item"><a class="nav-link <?= Yii::$app->controller->id == "contravvenzioni" ? "active" : "" ?>" href="<?= Url::to(["contravvenzioni/index"]) ?>"><span>Contravvenzioni</span></a></li>
+                                            <li class="nav-item"><a class="nav-link <?= Yii::$app->controller->id == "parcheggio-residenti" ? "active" : "" ?>" href="<?= Url::to(["parcheggio-residenti/index"]) ?>"><span>Parcheggio residenti</span></a></li>
                                             <li class="nav-item dropdown">
                                                 <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false" id="mainNavDropdown0">
                                                     <span>Altro</span>
@@ -101,9 +101,9 @@ AppAsset::register($this);
                                                 <div class="dropdown-menu" role="region" aria-labelledby="mainNavDropdown0">
                                                     <div class="link-list-wrapper">
                                                         <ul class="link-list">
-                                                            <li class="nav-item"><a class="nav-link" href="<?= Url::to(["cittadino/index"]) ?>"><span>Anagrafica cittadini</span></a></li>
+                                                            <li class="nav-item"><a class="nav-link <?= Yii::$app->controller->id == "cittadino" ? "active" : "" ?>" href="<?= Url::to(["cittadino/index"]) ?>"><span>Anagrafica cittadini</span></a></li>
                                                             <?php if (Yii::$app->user->identity->isAdmin()) : ?>
-                                                                <li class="nav-item"><a class="nav-link" href="<?= Url::to(["anagrafica-comune/index"]) ?>"><span>Comune</span></a></li>
+                                                                <li class="nav-item"><a class="nav-link <?= Yii::$app->controller->id == "anagrafica-comune" ? "active" : "" ?>" href="<?= Url::to(["anagrafica-comune/index"]) ?>"><span>Anagrafica Comune</span></a></li>
                                                             <?php endif; ?>
                                                         </ul>
                                                     </div>

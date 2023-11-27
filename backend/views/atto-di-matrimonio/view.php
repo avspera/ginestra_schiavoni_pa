@@ -29,7 +29,7 @@ $this->params['breadcrumbs'][] = [
     <p>
         <?= Html::a('Modifica', ['update', 'id' => $model->id], ['class' => 'btn btn-xs btn-primary']) ?>
         <?php if (!$model->approved) : ?>
-            <?= Html::a('Approva', ['approve', 'id' => $model->id], ['class' => 'btn btn-info']) ?>
+            <?= Html::a('Approva', ['approve', 'id' => $model->id], ['class' => 'btn btn-xs btn-info']) ?>
         <?php endif; ?>
         <?php if (!$model->published) { ?>
             <?= Html::a('Pubblica', ['publish', 'id' => $model->id], ['class' => 'btn btn-xs btn-success']) ?>
@@ -49,45 +49,82 @@ $this->params['breadcrumbs'][] = [
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
-            'id',
             [
-                'attribute' => "published",
+                'attribute' => 'coniuge_uno',
                 'value' => function ($model) {
-                    return $model->published ? "SI" : "NO";
-                }
-            ],
-            [
-                'attribute' => "approved",
-                'value' => function ($model) {
-                    return $model->approved ? "SI" : "NO";
-                }
-            ],
-            [
-                'attribute' => 'id_coniuge_uno',
-                'value' => function ($model) {
-                    return Html::a(Utils::getCittadino($model->id_coniuge_uno), Url::to(["cittadino/view", "id" => $model->id_coniuge_uno]));
+                    if (is_numeric($model->coniuge_uno)) {
+                        return Utils::getCittadino($model->coniuge_uno);
+                    } else {
+                        return $model->coniuge_uno;
+                    }
                 },
-                'format' => "raw"
-            ],
-            [
-                'attribute' => 'id_coniuge_due',
-                'value' => function ($model) {
-                    return Html::a(Utils::getCittadino($model->id_coniuge_due), Url::to(["cittadino/view", "id" => $model->id_coniuge_due]));
-                },
-                'format' => "raw"
-            ],
-            'data_matrimonio:date',
-            [
-                'attribute' => 'id_residenza',
-                'value' => function ($model) {
-                    return Utils::getResidenza($model->id_residenza);
-                },
-                'format' => "raw"
+                'format' => "raw",
             ],
             'padre_coniuge_uno',
             'madre_coniuge_uno',
+            [
+                'attribute' => 'titolo_studio_coniuge_uno',
+                'value' => function ($model) {
+                    return $model->getTitoloStudio($model->titolo_studio_coniuge_uno);
+                }
+            ],
+            [
+                'attribute' => 'posizione_professionale_coniuge_uno',
+                'value' => function ($model) {
+                    return $model->getPosizioneProfessionale($model->posizione_professionale_coniuge_uno);
+                }
+            ],
+            [
+                'attribute' => 'condizione_non_professionale_coniuge_uno',
+                'value' => function ($model) {
+                    return $model->getCondizioneNonProfessionale($model->condizione_non_professionale_coniuge_uno);
+                }
+            ],
+            [
+                'attribute' => 'coniuge_due',
+                'value' => function ($model) {
+                    if (is_numeric($model->coniuge_due)) {
+                        return Utils::getCittadino($model->coniuge_due);
+                    } else {
+                        return $model->coniuge_due;
+                    }
+                },
+                'format' => "raw"
+            ],
             'padre_coniuge_due',
             'madre_coniuge_due',
+            [
+                'attribute' => 'titolo_studio_coniuge_due',
+                'value' => function ($model) {
+                    return $model->getTitoloStudio($model->titolo_studio_coniuge_due);
+                }
+            ],
+
+            [
+                'attribute' => 'posizione_professionale_coniuge_due',
+                'value' => function ($model) {
+                    return $model->getPosizioneProfessionale($model->posizione_professionale_coniuge_due);
+                }
+            ],
+
+            [
+                'attribute' => 'condizione_non_professionale_coniuge_due',
+                'value' => function ($model) {
+                    return $model->getCondizioneNonProfessionale($model->condizione_non_professionale_coniuge_due);
+                }
+            ],
+            'data_matrimonio:date',
+            [
+                'attribute' => 'residenza',
+                'value' => function ($model) {
+                    if (is_numeric($model->residenza)) {
+                        return Utils::getResidenza($model->residenza);
+                    } else {
+                        return $model->residenza;
+                    }
+                },
+                'format' => "raw"
+            ],
             'luogo_matrimonio',
             [
                 'attribute' => 'tipo_rito',
@@ -101,56 +138,8 @@ $this->params['breadcrumbs'][] = [
                     return $model->getRegimeMatrimoniale();
                 }
             ],
-            [
-                'attribute' => 'titolo_studio_coniuge_uno',
-                'value' => function ($model) {
-                    return $model->getTitoloStudio($model->titolo_studio_coniuge_uno);
-                }
-            ],
-            [
-                'attribute' => 'titolo_studio_coniuge_due',
-                'value' => function ($model) {
-                    return $model->getTitoloStudio($model->titolo_studio_coniuge_due);
-                }
-            ],
-            [
-                'attribute' => 'posizione_professionale_coniuge_uno',
-                'value' => function ($model) {
-                    return $model->getPosizioneProfessionale($model->posizione_professionale_coniuge_uno);
-                }
-            ],
-            [
-                'attribute' => 'posizione_professionale_coniuge_due',
-                'value' => function ($model) {
-                    return $model->getPosizioneProfessionale($model->posizione_professionale_coniuge_due);
-                }
-            ],
-            [
-                'attribute' => 'condizione_non_professionale_coniuge_uno',
-                'value' => function ($model) {
-                    return $model->getCondizioneNonProfessionale($model->condizione_non_professionale_coniuge_uno);
-                }
-            ],
-            [
-                'attribute' => 'condizione_non_professionale_coniuge_due',
-                'value' => function ($model) {
-                    return $model->getCondizioneNonProfessionale($model->condizione_non_professionale_coniuge_due);
-                }
-            ],
             'created_at:datetime',
             'updated_at:datetime',
-            [
-                'attribute' => 'updated_by',
-                'value' => function ($model) {
-                    return Utils::getCreatedBy($model->updated_by);
-                }
-            ],
-            [
-                'attribute' => 'approved_by',
-                'value' => function ($model) {
-                    return Utils::getCreatedBy($model->approved_by);
-                }
-            ],
             [
                 'attribute' => 'published_by',
                 'value' => function ($model) {

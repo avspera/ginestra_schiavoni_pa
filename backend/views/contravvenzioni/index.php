@@ -25,7 +25,7 @@ $this->params['breadcrumbs'][] = [
     <?= $this->render('_search', ['model' => $searchModel]); ?>
 
     <div class="card-wrapper card-space">
-        <div class="card card-bg card-big no-after">
+        <div class="card card-bg  no-after">
             <div class="card-body lightgrey-bg-c1">
                 <?= Html::a('Aggiungi Nuovo', ['create'], ['class' => 'btn btn-xs btn-success']) ?>
                 <div class="row mt-3">

@@ -30,17 +30,12 @@ $this->params['breadcrumbs'][] = [
         <?= GridView::widget([
             'dataProvider' => $dataProvider,
             'columns' => [
-                ['class' => 'yii\grid\SerialColumn'],
-
-                'id',
                 'email:email',
                 'pec',
                 'centralino',
                 'via',
                 'civico',
                 'comune',
-                'provincia',
-                'responsabile_gestione_telematica',
                 [
                     'class' => ActionColumn::className(),
                     'template' => '{view} {update}'

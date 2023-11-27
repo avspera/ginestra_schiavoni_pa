@@ -10,55 +10,36 @@ use yii\grid\GridView;
 /** @var common\models\AttoDiMatrimonioSearch $searchModel */
 /** @var yii\data\ActiveDataProvider $dataProvider */
 
-$this->title = 'Atto Di Matrimonios';
-$this->params['breadcrumbs'][] = $this->title;
+$this->title = 'Atto Di Matrimonio';
+$this->params['breadcrumbs'][] = [
+    'label' => $this->title,
+    'template' => "<li class='breadcrumb-item'><span class='separator'>/</span>{link}</li>",
+    'url' => ["index"]
+];
 ?>
 <div class="atto-di-matrimonio-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+    <div id="pre_auth" class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <legend><?= $this->title ?></legend>
 
-    <p>
-        <?= Html::a('Create Atto Di Matrimonio', ['create'], ['class' => 'btn btn-xs btn-success']) ?>
-    </p>
+            <p>In questa sezione è possible richiedere la pubblicazione dell'atto di matrimonio in Albo Pretorio.</p>
+            <p>
+                E' possibile procedere effettuando l'accesso o direttamente dai link riportati su questa pagina.
+            </p>
+            <p>
+                Procedendo senza autenticazione non sono disponibili tutte le funzioni riservate nella sezione privata, come la consultazione dello stato di avanzamento della richiesta.
+            </p>
 
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+            <p class="text-center mt20 mb20"><a href="<?= Url::to(["login"]) ?>" class="btn btn-primary">Vai alla pagina di autenticazione</a></p>
 
-    <?= GridView::widget([
-        'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
-        'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
+            <p class="text-center mt20 mb20">
+                <strong>Oppure</strong><br><br>
+                <a class="btn btn-primary" href="<?= Url::to(["atto-di-matrimonio/create-no-login"]) ?>">Compila richiesta senza autenticazione</a>
+            </p>
 
-            'id',
-            'id_coniuge_uno',
-            'id_coniuge_due',
-            'data_matrimonio',
-            'id_residenza',
-            //'padre_coniuge_uno',
-            //'madre_coniuge_uno',
-            //'padre_coniuge_due',
-            //'madre_coniuge_due',
-            //'created_at',
-            //'updated_at',
-            //'created_by',
-            //'updated_by',
-            //'tipo_rito',
-            //'luogo_matrimonio',
-            //'regime_matrimoniale',
-            //'titolo_studio_coniuge_uno',
-            //'titolo_studio_coniuge_due',
-            //'posizione_professionale_coniuge_uno',
-            //'posizione_professionale_coniuge_due',
-            //'condizione_non_professionale_coniuge_uno',
-            //'condizione_non_professionale_coniuge_due',
-            [
-                'class' => ActionColumn::className(),
-                'urlCreator' => function ($action, AttoDiMatrimonio $model, $key, $index, $column) {
-                    return Url::toRoute([$action, 'id' => $model->id]);
-                 }
-            ],
-        ],
-    ]); ?>
+        </div>
 
+    </div>
 
 </div>

@@ -28,7 +28,7 @@ $this->params['breadcrumbs'][] = [
     <p>
         <?= Html::a('Modifica', ['update', 'id' => $model->id], ['class' => 'btn btn-xs btn-primary']) ?>
         <?php if (!empty($attoDiMatrimonio)) { ?>
-            <?= Html::a('Vai all\'Atto', Url::to(['atto-di-matrimonio/view', 'id' => $attoDiMatrimonio->id]), ['class' => 'btn btn-info']) ?>
+            <?= Html::a('Vai all\'Atto', Url::to(['atto-di-matrimonio/view', 'id' => $attoDiMatrimonio->id]), ['class' => 'btn btn-xs btn-info']) ?>
         <?php } ?>
         <?= Html::a('Cancella', ['delete', 'id' => $model->id], [
             'class' => 'btn btn-xs btn-danger',
@@ -117,24 +117,36 @@ $this->params['breadcrumbs'][] = [
                     }
                 ],
                 [
-                    'attribute' => 'id_coniuge_uno',
+                    'attribute' => 'coniuge_uno',
                     'value' => function ($model) {
-                        return Html::a(Utils::getCittadino($model->id_coniuge_uno), Url::to(["cittadino/view", "id" => $model->id_coniuge_uno]));
+                        if (is_numeric($model->coniuge_uno)) {
+                            return Utils::getCittadino($model->coniuge_uno);
+                        } else {
+                            return $model->coniuge_uno;
+                        }
                     },
                     'format' => "raw"
                 ],
                 [
-                    'attribute' => 'id_coniuge_due',
+                    'attribute' => 'coniuge_due',
                     'value' => function ($model) {
-                        return Html::a(Utils::getCittadino($model->id_coniuge_due), Url::to(["cittadino/view", "id" => $model->id_coniuge_due]));
+                        if (is_numeric($model->coniuge_due)) {
+                            return Utils::getCittadino($model->coniuge_due);
+                        } else {
+                            return $model->coniuge_due;
+                        }
                     },
                     'format' => "raw"
                 ],
                 'data_matrimonio:date',
                 [
-                    'attribute' => 'id_residenza',
+                    'attribute' => 'residenza',
                     'value' => function ($model) {
-                        return Utils::getResidenza($model->id_residenza);
+                        if (is_numeric($model->residenza)) {
+                            return Utils::getResidenza($model->residenza);
+                        } else {
+                            return $model->residenza;
+                        }
                     },
                     'format' => "raw"
                 ],

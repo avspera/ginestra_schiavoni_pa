@@ -22,7 +22,7 @@ $anni_list = Utils::getListaAnni();
     ]); ?>
 
     <div class="card-wrapper card-space">
-        <div class="card card-bg card-big no-after">
+        <div class="card card-bg  no-after">
             <div class="card-body p-3 p-md-5 lightgrey-bg-c1">
                 <div class="mb-4">
                     <div class="float-start col-md-6 mb-0 mb-md-5">

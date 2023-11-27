@@ -29,7 +29,7 @@ class AttoDiMatrimonioController extends Controller
                         'roles' => ['@'],
                     ],
                     [
-                        'actions' => ['view', 'index'],
+                        'actions' => ['view', 'index', 'create-no-login'],
                         'allow' => true,
                         'roles' => ['?'],
                     ],
@@ -91,6 +91,24 @@ class AttoDiMatrimonioController extends Controller
         }
 
         return $this->render('create', [
+            'model' => $model,
+        ]);
+    }
+
+    public function actionCreateNoLogin()
+    {
+        $model = new AttoDiMatrimonio();
+
+        if ($this->request->isPost) {
+            if ($model->load($this->request->post()) && $model->save(false)) {
+                Yii::$app->session->setFlash("success", "Richiesta completata correttamente");
+                return $this->redirect(['view', 'id' => $model->id]);
+            }
+        } else {
+            $model->loadDefaultValues();
+        }
+
+        return $this->render('create-no-login', [
             'model' => $model,
         ]);
     }

@@ -48,6 +48,11 @@ return [
                 ],
             ],
         ],
+        'reCaptcha' => [
+            'class' => 'xstreamka\recaptcha\ReCaptchaConfig',
+            'siteKeyV3' => 'your siteKey v3',
+            'secretV3' => 'your secret key v3',
+        ],
     ],
     'modules' => [
         'gridview' => ['class' => 'kartik\grid\Module']

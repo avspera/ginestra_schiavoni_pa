@@ -31,16 +31,24 @@ $this->params['breadcrumbs'][] = [
                         ['class' => 'yii\grid\SerialColumn'],
                         'id',
                         [
-                            'attribute' => 'id_coniuge_uno',
+                            'attribute' => 'coniuge_uno',
                             'value' => function ($model) {
-                                return Html::a(Utils::getCittadino($model->id_coniuge_uno), Url::to(["cittadino/view", "id" => $model->id_coniuge_uno]));
+                                if (is_numeric($model->coniuge_uno)) {
+                                    return Utils::getCittadino($model->coniuge_uno);
+                                } else {
+                                    return $model->coniuge_uno;
+                                }
                             },
                             'format' => "raw"
                         ],
                         [
-                            'attribute' => 'id_coniuge_due',
+                            'attribute' => 'coniuge_due',
                             'value' => function ($model) {
-                                return Html::a(Utils::getCittadino($model->id_coniuge_due), Url::to(["cittadino/view", "id" => $model->id_coniuge_due]));
+                                if (is_numeric($model->coniuge_due)) {
+                                    return Utils::getCittadino($model->coniuge_due);
+                                } else {
+                                    return $model->coniuge_due;
+                                }
                             },
                             'format' => "raw"
                         ],

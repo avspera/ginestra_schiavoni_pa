@@ -5,9 +5,12 @@ use yii\helpers\Html;
 /** @var yii\web\View $this */
 /** @var common\models\ValutazioneServizio $model */
 
-$this->title = 'Create Valutazione Servizio';
-$this->params['breadcrumbs'][] = ['label' => 'Valutazione Servizios', 'url' => ['index']];
-$this->params['breadcrumbs'][] = $this->title;
+$this->title = 'Valutazione Servizio';
+$this->params['breadcrumbs'][] = [
+    'label' => $this->title,
+    'template' => "<li class='breadcrumb-item'><span class='separator'>/</span>{link}</li>",
+    'url' => ["index"]
+];
 ?>
 <div class="valutazione-servizio-create">
 

@@ -19,13 +19,14 @@ $this->params['breadcrumbs'][] = [
 ?>
 <div class="contravvenzione-index">
 
+
     <?= $this->render('_search', ['model' => $searchModel]);
     ?>
     <div class="row">
         <div class="col-12">
             <!--start card-->
             <div class="card-wrapper card-space">
-                <div class="card card-bg card-big">
+                <div class="card card-bg ">
                     <div class="card-header">
                         <h3 class="card-title h5 ">Le tue contravvenzioni</h3>
                     </div>

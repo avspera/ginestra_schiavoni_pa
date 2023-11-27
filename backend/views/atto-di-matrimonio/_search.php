@@ -12,7 +12,7 @@ use yii\widgets\ActiveForm;
 <div class="atto-di-matrimonio-search">
 
     <div class="card-wrapper card-space">
-        <div class="card card-bg card-big no-after">
+        <div class="card card-bg  no-after">
             <div class="card-body p-3 p-md-5 lightgrey-bg-c1">
                 <?php $form = ActiveForm::begin([
                     'action' => ['index'],

@@ -17,7 +17,7 @@ class AttoDiMatrimonioSearch extends AttoDiMatrimonio
     public function rules()
     {
         return [
-            [['id', 'id_coniuge_uno', 'id_coniuge_due', 'id_residenza', 'created_by', 'updated_by', 'tipo_rito', 'regime_matrimoniale', 'titolo_studio_coniuge_uno', 'titolo_studio_coniuge_due', 'posizione_professionale_coniuge_uno', 'posizione_professionale_coniuge_due', 'condizione_non_professionale_coniuge_uno', 'condizione_non_professionale_coniuge_due'], 'integer'],
+            [['id', 'coniuge_uno', 'coniuge_due', 'residenza', 'created_by', 'updated_by', 'tipo_rito', 'regime_matrimoniale', 'titolo_studio_coniuge_uno', 'titolo_studio_coniuge_due', 'posizione_professionale_coniuge_uno', 'posizione_professionale_coniuge_due', 'condizione_non_professionale_coniuge_uno', 'condizione_non_professionale_coniuge_due'], 'integer'],
             [['padre_coniuge_uno', 'madre_coniuge_uno', 'padre_coniuge_due', 'madre_coniuge_due', 'created_at', 'updated_at', 'luogo_matrimonio'], 'safe'],
             [['data_matrimonio'], 'string']
         ];
@@ -60,10 +60,10 @@ class AttoDiMatrimonioSearch extends AttoDiMatrimonio
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'id_coniuge_uno' => $this->id_coniuge_uno,
-            'id_coniuge_due' => $this->id_coniuge_due,
+            'coniuge_uno' => $this->coniuge_uno,
+            'coniuge_due' => $this->coniuge_due,
             'data_matrimonio' => $this->data_matrimonio,
-            'id_residenza' => $this->id_residenza,
+            'residenza' => $this->residenza,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
             'created_by' => $this->created_by,

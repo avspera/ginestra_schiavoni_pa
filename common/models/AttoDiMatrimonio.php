@@ -8,10 +8,10 @@ use Yii;
  * This is the model class for table "atto_di_matrimonio".
  *
  * @property int $id
- * @property int $id_coniuge_uno
- * @property int $id_coniuge_due
+ * @property int $coniuge_uno
+ * @property int $coniuge_due
  * @property string $data_matrimonio
- * @property int $id_residenza
+ * @property int $residenza
  * @property string|null $padre_coniuge_uno
  * @property string|null $madre_coniuge_uno
  * @property string|null $padre_coniuge_due
@@ -97,11 +97,11 @@ class AttoDiMatrimonio extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id_coniuge_uno', 'id_coniuge_due', 'data_matrimonio', 'id_residenza', 'created_at', 'created_by', 'regime_matrimoniale'], 'required'],
-            [['id_coniuge_uno', 'id_coniuge_due', 'id_residenza', 'created_by', 'updated_by', 'tipo_rito', 'regime_matrimoniale', 'approved_by', 'published_by', 'id_albo_pretorio',
+            [['coniuge_uno', 'coniuge_due', 'data_matrimonio', 'residenza', 'created_at', 'regime_matrimoniale'], 'required'],
+            [['created_by', 'updated_by', 'tipo_rito', 'regime_matrimoniale', 'approved_by', 'published_by', 'id_albo_pretorio',
                 'titolo_studio_coniuge_uno', 'titolo_studio_coniuge_due', 'posizione_professionale_coniuge_uno', 'posizione_professionale_coniuge_due', 'condizione_non_professionale_coniuge_uno', 'condizione_non_professionale_coniuge_due'], 'integer'],
-            [['created_at', 'updated_at'], 'safe'],
-            [['data_matrimonio'], 'string'],
+            [['created_at', 'updated_at', 'created_by'], 'safe'],
+            [['data_matrimonio', 'coniuge_uno', 'coniuge_due', 'residenza'], 'string'],
             [['padre_coniuge_uno', 'madre_coniuge_uno', 'padre_coniuge_due', 'madre_coniuge_due', 'luogo_matrimonio'], 'string', 'max' => 255],
         ];
     }
@@ -113,10 +113,10 @@ class AttoDiMatrimonio extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'id_coniuge_uno' => 'Coniuge Uno',
-            'id_coniuge_due' => 'Coniuge Due',
+            'coniuge_uno' => 'Nome e Cognome',
+            'coniuge_due' => 'Nome e Cognome',
             'data_matrimonio' => 'Data Matrimonio',
-            'id_residenza' => 'Residenza',
+            'residenza' => 'Residenza',
             'padre_coniuge_uno' => 'Padre Coniuge uno',
             'madre_coniuge_uno' => 'Madre Coniuge uno',
             'padre_coniuge_due' => 'Padre Coniuge due',
@@ -150,7 +150,7 @@ class AttoDiMatrimonio extends \yii\db\ActiveRecord
 
         if ($this->isNewRecord) {
             $this->created_at = date("Y-m-d H:i:s");
-            $this->created_by = Yii::$app->user->identity->id;
+            $this->created_by = isset(Yii::$app->user->identity->id) ? Yii::$app->user->identity->id : 0;
             $this->published  = 0;
             $this->approved   = 0;
         } else {

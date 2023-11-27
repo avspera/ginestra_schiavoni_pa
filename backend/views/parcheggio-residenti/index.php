@@ -24,7 +24,7 @@ $this->params['breadcrumbs'][] = [
     <?= $this->render('_search', ['model' => $searchModel]); ?>
 
     <div class="card-wrapper card-space">
-        <div class="card card-bg card-big no-after">
+        <div class="card card-bg  no-after">
             <div class="card-body lightgrey-bg-c1">
                 <?= Html::a('Aggiungi Nuovo', ['create'], ['class' => 'btn btn-xs btn-success']) ?>
                 <div class="row mt-3">
@@ -34,9 +34,13 @@ $this->params['breadcrumbs'][] = [
                             'columns' => [
                                 'id',
                                 [
-                                    'attribute' => 'id_cittadino',
+                                    'attribute' => 'cittadino',
                                     'value' => function ($model) {
-                                        return Utils::getCittadino($model->id_cittadino);
+                                        if (is_numeric($model->cittadino)) {
+                                            return Utils::getCittadino($model->cittadino);
+                                        } else {
+                                            return $model->cittadino;
+                                        }
                                     }
                                 ],
                                 'indirizzo',

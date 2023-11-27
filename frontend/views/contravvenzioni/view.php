@@ -28,7 +28,7 @@ $this->params['breadcrumbs'][] = [
         <div class="col-12">
             <!--start card-->
             <div class="card-wrapper card-space">
-                <div class="card card-bg card-big">
+                <div class="card card-bg ">
                     <div class="card-header">
                         <h1><?= Html::encode($this->title) ?></h1>
                         <?php
@@ -69,7 +69,7 @@ $this->params['breadcrumbs'][] = [
                                 'ricevuta_pagamento',
                                 [
                                     'attribute' => "strumento",
-                                    'value' => function($model){
+                                    'value' => function ($model) {
                                         return $model->getStrumento();
                                     }
                                 ],
@@ -94,4 +94,7 @@ $this->params['breadcrumbs'][] = [
         </div>
     </div>
 
+    <div class="row" style="margin-top:10px;">
+        <p class="text-center"><?= Html::a("Esprimi il tuo giudizio", Url::to(["valutazione-servizio/create"]), ["class" => "btn btn-success"]) ?></p>
+    </div>
 </div>

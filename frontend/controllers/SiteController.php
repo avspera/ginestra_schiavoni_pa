@@ -78,6 +78,16 @@ class SiteController extends Controller
         return $this->render('index');
     }
 
+    public function actionPrivacy()
+    {
+        return $this->render("privacy");
+    }
+    
+    public function actionMap()
+    {
+        return $this->render("map");
+    }
+    
     /**
      * Logs in a user.
      *

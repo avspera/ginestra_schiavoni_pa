@@ -40,7 +40,7 @@ class ContravvenzioniController extends Controller
     public function actionIndex()
     {
         $searchModel = new ContravvenzioneSearch();
-        
+
         $dataProvider = $searchModel->search($this->request->queryParams);
 
         return $this->render('index', [
@@ -49,6 +49,11 @@ class ContravvenzioniController extends Controller
         ]);
     }
 
+    public function actionPrePay()
+    {
+
+        return $this->render("pre-pay");
+    }
     /**
      * Displays a single Contravvenzione model.
      * @param int $id ID
@@ -74,7 +79,7 @@ class ContravvenzioniController extends Controller
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save(false)) {
                 return $this->redirect(['view', 'id' => $model->id]);
-            }else {
+            } else {
                 Yii::$app->session->setFlash('error', 'Ops...c\'è stato qualche problema. [CONTRAVVENZIONI-105] <pre>' . json_encode($model->getErrors(), JSON_PRETTY_PRINT) . "</pre>");
             }
         } else {
