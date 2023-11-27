@@ -1,38 +1,50 @@
-version: '3.2'
-
+version: '3.3'
+name: ginestra
 services:
-
-  frontend:
-    build: frontend
-    ports:
-      - 20080:80
-    volumes:
-      # Re-use local composer cache via host-volume
-      - ~/.composer-docker/cache:/root/.composer/cache:delegated
-      # Mount source-code for development
-      - ./:/app
-
-  backend:
-    build: backend
-    ports:
-      - 21080:80
-    volumes:
-      # Re-use local composer cache via host-volume
-      - ~/.composer-docker/cache:/root/.composer/cache:delegated
-      # Mount source-code for development
-      - ./:/app
-
-  mysql:
-    image: mysql:5.7
+  
+  php-web:    
+    image: webdevops/php-nginx-dev:8.1
+    working_dir: /app
+   
     environment:
-      - MYSQL_ROOT_PASSWORD=verysecret
-      - MYSQL_DATABASE=yii2advanced
-      - MYSQL_USER=yii2advanced
-      - MYSQL_PASSWORD=secret
-
-  #pgsql:
-  #  image: postgres:9.5
-  #  environment:
-  #    - POSTGRES_DB=yii2advanced
-  #    - POSTGRES_USER=yii2advanced
-  #    - POSTGRES_PASSWORD=secret
+      - WEB_DOCUMENT_ROOT=/app/frontend/web      
+      - PHP_DISPLAY_ERRORS=1
+      - PHP_MEMORY_LIMIT=2048M
+      - PHP_MAX_EXECUTION_TIME=-1
+      - XDEBUG_MODE=debug
+      - XDEBUG_PROFILER_OUTPUT_DIR=/logs/xdebug
+      - XDEBUG_START_WITH_REQUEST=yes
+      - XDEBUG_REMOTE_PORT=9003     
+      - XDEBUG_MAX_NESTING_LEVEL=1000
+      - XDEBUG_REMOTE_HOST=host.docker.internal
+      - XDEBUG_CLIENT_HOST=host.docker.internal
+      - XDEBUG_PROFILER_ENABLE=1
+      - XDEBUG_REMOTE_ENABLE=1  
+      - XDEBUG_DISCOVER_CLIENT_HOST=1
+      - COMPOSER_VERSION=2
+    ports: 
+      - 8082:443
+      - 8080:8080
+      - 5050:5050
+    tty: true
+    volumes:
+      - .:/app:rw,cached  
+  redis:
+    image: redis    
+    ports:
+      - 6380:6379    
+  mysql:    
+    image: mysql:8.0
+    container_name: mysql
+    ports:
+      - 3307:3306      
+    environment:      
+      MYSQL_USER: developer
+      MYSQL_DATABASE: ginestra
+      MYSQL_PASSWORD: pippo        
+      MYSQL_ROOT_PASSWORD: pippo      
+    volumes:           
+      - ./DB:/docker-entrypoint-initdb.d
+   
+ 
+ 

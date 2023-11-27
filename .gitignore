@@ -3,7 +3,7 @@
 node_modules/
 npm-debug.log
 yarn-error.log
-
+**/*/main-local.php
 # Laravel 4 specific
 bootstrap/compiled.php
 app/storage/
