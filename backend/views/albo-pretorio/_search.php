@@ -10,6 +10,7 @@ use common\models\AlboPretorio;
 /** @var common\models\AlboPretorioSearch $model */
 /** @var yii\widgets\ActiveForm $form */
 $anni_list = Utils::getListaAnni();
+$params = isset(Yii::$app->request->queryParams["AlboPretorioSearch"]) ? Yii::$app->request->queryParams["AlboPretorioSearch"] : [];
 
 ?>
 
@@ -42,15 +43,20 @@ $anni_list = Utils::getListaAnni();
                                 <label class="control-label active" for="id_tipologia">Tipologia</label>
                                 <select id="albopretoriosearch-id_tipologia" name="AlboPretorioSearch[id_tipologia]">
                                     <option value="">Tutti</option>
-                                    <?php foreach ($model->tipologia_choices as $key => $value) {
+                                    <?php foreach ($model->getTipiDocumento() as $key => $value) {
                                         $count = AlboPretorio::find()->where(["id_tipologia" => $key])->count();
-                                        if($count > 0){
-                                            $label = $value . " (".$count.")";
-                                        }else{
+                                        if ($count > 0) {
+                                            $label = $value . " (" . $count . ")";
+                                        } else {
                                             $label = $value;
                                         }
+
+                                        $selected = "";
+                                        if (isset($params["id_tipologia"]) && $params["id_tipologia"] == $key) {
+                                            $selected = "selected";
+                                        }
                                     ?>
-                                        <option <?= $model->id_tipologia == $key ? "selected" : "" ?> value="<?= $key ?>"><?= $label ?></option>
+                                        <option <?= $selected ?> value="<?= $key ?>"><?= $label ?></option>
                                     <?php } ?>
                                 </select>
                             </div>
@@ -61,41 +67,43 @@ $anni_list = Utils::getListaAnni();
                                 <label class="control-label active" for="anno">Anno</label>
                                 <select id="albopretoriosearch-anno" name="AlboPretorioSearch[anno]">
                                     <option value="">Tutti</option>
-                                    <?php foreach ($anni_list as $item) { ?>
-                                        <option <?= $model->anno == $item ? "selected" : "" ?> value="<?= $item ?>"><?= $item ?></option>
+                                    <?php foreach ($anni_list as $item) {
+                                        $selected = "";
+                                        if (isset($params["anno"]) && $params["anno"] == $item) {
+                                            $selected = "selected";
+                                        }
+                                    ?>
+                                        <option <?= $selected ?> value="<?= $item ?>"><?= $item ?></option>
                                     <?php } ?>
                                 </select>
                             </div>
                         </div>
 
-                        <div class="col-md-4">
-                            <div class="form-group field-albopretoriosearch-oggetto">
-                                <label class="control-label active" for="albopretoriosearch-oggetto">Oggetto</label>
-                                <input type="text" value="<?= $model->titolo ?>" id="albopretoriosearch-oggetto" class="form-control" name="AlboPretorioSearch[oggetto]" data-focus-mouse="false">
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-4">
-                            <div class="form-group field-albopretoriosearch-numero_affissione">
-                                <label class="control-label active" for="albopretoriosearch-numero_affissione">Numero Affissione</label>
-                                <input type="text" value="<?= $model->numero_affissione ?>" id="albopretoriosearch-numero_affissione" class="form-control" name="AlboPretorioSearch[numero_affissione]" data-focus-mouse="false">
-                            </div>
-                        </div>
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <div class="form-group field-albopretoriosearch-numero_atto">
                                 <label class="control-label active" for="albopretoriosearch-numero_atto">Numero Atto</label>
-                                <input type="text" value="<?= $model->numero_atto ?>" id="albopretoriosearch-numero_atto" class="form-control" name="AlboPretorioSearch[numero_atto]" data-focus-mouse="false">
+                                <input type="text" value="<?= !empty($params["numero_atto"]) ? $params["numero_atto"] : NULL ?>" id="albopretoriosearch-numero_atto" class="form-control" name="AlboPretorioSearch[numero_atto]" data-focus-mouse="false">
                             </div>
                         </div>
 
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <div class="form-group field-albopretoriosearch-data_pubblicazione">
                                 <label class="control-label active" for="dateStandard">Data pubblicazione</label>
                                 <input value="<?= !empty($model->data_pubblicazione) ? date("Y-m-d", strtotime($model->data_pubblicazione)) : "" ?>" type="date" id="albopretoriosearch-data_pubblicazione" max="<?= date("Y-m-d") ?>" name="AlboPretorioSearch[data_pubblicazione]">
                             </div>
                         </div>
+
+                    </div>
+
+                    <div class="row">
+
+                        <div class="col-md-4">
+                            <div class="form-group field-albopretoriosearch-oggetto">
+                                <label class="control-label active" for="albopretoriosearch-oggetto">Oggetto</label>
+                                <input type="text" value="<?= !empty($params["oggetto"]) ? $params["oggetto"] : NULL ?>" id="albopretoriosearch-oggetto" class="form-control" name="AlboPretorioSearch[oggetto]" data-focus-mouse="false">
+                            </div>
+                        </div>
+
                     </div>
                 </div>
 

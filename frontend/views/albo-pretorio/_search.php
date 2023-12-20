@@ -10,7 +10,7 @@ use common\models\AlboPretorio;
 /** @var common\models\AlboPretorioSearch $model */
 /** @var yii\widgets\ActiveForm $form */
 $anni_list = Utils::getListaAnni();
-
+$params = isset(Yii::$app->request->queryParams["AlboPretorioSearch"]) ? Yii::$app->request->queryParams["AlboPretorioSearch"] : [];
 ?>
 
 <div class="albo-pretorio-search">
@@ -42,15 +42,21 @@ $anni_list = Utils::getListaAnni();
                                 <label class="control-label active" for="id_tipologia">Tipologia</label>
                                 <select id="albopretoriosearch-id_tipologia" name="AlboPretorioSearch[id_tipologia]">
                                     <option value="">Tutti</option>
-                                    <?php foreach ($model->tipologia_choices as $key => $value) {
+                                    <?php
+                                    $tipi = $model->getTipiDocumento();
+                                    foreach ($tipi as $key => $value) {
                                         $count = AlboPretorio::find()->where(["id_tipologia" => $key])->count();
-                                        if($count > 0){
-                                            $label = $value . " (".$count.")";
-                                        }else{
+                                        if ($count > 0) {
+                                            $label = $value . " (" . $count . ")";
+                                        } else {
                                             $label = $value;
                                         }
+                                        $selected = "";
+                                        if (isset($params["id_tipologia"]) && $params["id_tipologia"] == $key) {
+                                            $selected = "selected";
+                                        }
                                     ?>
-                                        <option <?= $model->id_tipologia == $key ? "selected" : "" ?> value="<?= $key ?>"><?= $label ?></option>
+                                        <option <?= $selected ?> value="<?= $key ?>"><?= $label ?></option>
                                     <?php } ?>
                                 </select>
                             </div>
@@ -61,8 +67,13 @@ $anni_list = Utils::getListaAnni();
                                 <label class="control-label active" for="anno">Anno</label>
                                 <select id="albopretoriosearch-anno" name="AlboPretorioSearch[anno]">
                                     <option value="">Tutti</option>
-                                    <?php foreach ($anni_list as $item) { ?>
-                                        <option <?= $model->anno == $item ? "selected" : "" ?> value="<?= $item ?>"><?= $item ?></option>
+                                    <?php foreach ($anni_list as $item) {
+                                        $selected = "";
+                                        if (isset($params["anno"]) && $params["anno"] == $item) {
+                                            $selected = "selected";
+                                        }
+                                    ?>
+                                        <option <?= $selected ?> value="<?= $item ?>"><?= $item ?></option>
                                     <?php } ?>
                                 </select>
                             </div>
@@ -71,7 +82,7 @@ $anni_list = Utils::getListaAnni();
                         <div class="col-md-4">
                             <div class="form-group field-albopretoriosearch-oggetto">
                                 <label class="control-label active" for="albopretoriosearch-oggetto">Oggetto</label>
-                                <input type="text" value="<?= $model->titolo ?>" id="albopretoriosearch-oggetto" class="form-control" name="AlboPretorioSearch[oggetto]" data-focus-mouse="false">
+                                <input type="text" value="<?= isset($params["oggetto"]) ? $params["oggetto"] : NULL ?>" id="albopretoriosearch-oggetto" class="form-control" name="AlboPretorioSearch[oggetto]" data-focus-mouse="false">
                             </div>
                         </div>
                     </div>

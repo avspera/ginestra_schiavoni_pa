@@ -24,7 +24,7 @@ use kartik\file\FileInput;
                     <div class="select-wrapper">
                         <?= Select2::widget([
                             'model' => $model,
-                            'attribute' => "id_cittadino",
+                            'attribute' => "cittadino",
                             'options' => [
                                 'multiple' => false,
                                 'placeholder' => 'Cerca cittadino ...',

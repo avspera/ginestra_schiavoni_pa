@@ -4,6 +4,8 @@ namespace common\models;
 
 use Yii;
 use common\models\AttoDiMatrimonio;
+use linslin\yii2\curl;
+use yii\web\JsonParser;
 
 /**
  * This is the model class for table "albo_pretorio".
@@ -20,7 +22,7 @@ use common\models\AttoDiMatrimonio;
  * @property int|null $updated_by
  * @property string|null $attachments
  * @property string|null $note
- * @property string $titolo
+ * @property string $oggetto
  * @property string|null $data_fine_pubblicazione
  * @property int|null $sorgente
  * @property int|null $id_atto_matrimonio
@@ -64,10 +66,10 @@ class AlboPretorio extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['numero_atto', 'anno', 'id_tipologia', 'data_pubblicazione', 'created_at', 'created_by', 'titolo'], 'required'],
+            [['numero_atto', 'anno', 'id_tipologia', 'data_pubblicazione', 'created_at', 'created_by', 'oggetto'], 'required'],
             [['numero_atto', 'id_tipologia', 'numero_affissione', 'created_by', 'updated_by', 'sorgente', "id_atto_matrimonio"], 'integer'],
             [['anno', 'data_pubblicazione', 'created_at', 'updated_at', 'data_fine_pubblicazione', 'sorgente', 'id_atto_matrimonio'], 'safe'],
-            [['note', 'titolo', 'data_fine_pubblicazione'], 'string'],
+            [['note', 'oggetto', 'data_fine_pubblicazione'], 'string'],
             [['attachments'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg, pdf', 'maxSize' => 1024 * 1024 * 2],
         ];
     }
@@ -90,7 +92,7 @@ class AlboPretorio extends \yii\db\ActiveRecord
             'updated_by' => 'Modificato da',
             'attachments' => 'Allegati',
             'note' => 'Note',
-            'titolo' => "Oggetto",
+            'oggetto' => "Oggetto",
             'data_fine_pubblicazione' => "Data fine pubblicazione",
             'sorgente' => "Sorgente",
             'id_atto_matrimonio' => "Atto di matrimonio"
@@ -111,9 +113,15 @@ class AlboPretorio extends \yii\db\ActiveRecord
         return parent::beforeSave($insert);
     }
 
-    public function getTipologia()
+    public function getTipologia($id)
     {
-        return isset($this->tipologia_choices[$this->id_tipologia]) ? $this->tipologia_choices[$this->id_tipologia] : "-";
+        //Init curl
+        $curl = new curl\Curl();
+        $response = $curl->get('https://api.trasparenzapa.it/Albo/TipoDocumento/' . $id . '?comune=' . \Yii::$app->params["codiceCatastale"]);
+        $formatter = new JsonParser();
+        $decodedResponse = $formatter->parse($response, 'json');
+        return $decodedResponse;
+        // return isset($this->tipologia_choices[$this->id_tipologia]) ? $this->tipologia_choices[$this->id_tipologia] : "-";
     }
 
     public function getSorgente()
@@ -144,5 +152,19 @@ class AlboPretorio extends \yii\db\ActiveRecord
         }
 
         return false;
+    }
+
+    public function getTipiDocumento()
+    {
+        $curl = new curl\Curl();
+        $response = $curl->get('https://api.trasparenzapa.it/Albo/TipiDocumento?comune=' . \Yii::$app->params["codiceCatastale"]);
+        $formatter = new JsonParser();
+        $decodedResponse = $formatter->parse($response, 'json');
+        $items = [];
+        foreach ($decodedResponse as $item) {
+            $items[$item["id"]] = $item["descrizione"];
+        }
+
+        return $items;
     }
 }

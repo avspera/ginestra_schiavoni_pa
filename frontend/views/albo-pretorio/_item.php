@@ -27,7 +27,7 @@ use common\components\Utils;
         </div>
     </div>
     <div class="col-lg-10">
-        <span class="h5"><?= $model->titolo ?></span>
+        <span class="h5"><a href="<?= Url::to(["view", "id" => $model->id]) ?>"><?= $model->oggetto ?></a></span>
         <div class="collapse-header d-block d-sm-none mt-2" id="<?= $model->id ?>">
             <a class="ps-0 border-top-0" data-bs-toggle="collapse" aria-expanded="false" href="#collapse<?= $model->id ?>" role="button">Dettagli pubblicazione</a>
         </div>
@@ -50,37 +50,39 @@ use common\components\Utils;
                     <?php } ?>
                     <li>
                         <span class="d-inline-block col-12 col-md-3 ps-0">Tipo documento:</span> <strong>
-                            <?= $model->getTipologia() ?>
+                            <?php
+                            $tipologia = $model->getTipologia($model->id_tipologia);
+                            echo isset($tipologia["descrizioneDocumento"]) ? $tipologia["descrizioneDocumento"] : "-";
+                            ?>
                         </strong>
                     </li>
 
-                    <li>
+                    <!-- <li>
                         <span class="d-inline-block col-12 col-md-3 ps-0">Note:</span> <strong><?= !empty($model->note) ? $model->note : "-" ?></strong>
-                    </li>
+                    </li> -->
 
                     <?php if (!empty($model->id_atto_matrimonio)) { ?>
                         <li>
                             <span class="d-inline-block col-12 col-md-3 ps-0">Atto di matrimonio: </span> <strong><?= Html::a("Vedi dettagli", Url::to(["atto-di-matrimonio/view", "id" => $model->id_atto_matrimonio]), ["class" => "link"]) ?></strong>
                         </li>
                     <?php } ?>
-                    <li class="mb-2">Scarica i documenti: </li>
+                    <!-- <li class="mb-2">Scarica i documenti: </li>
                     <li>
                         <?php
                         if (!empty($model->attachments)) {
                             $attachments = json_decode($model->attachments, true);
                             foreach ($attachments as $item) {
-                                $fileUrl = Yii::getAlias("@web") . "/uploads/albo-pretorio/" . $item;
-                                $icon = substr($item, strrpos($item, ".")) == ".pdf" ? "it-file-pdf" : "it-file";
+                                $icon = substr($item->nomeFile, strrpos($item->nomeFile, ".")) == ".pdf" ? "it-file-pdf" : "it-file";
                         ?>
                                 <svg class="icon" aria-hidden="true">
                                     <use href="/bootstrap-italia/svg/sprites.svg#<?= $icon ?>"></use>
                                 </svg>
-                                <a target="_blank" class="pdf" title="Clicca per aprire il documento (formato PDF)" href="<?= Url::to($fileUrl) ?>"><?= $item ?></a> <br />
+                                <a target="_blank" class="pdf" title="Clicca per aprire il documento (formato PDF)" href="<?= Url::to($allegato->url) ?>"><?= $allegato->nomeFile ?></a> <br />
                             <?php }
                         } else { ?>
                             <small class="text-sm">Nessun allegato disponibile</small>
                         <?php } ?>
-                    </li>
+                    </li> -->
                 </ul>
             </div>
         </div>

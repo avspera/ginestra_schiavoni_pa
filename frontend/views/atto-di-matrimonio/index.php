@@ -1,10 +1,6 @@
 <?php
 
-use common\models\AttoDiMatrimonio;
-use yii\helpers\Html;
 use yii\helpers\Url;
-use yii\grid\ActionColumn;
-use yii\grid\GridView;
 
 /** @var yii\web\View $this */
 /** @var common\models\AttoDiMatrimonioSearch $searchModel */
@@ -31,7 +27,7 @@ $this->params['breadcrumbs'][] = [
                 Procedendo senza autenticazione non sono disponibili tutte le funzioni riservate nella sezione privata, come la consultazione dello stato di avanzamento della richiesta.
             </p>
 
-            <p class="text-center mt20 mb20"><a href="<?= Url::to(["login"]) ?>" class="btn btn-primary">Vai alla pagina di autenticazione</a></p>
+            <p class="text-center mt20 mb20"><a href="<?= Url::to(["site/login"]) ?>" class="btn btn-primary">Vai alla pagina di autenticazione</a></p>
 
             <p class="text-center mt20 mb20">
                 <strong>Oppure</strong><br><br>

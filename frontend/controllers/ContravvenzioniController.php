@@ -40,8 +40,14 @@ class ContravvenzioniController extends Controller
     public function actionIndex()
     {
         $searchModel = new ContravvenzioneSearch();
+        $queryParams = $this->request->queryParams;
 
-        $dataProvider = $searchModel->search($this->request->queryParams);
+        if (isset($queryParams["ContravvenzioneSearch"]["id"])) {
+            $dataProvider = $searchModel->search($queryParams);
+        } else {
+            $dataProvider = new \yii\data\ArrayDataProvider();
+        }
+
 
         return $this->render('index', [
             'searchModel' => $searchModel,
@@ -49,10 +55,12 @@ class ContravvenzioniController extends Controller
         ]);
     }
 
-    public function actionPrePay()
+    public function actionPrePay($id)
     {
-
-        return $this->render("pre-pay");
+        if (empty($id)) {
+            return $this->goBack();
+        }
+        return $this->render("pre-pay", ["id" => $id]);
     }
     /**
      * Displays a single Contravvenzione model.
@@ -63,6 +71,13 @@ class ContravvenzioniController extends Controller
     public function actionView($id)
     {
         return $this->render('view', [
+            'model' => $this->findModel($id),
+        ]);
+    }
+
+    public function actionPay($id)
+    {
+        return $this->render('pay', [
             'model' => $this->findModel($id),
         ]);
     }

@@ -2,6 +2,7 @@
 
 use yii\widgets\ListView;
 use common\components\Utils;
+use yii\widgets\LinkPager;
 
 /** @var yii\web\View $this */
 /** @var common\models\AlboPretorioSearch $searchModel */
@@ -42,6 +43,10 @@ $latestUpdate = !empty($models[count($models) - 1]) ? Utils::formatDate($models[
                 <?= ListView::widget([
                     'dataProvider' => $dataProvider,
                     'itemView' => '_item',
+                    // 'pager' => [
+                    //     'class' => '\yii\widgets\LinkPager',
+                    //     'hideOnSinglePage' => true
+                    // ],
                 ]); ?>
             </div>
 

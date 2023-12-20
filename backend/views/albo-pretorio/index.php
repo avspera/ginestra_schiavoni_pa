@@ -35,20 +35,17 @@ $latestUpdate = !empty($models[count($models) - 1]) ? Utils::formatDate($models[
                             'columns' => [
                                 ['class' => 'yii\grid\SerialColumn'],
                                 'id',
-                                'titolo',
-                                [
-                                    'attribute' => 'numero_atto',
-                                    'value' => function ($model) {
-                                        return $model->numero_atto . "/" . $model->anno;
-                                    }
-                                ],
+                                'oggetto',
+                                'numero_atto',
+                                'progressivo',
                                 'numero_affissione',
                                 'data_pubblicazione:date',
                                 'anno',
                                 [
                                     'attribute' => 'id_tipologia',
                                     'value' => function ($model) {
-                                        return $model->getTipologia();
+                                        $tipologia = $model->getTipologia($model->id_tipologia);
+                                        return isset($tipologia["descrizioneDocumento"]) ? $tipologia["descrizioneDocumento"] : "-";
                                     }
                                 ],
                                 [

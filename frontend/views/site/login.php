@@ -16,6 +16,7 @@ $this->title = 'Login';
 
 $spidsdk = new SPID_PHP();
 
+die;
 if (!$spidsdk->isAuthenticated()) {
     if (!isset($_GET['idp'])) {
         $spidsdk->insertSPIDButtonCSS();

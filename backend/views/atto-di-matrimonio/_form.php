@@ -28,7 +28,7 @@ use kartik\date\DatePicker;
                 ],
             ])->label("Data matrimonio", ["class" => "active control-label"]); ?>
         </div>
-        <div class="col-md-4"><?= $form->field($model, 'id_residenza')->textInput()->label("Residenza", ["class" => "active control-label"]) ?></div>
+        <div class="col-md-4"><?= $form->field($model, 'residenza')->textInput()->label("Residenza", ["class" => "active control-label"]) ?></div>
         <div class="col-md-4"><?= $form->field($model, 'tipo_rito')->dropDownList($model->tipo_rito_choices, ["prompt" => "Scegli"])->label("Tipo di rito", ["class" => "active control-label"]) ?></div>
     </div>
 
@@ -44,7 +44,7 @@ use kartik\date\DatePicker;
 
     <div class="row mt-3">
         <div class="col-md-4">
-            <?= $form->field($model, 'id_coniuge_uno')->widget(Select2::classname(), [
+            <?= $form->field($model, 'coniuge_uno')->widget(Select2::classname(), [
                 'options' => [
                     'multiple' => false,
                     'placeholder' => 'Cerca cittadino ...'
@@ -84,7 +84,7 @@ use kartik\date\DatePicker;
 
     <div class="row mt-2">
         <div class="col-md-4">
-            <?= $form->field($model, 'id_coniuge_due')->widget(Select2::classname(), [
+            <?= $form->field($model, 'coniuge_due')->widget(Select2::classname(), [
                 'options' => [
                     'multiple' => false,
                     'placeholder' => 'Cerca cittadino ...'

@@ -9,6 +9,7 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii2tech\csvgrid\CsvGrid;
 use common\components\Utils;
+use yii\data\Pagination;
 
 /**
  * AlboPretorioController implements the CRUD actions for AlboPretorio model.
@@ -41,8 +42,9 @@ class AlboPretorioController extends Controller
     public function actionIndex()
     {
         $searchModel = new AlboPretorioSearch();
-        $dataProvider = $searchModel->search($this->request->queryParams);
-        $dataProvider->sort->defaultOrder = ["numero_atto" => SORT_DESC];
+        $dataProvider = $searchModel->searchCurl($this->request->queryParams);
+        // $dataProvider = $searchModel->search($this->request->queryParams);
+        // $dataProvider->sort->defaultOrder = ["numero_atto" => SORT_DESC];
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
@@ -57,19 +59,22 @@ class AlboPretorioController extends Controller
      */
     public function actionView($id)
     {
+        $searchModel = new AlboPretorioSearch();
+        $model = $searchModel->getCurl($id);
+
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'model' => $model,
         ]);
     }
 
-    
+
     public function actionExport()
     {
 
         $params = \Yii::$app->request->get();
-        
+
         $model = new AlboPretorioSearch();
-        $dataProvider = $model->search($params);
+        $dataProvider = $model->searchCurl($params);
 
         $exporter = new CsvGrid([
             'dataProvider' => $dataProvider,
@@ -81,12 +86,13 @@ class AlboPretorioController extends Controller
                     'attribute' => 'numero_affissione',
                 ],
                 [
-                    'attribute' => 'titolo'
+                    'attribute' => 'oggetto'
                 ],
                 [
                     'attribute' => 'id_tipologia',
                     'value' => function ($model) {
-                        return $model->getTipologia();
+                        $tipologia = $model->getTipologia($model->id_tipologia);
+                        return isset($tipologia["descrizioneDocumento"]) ? $tipologia["descrizioneDocumento"] : "-";
                     }
                 ],
                 [

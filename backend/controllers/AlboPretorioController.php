@@ -44,8 +44,9 @@ class AlboPretorioController extends Controller
     public function actionIndex()
     {
         $searchModel = new AlboPretorioSearch();
-        $dataProvider = $searchModel->search($this->request->queryParams);
-        $dataProvider->sort->defaultOrder = ["data_pubblicazione" => SORT_DESC];
+        $dataProvider = $searchModel->searchCurl($this->request->queryParams);
+        // $dataProvider = $searchModel->search($this->request->queryParams);
+        // $dataProvider->sort->defaultOrder = ["data_pubblicazione" => SORT_DESC];
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
@@ -60,11 +61,13 @@ class AlboPretorioController extends Controller
      */
     public function actionView($id)
     {
-        $model = $this->findModel($id);
+        $searchModel = new AlboPretorioSearch();
+        $model = $searchModel->getCurl($id);
+
         return $this->render('view', [
             'model' => $model,
-            'attoDiMatrimonio' => AttoDiMatrimonio::findOne(["id_albo_pretorio" => $id])
         ]);
+
     }
 
     /**
@@ -93,7 +96,7 @@ class AlboPretorioController extends Controller
 
         $model->sorgente = 0;
         $latestAlbo = AlboPretorio::find()->select(["numero_atto"])->orderBy(["numero_atto" => SORT_DESC])->one();
-        $model->numero_atto = !empty($latestAlbo) ? $latestAlbo->numero_atto+1 : 1;
+        $model->numero_atto = !empty($latestAlbo) ? $latestAlbo->numero_atto + 1 : 1;
         $model->anno = date("Y");
         return $this->render('create', [
             'model' => $model,
@@ -112,9 +115,9 @@ class AlboPretorioController extends Controller
         $model = $this->findModel($id);
         $prevAttachments = json_decode($model->attachments, true);
         if ($this->request->isPost && $model->load($this->request->post())) {
-            
+
             $model->attachments = UploadedFile::getInstances($model, 'attachments');
-            
+
             if (!empty($model->attachments)) {
                 $newAttachments = $model->uploadFiles($model->attachments);
                 $model->attachments = array_merge($prevAttachments, json_decode($newAttachments, true));
@@ -153,12 +156,13 @@ class AlboPretorioController extends Controller
                     'attribute' => 'numero_affissione',
                 ],
                 [
-                    'attribute' => 'titolo'
+                    'attribute' => 'oggetto'
                 ],
                 [
                     'attribute' => 'id_tipologia',
                     'value' => function ($model) {
-                        return $model->getTipologia();
+                        $tipologia = $model->getTipologia($model->id_tipologia);
+                        return isset($tipologia["descrizioneDocumento"]) ? $tipologia["descrizioneDocumento"] : "-";
                     }
                 ],
                 [

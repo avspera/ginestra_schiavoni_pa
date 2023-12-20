@@ -43,8 +43,9 @@ $this->params['breadcrumbs'][] = [
         'model' => $model,
         'attributes' => [
             'id',
-            'titolo',
+            'oggetto',
             'numero_atto',
+            'progressivo',
             'numero_affissione',
             'anno',
             'data_pubblicazione:date',
@@ -52,32 +53,25 @@ $this->params['breadcrumbs'][] = [
             [
                 'attribute' => 'id_tipologia',
                 'value' => function ($model) {
-                    return $model->getTipologia();
+                    $tipologia = $model->getTipologia($model->id_tipologia);
+                    return isset($tipologia["descrizioneDocumento"]) ? $tipologia["descrizioneDocumento"] : "-";
                 }
             ],
             'note:ntext',
             [
                 'attribute' => 'attachments',
                 'value' => function ($model) {
-                    if (!empty($model->attachments)) {
-                        $html = "<ul class='upload-file-list'>";
-                        $attachments = json_decode($model->attachments);
-                        foreach ($attachments as $item) {
-                            $fullPath = Yii::getAlias("@frontend/web/") . "uploads/albo-pretorio/" . $item;
-                            $html .= '
-                            <li class="upload-file success">
-                              <svg class="icon icon-sm" aria-hidden="true"><use href="/bootstrap-italia/svg/sprites.svg#it-file"></use></svg>
-                              <p>
-                                <span class="visually-hidden">File:</span>' . Html::a($item, Url::to($fullPath)) . '
-                              </p>
-                            </li>';
-                        }
-                        $html .= "</ul>";
-
-                        return $html;
+                    $html = "";
+                    $decodedAllegati = json_decode($model->attachments);
+                    foreach ($decodedAllegati as $allegato) {
+                        $icon = substr($allegato->nomeFile, strrpos($allegato->nomeFile, ".")) == ".pdf" ? "it-file-pdf" : "it-file";
+                        // $html .= Html::a($allegato->nomeFile, Url::to($allegato->url), ["target" => "_blank"]);
+                        $html .= '<svg class="icon" aria-hidden="true">
+                                    <use href="/bootstrap-italia/svg/sprites.svg#' . $icon . '"></use>
+                                </svg>
+                                <a target="_blank" class="pdf" title="Clicca per aprire il documento (formato PDF)" href="' . Url::to($allegato->url) . '">' . $allegato->nomeFile . '</a> <br />';
                     }
-
-                    return "-";
+                    return $html;
                 },
                 'format' => "raw"
             ],

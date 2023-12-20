@@ -22,8 +22,8 @@ use yii\widgets\ActiveForm;
             <div class="row">
                 <div class="col-lg-6">
                     <div class="form-group">
-                        <label class="control-label active" for="albopretorio-titolo">Titolo</label>
-                        <input type="text" name="AlboPretorio[titolo]" id="albopretorio-titolo" value="<?= $model->titolo ?>" class="form-control">
+                        <label class="control-label active" for="albopretorio-oggetto">Oggetto</label>
+                        <input type="text" name="AlboPretorio[oggetto]" id="albopretorio-oggetto" value="<?= $model->oggetto ?>" class="form-control">
                     </div>
                 </div>
                 <div class="form-group col-md-3 col-xs-12">
@@ -57,7 +57,7 @@ use yii\widgets\ActiveForm;
                             <label class="control-label active" for="id_tipologia">Tipologia</label>
                             <select class="select-italia" id="albopretorio-id_tipologia" name="AlboPretorio[id_tipologia]">
                                 <option value="">Scegli</option>
-                                <?php foreach ($model->tipologia_choices as $key => $value) { ?>
+                                <?php foreach ($model->getTipiDocumento() as $key => $value) { ?>
                                     <option <?= $model->id_tipologia == $key ? "selected" : "" ?> value="<?= $key ?>"><?= $value ?></option>
                                 <?php } ?>
                             </select>
