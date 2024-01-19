@@ -91,7 +91,7 @@ class AttoDiMatrimonioController extends Controller
              * 'numero_atto', 'anno', 'id_tipologia', 'data_pubblicazione', 'created_at', 'created_by', 'titolo'
              */
             $alboPretorio = new AlboPretorio();
-            $alboPretorio->titolo = "Pubblicazione di Matrimonio del " . Utils::formatDate($model->data_matrimonio);
+            $alboPretorio->oggetto = "Pubblicazione di Matrimonio del " . Utils::formatDate($model->data_matrimonio);
             $alboPretorio->numero_atto = !empty($latestAtto) ? $latestAtto->numero_atto + 1 : 1;
             $alboPretorio->numero_affissione = !empty($latestAtto) ? $latestAtto->numero_affissione + 1 : 1;
             $alboPretorio->anno = date("Y");

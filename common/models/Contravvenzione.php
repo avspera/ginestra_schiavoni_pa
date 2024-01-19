@@ -26,6 +26,13 @@ use common\components\Utils;
 class Contravvenzione extends \yii\db\ActiveRecord
 {
     public $strumento_choices = [1 => "Agente in servizio", 2 => "Mediante telecamera"];
+    public $privateKey = "sKd80O12nm";
+    public $clientId = "uin892IO!";
+    public $testUsername = "civilia_test@jwt.it";
+    public $testPassword = "PswCivilia1";
+    public $testUrl      = "https://starttest.soluzionipa.it/auth_hub/oauth/token";
+
+    public $prodUrl     = "https://start.soluzionipa.it/auth_hub/oauth/token";
 
     /**
      * {@inheritdoc}
@@ -93,7 +100,8 @@ class Contravvenzione extends \yii\db\ActiveRecord
         return true;
     }
 
-    public function getStrumento(){
+    public function getStrumento()
+    {
         return isset($this->strumento_choices[$this->strumento]) ? $this->strumento_choices[$this->strumento] : "-";
     }
 }

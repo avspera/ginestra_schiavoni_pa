@@ -48,7 +48,6 @@ class ContravvenzioniController extends Controller
             $dataProvider = new \yii\data\ArrayDataProvider();
         }
 
-
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,

@@ -8,6 +8,8 @@ use common\models\ContravvenzioneSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use linslin\yii2\curl;
+use yii\web\JsonParser;
 
 /**
  * ContravvenzioniController implements the CRUD actions for Contravvenzione model.
@@ -46,6 +48,40 @@ class ContravvenzioniController extends Controller
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
+    }
+
+    private function authenticateWithJwt($ambiente = "test")
+    {
+        //$url = $ambiente !== "test" ? Yii::$app->params["paymentAuthUrl"] : Yii::$app->params["paymentAuthUrlTest"];
+        $url = Yii::$app->params["testEndPoint"];
+
+        //Init curl
+        $curl = new curl\Curl();
+        $response = $curl->post($url);
+        $formatter = new JsonParser();
+        $decodedResponse = $formatter->parse($response, 'json');
+
+        if (!empty($decodedResponse)) {
+            Yii::$app->session->jwt_token = $decodedResponse;
+        }
+
+        return $decodedResponse;
+    }
+
+    private function inviaMultidovuto($params)
+    {
+    }
+    public function actionGeneratePagopaItem($id)
+    {
+        $token = $this->authenticateWithJwt();
+        $model = $this->findModel($id);
+
+        $structure["pagatore"] = [];
+        $structure["causale"] = "Contravvenzione N. " . $model->id . " del " . Yii::$app->formatter->asDate($model->data_accertamento) . " TARGA: " . $model->targa;
+        $structure["importo"] = floatval($model->amount);
+        $structure["anno_competenza"] = date("Y");
+
+        $out = $this->inviaMultidovuto($structure);
     }
 
     /**

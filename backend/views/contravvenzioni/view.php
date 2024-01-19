@@ -26,6 +26,7 @@ $this->params['breadcrumbs'][] = [
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
+        <?= Html::a('Genera pagamento PagoPa', ['generate-pagopa-item', 'id' => $model->id], ['class' => 'btn btn-xs btn-warning']) ?>
         <?= Html::a('Modifica', ['update', 'id' => $model->id], ['class' => 'btn btn-xs btn-primary']) ?>
         <?= Html::a('Cancella', ['delete', 'id' => $model->id], [
             'class' => 'btn btn-xs btn-danger',

@@ -53,7 +53,7 @@ $this->title = Yii::$app->name;
                             <div class="card-body p-0 my-2">
                                 <h3 class="green-title-big t-primary mb-8"><a href="<?= Url::to(["contravvenzioni/index"]) ?>" class="text-decoration-none" data-element="service-link">Contravvenzioni</a></h3>
                                 <p class="text-paragraph">In questa sezione puoi pagare le contravvenzioni della Polizia Municipale.</p>
-                                <p><a class="btn btn-outline-secondary" href="<?= Url::to(["contravvenzione/index"]); ?>" data-focus-mouse="false">Cerca »</a></p>
+                                <p><a class="btn btn-outline-secondary" href="<?= Url::to(["contravvenzioni/index"]); ?>" data-focus-mouse="false">Cerca »</a></p>
                             </div>
                         </div>
                     </div>

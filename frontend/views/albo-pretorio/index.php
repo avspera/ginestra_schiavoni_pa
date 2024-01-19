@@ -43,10 +43,10 @@ $latestUpdate = !empty($models[count($models) - 1]) ? Utils::formatDate($models[
                 <?= ListView::widget([
                     'dataProvider' => $dataProvider,
                     'itemView' => '_item',
-                    // 'pager' => [
-                    //     'class' => '\yii\widgets\LinkPager',
-                    //     'hideOnSinglePage' => true
-                    // ],
+                    'pager' => [
+                        'class' => 'common\components\CustomLinkPager',
+                        'hideOnSinglePage' => true,
+                    ],
                 ]); ?>
             </div>
 
