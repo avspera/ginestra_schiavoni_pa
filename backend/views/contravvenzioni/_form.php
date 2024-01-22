@@ -11,11 +11,11 @@ use yii\widgets\ActiveForm;
 <div class="contravvenzione-form">
 
     <?php $form = ActiveForm::begin(); ?>
-
-    <div class="card shadow-sm px-4 pt-4 pb-4 rounded">
-        <div class="card-header border-0 p-0">
+    <div class="card shadow-sm rounded">
+        <div class="card-header px-4 border-0">
+            <h3>Dati contravvenzione</h3>
         </div>
-        <div class="card-body p-0 my-2">
+        <div class="card-body">
             <div>
                 <div class="row">
                     <div class="form-group col-md-3">
@@ -91,17 +91,108 @@ use yii\widgets\ActiveForm;
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
 
-            <div class="row mt-4">
-                <div class="form-group">
-                    <?= Html::submitButton('Salva', ['class' => 'btn btn-xs btn-success float-end']) ?>
+    <div class="card shadow-sm rounded">
+        <div class="card-header px-4 border-0">
+            <h3>Dati pagatore</h3>
+        </div>
+        <div class="card-body my-2">
+            <div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <div class="select-wrapper">
+                                <label class="active control-label" for="defaultSelect">Tipo di persona</label>
+                                <select id="contravvenzione-payed" name="Contravvenzione[tipo_persona]">
+                                    <option selected="" value="">Scegli un'opzione</option>
+                                    <?php foreach ($model->tipo_persona_choices as $key => $value) { ?>
+                                        <option value="<?= $key ?>"><?= $value ?></option>
+                                    <?php } ?>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="active control-label" for="nome">Nome</label>
+                            <input type="text" name="Contravvenzione[nome]" id="contravvenzione-nome" value="<?= $model->nome ?>" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="active control-label" for="cognome">Cognome</label>
+                            <input type="text" name="Contravvenzione[cognome]" id="contravvenzione-cognome" value="<?= $model->cognome ?>" class="form-control" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="active control-label" for="email">Email</label>
+                            <input type="email" name="Contravvenzione[email]" id="contravvenzione-email" value="<?= $model->email ?>" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="active control-label" for="cf">Codice Fiscale</label>
+                            <input type="text" maxlength="16" name="Contravvenzione[cf]" id="contravvenzione-cf" value="<?= $model->cf ?>" class="form-control" />
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="active control-label" for="via">Via</label>
+                            <input type="text" name="Contravvenzione[via]" id="contravvenzione-via" value="<?= $model->via ?>" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="active control-label" for="civico">Civico</label>
+                            <input type="text" name="Contravvenzione[civico]" id="contravvenzione-civico" value="<?= $model->civico ?>" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="active control-label" for="cap">Cap</label>
+                            <input type="text" maxlength="5" name="Contravvenzione[cap]" id="contravvenzione-cap" value="<?= $model->cap ?>" class="form-control" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="active control-label" for="comune">Comune</label>
+                            <input type="text" name="Contravvenzione[comune]" id="contravvenzione-comune" value="<?= $model->comune ?>" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="active control-label" for="prov">Provincia</label>
+                            <input type="text" name="Contravvenzione[prov]" maxlength="2" id="contravvenzione-prov" value="<?= $model->prov ?>" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="active control-label" for="nazione">Nazione</label>
+                            <input type="text" name="Contravvenzione[nazione]" id="contravvenzione-nazione" value="<?= $model->nazione ?>" class="form-control" />
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
-</div>
+    <div class="row mt-4">
+        <div class="form-group">
+            <?= Html::submitButton('Salva', ['class' => 'btn btn-xs btn-success float-end']) ?>
+        </div>
+    </div>
 
-<?php ActiveForm::end(); ?>
+    <?php ActiveForm::end(); ?>
 
 </div>

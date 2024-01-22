@@ -9,6 +9,7 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use linslin\yii2\curl;
+use yii\web\HttpException;
 use yii\web\JsonParser;
 
 /**
@@ -50,40 +51,149 @@ class ContravvenzioniController extends Controller
         ]);
     }
 
+    private function getTipoDovuti()
+    {
+        $token = Yii::$app->session->get("jwt_token");
+        $url = Yii::$app->params["testEndPoint"] . "/tipi_dovuto";
+        $curl = new curl\Curl();
+        $curl->setHeaders([
+            'Authorization' => "Bearer " . $token["access_token"]
+        ]);
+        $response = $curl->get($url);
+        $formatter = new JsonParser;
+        $parsedResponse = $formatter->parse($response, 'json');
+        $out = [];
+        foreach ($parsedResponse["tipi_dovuto"] as $item) {
+            if ($item["tipo_elemento"] == "multe") {
+                $out = $item;
+            }
+        }
+        return [
+            "esito" => $parsedResponse["esito"],
+            "errore" => isset($parsedResponse["errore"]) ? $parsedResponse["errore"] : NULL,
+            "out" => $out
+        ];
+    }
+
     private function authenticateWithJwt($ambiente = "test")
     {
-        //$url = $ambiente !== "test" ? Yii::$app->params["paymentAuthUrl"] : Yii::$app->params["paymentAuthUrlTest"];
-        $url = Yii::$app->params["testEndPoint"];
-
+        $url        = $ambiente !== "test" ? Yii::$app->params["paymentAuthUrl"] : Yii::$app->params["paymentAuthUrlTest"];
+        $username   = $ambiente !== "test" ? Yii::$app->params["payUsername"] : Yii::$app->params["payUsernameTest"];
+        $password   = $ambiente !== "test" ? Yii::$app->params["payPassword"] : Yii::$app->params["payPasswordTest"];
+        $grantType  = Yii::$app->params["payGrantType"];
         //Init curl
         $curl = new curl\Curl();
-        $response = $curl->post($url);
+        $response = $curl
+            ->setPostParams([
+                'username' => $username,
+                'password' => $password,
+                'grant_type' => $grantType
+            ])->post($url);
+
         $formatter = new JsonParser();
         $decodedResponse = $formatter->parse($response, 'json');
 
         if (!empty($decodedResponse)) {
-            Yii::$app->session->jwt_token = $decodedResponse;
+            Yii::$app->session->set("jwt_token", $decodedResponse);
+            return $decodedResponse;
         }
 
-        return $decodedResponse;
+        return false;
     }
 
-    private function inviaMultidovuto($params)
-    {
-    }
     public function actionGeneratePagopaItem($id)
     {
         $token = $this->authenticateWithJwt();
+        if (!$token) {
+            Yii::$app->session->setFlash("error", "Errore critico: impossibile connettersi a sistema DedaGroup");
+            return $this->redirect(Yii::$app->request->referrer);
+        }
+
+        $tipo_dovuto = $this->getTipoDovuti();
+
+        if ($tipo_dovuto["esito"] == "ko") {
+            Yii::$app->session->setFlash("error", "Errore critico: " . $tipo_dovuto["errore"]);
+            return $this->redirect(Yii::$app->request->referrer);
+        }
+
         $model = $this->findModel($id);
 
-        $structure["pagatore"] = [];
-        $structure["causale"] = "Contravvenzione N. " . $model->id . " del " . Yii::$app->formatter->asDate($model->data_accertamento) . " TARGA: " . $model->targa;
-        $structure["importo"] = floatval($model->amount);
-        $structure["anno_competenza"] = date("Y");
+        $structure = $this->parseInviaMultidovutoData($model);
 
-        $out = $this->inviaMultidovuto($structure);
+        $response = $this->inviaMultidovuto(json_encode($structure));
     }
 
+    private function parseInviaMultidovutoData($model)
+    {
+        $structure["pagatore"] = [
+            'tipo_persona' => $model->tipo_persona,
+            'nome' => $model->nome,
+            'cognome' => $model->cognome,
+            'cf' => $model->cf,
+            'via' => $model->via,
+            'civico' => $model->civico,
+            'comune' => $model->comune,
+            'cap' => $model->cap,
+            'prov' => $model->prov,
+            'nazione' => $model->nazione,
+            'email' => $model->email
+        ];
+
+        $structure["data_documento"] = null;
+        $structure["numero_protocollo"] = "";
+        $structure["data_protocollo"] = null;
+        $structure["dettaglio_riga1"] = null;
+        $structure["dettaglio_riga2"] = null;
+        $structure["dettaglio_riga3"] = null;
+        $structure["dettaglio_riga4"] = null;
+        $structure["dettaglio_riga5"] = null;
+        $structure["istruttore_procedimento"] = null;
+        $structure["telefono_procedimento"] = null;
+        $structure["email_procedimento"] = null;
+        $structure["note"] = null;
+        $structure["id_doc_civilianext"] = null;
+        $structure["url_documento"] = null;
+
+        $structure["rate"][] = [
+            "tipo_rata" => "U",
+            'id_univoco_versamento' => null,
+            'dovuti'    => [
+                [
+                    //'tipo_dovuto' => $tipo_dovuto['out']["tipo_elemento"],
+                    'tipo_dovuto' => 'a',
+                    'id_univoco_dovuto' => $model->getNextIdUnivocoDovuto(),
+                    'causale' => "Contravvenzione N. " . $model->id . " del " . Yii::$app->formatter->asDate($model->data_accertamento) . " TARGA: " . $model->targa,
+                    'importo' => floatval($model->amount),
+                    'anno_competenza' => intval(date("Y"))
+                ]
+            ],
+        ];
+
+        return $structure;
+    }
+    private function inviaMultidovuto($params)
+    {
+        $token = Yii::$app->session->get("jwt_token");
+        $url = Yii::$app->params["testEndPoint"] . "/invia_multidovuto";
+        $curl = new curl\Curl();
+        $curl->setHeaders([
+            'Authorization' => "Bearer " . $token["access_token"],
+            'Content-Type' => 'application/x-www-form-urlencoded',
+        ]);
+
+        $response = $curl->setPostParams([
+            'applicazione' => 'pagamenti',
+            'numero' => 1,
+            'nome_flusso' => "0", //singolo pagamento
+            'caricamento_da_confermare' => false,
+            'content_json' => base64_encode($params),
+        ])->post($url);
+
+        $formatter = new JsonParser;
+        $parsedResponse = $formatter->parse($response, 'json');
+        print_r($parsedResponse);
+        die;
+    }
     /**
      * Displays a single Contravvenzione model.
      * @param int $id ID

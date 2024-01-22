@@ -37,50 +37,97 @@ $this->params['breadcrumbs'][] = [
         ]) ?>
     </p>
 
-    <?= DetailView::widget([
-        'model' => $model,
-        'attributes' => [
-            'id',
-            [
-                'attribute' => 'strumento',
-                'value' => function($model){
-                    return $model->getStrumento();
-                }
-            ],
-            [
-                'attribute' => 'amount',
-                'value' => Utils::formatCurrency($model->amount)
-            ],
-            'articolo_codice',
-            'data_accertamento:date',
-            'orario_accertamento:time',
-            [
-                'attribute' => 'targa',
-                'value' => function ($model) {
-                    return strtoupper($model->targa);
-                }
-            ],
-            'luogo',
-            'punti_patente',
-            [
-                'attribute' => 'payed',
-                'value' => function ($model) {
-                    return $model->payed ? "SI" : "NO";
-                }
-            ],
-            'data_pagamento:datetime',
-            'ricevuta_pagamento',
-            'created_at:datetime',
-            'updated_at:datetime',
-            [
-                'attribute' => 'created_by',
-                'value' => Utils::getCreatedBy($model->created_by)
-            ],
-            [
-                'attribute' => 'updated_by',
-                'value' => Utils::getCreatedBy($model->updated_by)
-            ],
-        ],
-    ]) ?>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card card-info">
+                <div class="card-header">
+                    <h3>Dati contravvenzione</h3>
+                </div>
+                <div class="card-body">
+                    <?= DetailView::widget([
+                        'model' => $model,
+                        'attributes' => [
+                            'id',
+                            'id_univoco_versamento',
+                            'stato',
+                            [
+                                'attribute' => 'strumento',
+                                'value' => function ($model) {
+                                    return $model->getStrumento();
+                                }
+                            ],
+                            [
+                                'attribute' => 'amount',
+                                'value' => Utils::formatCurrency($model->amount)
+                            ],
+                            'articolo_codice',
+                            'data_accertamento:date',
+                            'orario_accertamento:time',
+                            [
+                                'attribute' => 'targa',
+                                'value' => function ($model) {
+                                    return strtoupper($model->targa);
+                                }
+                            ],
+                            'luogo',
+                            'punti_patente',
+                            [
+                                'attribute' => 'payed',
+                                'value' => function ($model) {
+                                    $msg = $model->payed ? "SI" : "NO";
+                                    $color = $model->payed ? "green" : "red";
+                                    return "<span style='color:$color'>$msg</span>";
+                                },
+                                'format' => "raw"
+                            ],
+                            'data_pagamento:datetime',
+                            'ricevuta_pagamento',
+                            'created_at:datetime',
+                            'updated_at:datetime',
+                            [
+                                'attribute' => 'created_by',
+                                'value' => Utils::getCreatedBy($model->created_by)
+                            ],
+                            [
+                                'attribute' => 'updated_by',
+                                'value' => Utils::getCreatedBy($model->updated_by)
+                            ],
+                        ],
+                    ]) ?>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card card-info">
+                <div class="card-header">
+                    <h3>Dati pagatore</h3>
+                </div>
+                <div class="card-body">
+                    <?= DetailView::widget([
+                        'model' => $model,
+                        'attributes' => [
+                            [
+                                'attribute' => "tipo_persona",
+                                'value' => function ($model) {
+                                    return $model->getTipoPersona();
+                                }
+                            ],
+                            'nome',
+                            'cognome',
+                            'email',
+                            'cf',
+                            'via',
+                            'civico',
+                            'cap',
+                            'comune',
+                            'prov',
+                            'nazione'
+                        ],
+                    ]) ?>
+                </div>
+            </div>
+        </div>
+    </div>
+
 
 </div>

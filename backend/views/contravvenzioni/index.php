@@ -46,8 +46,12 @@ $this->params['breadcrumbs'][] = [
                                 'targa',
                                 [
                                     'attribute' => 'payed',
-                                    'value' => $searchModel->payed ? "SI" : "NO",
-                                    'filter' => [0 => "NO", 1 => "SI"]
+                                    'value' => function ($model) {
+                                        $msg = $model->payed ? "SI" : "NO";
+                                        $color = $model->payed ? "green" : "red";
+                                        return "<span style='color:$color'>$msg</span>";
+                                    },
+                                    'format' => "raw",
                                 ],
                                 'data_pagamento:datetime',
                                 'created_at:datetime',
