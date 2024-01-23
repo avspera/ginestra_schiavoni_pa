@@ -29,17 +29,17 @@ use yii\widgets\ActiveForm;
                     <div class="form-group col-md-3">
                         <div class="field-contravvenzione-data_accertamento">
                             <label class="active control-label" for="dateStandard">Data accertamento</label>
-                            <input value="<?= !empty($model->data_pagamento) ? date("Y-m-d", strtotime($model->data_accertamento)) : "" ?>" type="date" id="contravvenzione-data_accertamento" max="<?= date("Y-m-d") ?>" name="Contravvenzione[data_accertamento]">
+                            <input value="<?= !empty($model->data_accertamento) ? date("Y-m-d", strtotime($model->data_accertamento)) : "" ?>" type="date" id="contravvenzione-data_accertamento" max="<?= date("Y-m-d") ?>" name="Contravvenzione[data_accertamento]">
                         </div>
                     </div>
                     <div class="form-group col-md-3">
                         <label class="active control-label" class="active" for="timeStandard">Orario accertamento</label>
-                        <input class="form-control" id="contravvenzione-orario_accertamento" name="Contravvenzione[orario_accertamento]" type="time">
+                        <input class="form-control" id="contravvenzione-orario_accertamento" name="Contravvenzione[orario_accertamento]" value="<?= date("H:i", strtotime($model->orario_accertamento)) ?>" type="time">
                     </div>
                 </div>
                 <div class="row">
                     <div class="form-group col-md-3">
-                        <label class="active control-label" for="contravvenzione-luogo">Luogo</label>
+                        <label class="active control-label" for="contravvenzione-luogo">Via</label>
                         <input type="text" name="Contravvenzione[luogo]" id="contravvenzioni-luogo" value="<?= $model->luogo ?>" class="form-control">
                     </div>
 
@@ -49,15 +49,15 @@ use yii\widgets\ActiveForm;
                     </div>
                     <div class="form-group col-md-3">
                         <label class="active control-label" for="punti_patente">Punti patente</label>
-                        <input type="number" data-bs-input class="form-control" id="contravvenzione-punti_patente" value="<?= $model->punti_patente ?>">
+                        <input type="number" data-bs-input class="form-control" name="Contravvenzione[punti_patente]" id="contravvenzione-punti_patente" value="<?= $model->punti_patente ?>">
                     </div>
                     <div class="form-group col-md-3">
                         <div class="select-wrapper">
-                            <label class="active control-label" for="defaultSelect">Pagata</label>
+                            <label class="active control-label" for="defaultSelect">Pagato</label>
                             <select id="contravvenzione-payed" name="Contravvenzione[payed]">
                                 <option selected="" value="">Scegli un'opzione</option>
-                                <option value=0>NO</option>
-                                <option value=1>SI</option>
+                                <option <?= $model->payed == 0 ? "payed" : "" ?> value=0>NO</option>
+                                <option <?= $model->payed == 1 ? "payed" : "" ?> value=1>SI</option>
                             </select>
                         </div>
                     </div>
@@ -72,7 +72,7 @@ use yii\widgets\ActiveForm;
                         <select id="contravvenzione-strumento" name="Contravvenzione[strumento]">
                             <option selected="" value="">Scegli un'opzione</option>
                             <?php foreach ($model->strumento_choices as $key => $value) { ?>
-                                <option value="<?= $key ?>"><?= $value ?></option>
+                                <option <?= $model->strumento == $key ? "selected" : "" ?> value="<?= $key ?>"><?= $value ?></option>
                             <?php } ?>
                         </select>
                     </div>
@@ -87,7 +87,7 @@ use yii\widgets\ActiveForm;
                 <div class="col-md-4">
                     <div class="form-group">
                         <label class="active control-label" for="contravvenzione-ricevuta_pagamento">Ricevuta di pagamento</label>
-                        <input type="text" name="Contravvenzione[ricevuta_pagamento]" id="contravvenzioni-ricevuta_pagamento" value="<?= $model->ricevuta_pagamento ?>" class="form-control">
+                        <input readonly type="text" name="Contravvenzione[ricevuta_pagamento]" id="contravvenzioni-ricevuta_pagamento" value="<?= $model->ricevuta_pagamento ?>" class="form-control">
                     </div>
                 </div>
             </div>
@@ -108,7 +108,7 @@ use yii\widgets\ActiveForm;
                                 <select id="contravvenzione-payed" name="Contravvenzione[tipo_persona]">
                                     <option selected="" value="">Scegli un'opzione</option>
                                     <?php foreach ($model->tipo_persona_choices as $key => $value) { ?>
-                                        <option value="<?= $key ?>"><?= $value ?></option>
+                                        <option <?= $model->tipo_persona == $key ? "selected" : "" ?> value="<?= $key ?>"><?= $value ?></option>
                                     <?php } ?>
                                 </select>
                             </div>

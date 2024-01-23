@@ -11,37 +11,18 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
-        <?= $form->field($model, 'amount') ?>
-        <?= $form->field($model, 'articolo_codice') ?>
-        <?= $form->field($model, 'data_accertamento') ?>
-        <?= $form->field($model, 'created_at') ?>
-        <?= $form->field($model, 'targa') ?>
-        <?= $form->field($model, 'created_by') ?>
-        <?= $form->field($model, 'data_pagamento') ?>
-        <?= $form->field($model, 'orario_accertamento') ?>
-        <?= $form->field($model, 'punti_patente') ?>
-        <?= $form->field($model, 'payed') ?>
-        <?= $form->field($model, 'updated_by') ?>
-        <?= $form->field($model, 'id_cittadino') ?>
-        <?= $form->field($model, 'strumento') ?>
-        <?= $form->field($model, 'rata') ?>
-        <?= $form->field($model, 'luogo') ?>
-        <?= $form->field($model, 'ricevuta_pagamento') ?>
-        <?= $form->field($model, 'nome') ?>
-        <?= $form->field($model, 'cognome') ?>
-        <?= $form->field($model, 'via') ?>
-        <?= $form->field($model, 'comune') ?>
-        <?= $form->field($model, 'nazione') ?>
-        <?= $form->field($model, 'email') ?>
-        <?= $form->field($model, 'id_univoco_versamento') ?>
-        <?= $form->field($model, 'civico') ?>
-        <?= $form->field($model, 'prov') ?>
-        <?= $form->field($model, 'cf') ?>
-        <?= $form->field($model, 'cap') ?>
-    
-        <div class="form-group">
-            <?= Html::submitButton('Submit', ['class' => 'btn btn-primary']) ?>
+    <div class="row">
+        <div class="form-group col-md-3">
+            <label class="active control-label" for="contravvenzione-amount">Codice Fiscale</label>
+            <input type="text" required maxlength="16" name="Contravvenzione[cf]" id="contravvenzioni-cf" value="<?= $model->cf ?>" class="form-control">
         </div>
+        <div class="form-group col-md-3">
+            <label class="active control-label" for="contravvenzione-articolo_codice">Identificativo univoco</label>
+            <input type="text" required name="Contravvenzione[id_univoco_versamento]" id="contravvenzioni-id_univoco_versamento" value="<?= $model->id_univoco_versamento ?>" class="form-control">
+        </div>
+        <div class="form-group col-md-3"><?= Html::submitButton('Cerca', ['class' => 'btn btn-xs btn-primary']) ?></div>
+    </div>
+    
     <?php ActiveForm::end(); ?>
 
 </div><!-- contravvenzioni-_form -->

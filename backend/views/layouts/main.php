@@ -25,7 +25,7 @@ AppAsset::register($this);
     <link rel="icon" type="image/png" sizes="16x16" href="<?= Yii::getAlias("@web") ?>/favicon/favicon-16x16.png">
     <link rel="manifest" href="<?= Yii::getAlias("@web") ?>/favicon/site.webmanifest">
     <link rel="mask-icon" href="<?= Yii::getAlias("@web") ?>/favicon/safari-pinned-tab.svg" color="#5bbad5">
-    
+
     <?php $this->head() ?>
 </head>
 
@@ -94,7 +94,22 @@ AppAsset::register($this);
                                     <div class="menu-wrapper">
                                         <ul class="navbar-nav">
                                             <li class="nav-item active"><a class="nav-link <?= Yii::$app->controller->id == "albo-pretorio" ? "active" : "" ?>" href="<?= Url::to(["albo-pretorio/index"]) ?>" aria-current="page"><span>Albo pretorio</span></a></li>
-                                            <li class="nav-item"><a class="nav-link <?= Yii::$app->controller->id == "atto-di-matrimonio" ? "active" : "" ?>" href="<?= Url::to(["atto-di-matrimonio/index"]) ?>" aria-disabled="true"><span>Pubblicazioni di Matrimonio</span></a></li>
+                                            <li class="nav-item dropdown">
+                                                <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false" id="mainNavDropdown0">
+                                                    <span>Pubblicazioni di matrimonio</span>
+                                                    <svg class="icon icon-xs">
+                                                        <use href="/bootstrap-italia/svg/sprites.svg#it-expand"></use>
+                                                    </svg>
+                                                </a>
+                                                <div class="dropdown-menu" role="region" aria-labelledby="mainNavDropdown0">
+                                                    <div class="link-list-wrapper">
+                                                        <ul class="link-list">
+                                                            <li class="nav-item"><a class="nav-link <?= Yii::$app->controller->id == "cittadino" ? "active" : "" ?>" href="<?= Url::to(["atto-di-matrimonio/index-requests"]) ?>"><span>Richieste</span></a></li>
+                                                            <li class="nav-item"><a class="nav-link <?= Yii::$app->controller->id == "anagrafica-comune" ? "active" : "" ?>" href="<?= Url::to(["atto-di-matrimonio/index"]) ?>"><span>Pubblicazioni</span></a></li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </li>
                                             <li class="nav-item"><a class="nav-link <?= Yii::$app->controller->id == "contravvenzioni" ? "active" : "" ?>" href="<?= Url::to(["contravvenzioni/index"]) ?>"><span>Contravvenzioni</span></a></li>
                                             <li class="nav-item"><a class="nav-link <?= Yii::$app->controller->id == "parcheggio-residenti" ? "active" : "" ?>" href="<?= Url::to(["parcheggio-residenti/index"]) ?>"><span>Parcheggio residenti</span></a></li>
                                             <li class="nav-item dropdown">
@@ -149,7 +164,7 @@ AppAsset::register($this);
                 $flashMessage = YIi::$app->session->getFlash("warning");
             ?>
                 <div class="alert alert-success alert-dismissible fade show" role="alert">
-                    <strong>Attenzione</strong> <?= $flashMessage ?>.
+                    <?= $flashMessage ?>.
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Chiudi avviso">
                         <svg class="icon">
                             <use href="/bootstrap-italia/svg/sprites.svg#it-close"></use>
@@ -162,7 +177,7 @@ AppAsset::register($this);
                 $flashMessage = YIi::$app->session->getFlash("error");
             ?>
                 <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                    <strong>Attenzione</strong> <?= $flashMessage ?>.
+                    <?= $flashMessage ?>.
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Chiudi avviso">
                         <svg class="icon">
                             <use href="/bootstrap-italia/svg/sprites.svg#it-close"></use>

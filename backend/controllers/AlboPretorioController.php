@@ -45,8 +45,7 @@ class AlboPretorioController extends Controller
     {
         $searchModel = new AlboPretorioSearch();
         $dataProvider = $searchModel->searchCurl($this->request->queryParams);
-        // $dataProvider = $searchModel->search($this->request->queryParams);
-        // $dataProvider->sort->defaultOrder = ["data_pubblicazione" => SORT_DESC];
+
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
@@ -63,11 +62,13 @@ class AlboPretorioController extends Controller
     {
         $searchModel = new AlboPretorioSearch();
         $model = $searchModel->getCurl($id);
-
+        if (empty($model)) {
+            \Yii::$app->session->setFlash("error", "Elemento non trovato");
+            return $this->redirect(\Yii::$app->request->referrer);
+        }
         return $this->render('view', [
             'model' => $model,
         ]);
-
     }
 
     /**

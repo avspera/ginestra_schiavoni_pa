@@ -25,10 +25,26 @@ $this->params['breadcrumbs'][] = [
 
     <h1><?= Html::encode($this->title) ?></h1>
 
+    <?php if ($model->stato == $model->stato_choices_flipped["deleted"]) { ?>
+        <div class="alert alert-warning">
+            Attenzione: la contravvenzione è CANCELLATA. Alcune funzioni non sono disponibili.
+        </div>
+    <?php } ?>
     <p>
-        <?= Html::a('Genera pagamento PagoPa', ['generate-pagopa-item', 'id' => $model->id], ['class' => 'btn btn-xs btn-warning']) ?>
-        <?= Html::a('Modifica', ['update', 'id' => $model->id], ['class' => 'btn btn-xs btn-primary']) ?>
-        <?= Html::a('Cancella', ['delete', 'id' => $model->id], [
+        <?php if (empty($model->id_univoco_versamento)) { ?>
+            <?= Html::a('Genera pagamento PagoPa', ['generate-pagopa-item', 'id' => $model->id], ['class' => 'btn btn-xs btn-warning']) ?>
+            <?= Html::a('Scarica avviso', ['scarica-avviso', 'id' => $model->id], ['class' => 'btn btn-xs btn-success']) ?>
+            <?= Html::a('Modifica', ['update', 'id' => $model->id], ['class' => 'btn btn-xs btn-primary']) ?>
+        <?php } ?>
+        <?php
+        $url = "delete";
+        $label = "Cancella";
+        if ($model->stato == $model->stato_choices_flipped["deleted"]) {
+            $url = "delete-permanent";
+            $label = "Cancella definitivamente";
+        }
+        ?>
+        <?= Html::a($label, [$url, 'id' => $model->id], [
             'class' => 'btn btn-xs btn-danger',
             'data' => [
                 'confirm' => 'Sicuro di voler cancellare questo elemento?',
@@ -37,6 +53,19 @@ $this->params['breadcrumbs'][] = [
         ]) ?>
     </p>
 
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card card-info mt-1 border border-<?= $statoFlusso["esito"] == "ko" ? "danger" : "success" ?>">
+                <div class="card-body">
+                    <?php if ($statoFlusso["esito"] == "ko") { ?>
+                        <div><?= $statoFlusso["errore"] ?></div>
+                    <?php } else { ?>
+                        <div><?= $statoFlusso["esito"] ?></div>
+                    <?php } ?>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="row">
         <div class="col-md-6">
             <div class="card card-info">
@@ -49,7 +78,13 @@ $this->params['breadcrumbs'][] = [
                         'attributes' => [
                             'id',
                             'id_univoco_versamento',
-                            'stato',
+                            'causale',
+                            [
+                                'attribute' => 'stato',
+                                'value' => function ($model) {
+                                    return $model->getStato();
+                                }
+                            ],
                             [
                                 'attribute' => 'strumento',
                                 'value' => function ($model) {

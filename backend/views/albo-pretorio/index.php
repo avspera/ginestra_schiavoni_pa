@@ -1,6 +1,7 @@
 <?php
 
 use yii\helpers\Html;
+use yii\helpers\Url;
 use common\components\Utils;
 use yii\grid\ActionColumn;
 use yii\grid\GridView;
@@ -27,7 +28,6 @@ $latestUpdate = !empty($models[count($models) - 1]) ? Utils::formatDate($models[
     <div class="card-wrapper card-space">
         <div class="card card-bg  no-after">
             <div class="card-body lightgrey-bg-c1">
-                <?= Html::a('Aggiungi Nuovo', ['create'], ['class' => 'btn btn-xs btn-success']) ?>
                 <div class="row mt-3">
                     <div class="table table-responsive">
                         <?= GridView::widget([
@@ -50,7 +50,12 @@ $latestUpdate = !empty($models[count($models) - 1]) ? Utils::formatDate($models[
                                 ],
                                 [
                                     'class' => ActionColumn::className(),
-                                    'template' => "{view} {update}"
+                                    'template' => "{view}",
+                                    'buttons' => [
+                                        'view' => function($url, $model){
+                                            return Html::a("<button class='btn btn-xs btn-success'>Vedi</button>", Url::to(["view", "id" => $model->id])); 
+                                        }
+                                    ]
                                 ],
                             ],
                         ]); ?>

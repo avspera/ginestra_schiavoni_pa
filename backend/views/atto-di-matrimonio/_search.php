@@ -3,6 +3,10 @@
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\ActiveForm;
+use common\components\Utils;
+
+$anni_list = Utils::getListaAnni();
+$params = isset(Yii::$app->request->queryParams["AlboPretorioSearch"]) ? Yii::$app->request->queryParams["AlboPretorioSearch"] : [];
 
 /** @var yii\web\View $this */
 /** @var common\models\AttoDiMatrimonioSearch $model */
@@ -29,53 +33,18 @@ use yii\widgets\ActiveForm;
                     <div class="col-md-2">
                         <?= $form->field($model, 'id') ?>
                     </div>
-                    <div class="col-md-3">
-                        <div class="form-group field-atto-di-matrimonio-created_at">
-                            <label class="active" for="dateStandard">Coniuge uno</label>
-                            <input type="text" id="attodimatrimonio-id_coniuge_uno" name="AttoDiMatrimonio[id_coniuge_uno]">
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="form-group field-atto-di-matrimonio-created_at">
-                            <label class="active" for="dateStandard">Coniuge due</label>
-                            <input type="text" id="attodimatrimonio-id_coniuge_uno" name="AttoDiMatrimonio[id_coniuge_uno]">
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="form-group field-atto-di-matrimonio-data_matrimonio">
-                            <label class="active" for="dateStandard">Data matrimonio</label>
-                            <input type="date" id="attodimatrimonio-data_pubblicazione" max="<?= date("Y-m-d") ?>" name="AttoDiMatrimonio[data_matrimonio]">
-                        </div>
-                    </div>
-
-                </div>
-
-                <div class="row">
-                    <div class="col-md-3">
-                        <div class="form-group field-atto-di-matrimonio-created_at">
-                            <label class="active" for="dateStandard">Data richiesta</label>
-                            <input type="date" id="attodimatrimonio-created_at" max="<?= date("Y-m-d") ?>" name="AttoDiMatrimonio[created_at]">
-                        </div>
-                    </div>
-                    <div class="form-group d-inline-flex col-md-3 col-xs-12">
+                    <div class="form-group col-md-3 col-xs-12">
                         <div class="form-control select-wrapper p-0">
-                            <label for="id_tipologia">Tipo di rito</label>
-                            <select class="select-italia" id="albopretoriosearch-tipo_rito" name="AlboPretorioSearch[tipo_rito]">
+                            <label class="control-label active" for="anno">Anno</label>
+                            <select id="albopretoriosearch-anno" name="AlboPretorioSearch[anno]">
                                 <option value="">Tutti</option>
-                                <?php foreach ($model->tipo_rito_choices as $key => $value) { ?>
-                                    <option value="<?= $key ?>"><?= $value ?></option>
-                                <?php } ?>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="form-group d-inline-flex col-md-3 col-xs-12">
-                        <div class="form-control select-wrapper p-0">
-                            <label for="id_tipologia">Regime matrimoniale</label>
-                            <select class="select-italia" id="albopretoriosearch-regime_matrimoniale" name="AlboPretorioSearch[regime_matrimoniale]">
-                                <option value="">Tutti</option>
-                                <?php foreach ($model->regime_matrimoniale_choices as $key => $value) { ?>
-                                    <option value="<?= $key ?>"><?= $value ?></option>
+                                <?php foreach ($anni_list as $item) {
+                                    $selected = "";
+                                    if (isset($params["anno"]) && $params["anno"] == $item) {
+                                        $selected = "selected";
+                                    }
+                                ?>
+                                    <option <?= $selected ?> value="<?= $item ?>"><?= $item ?></option>
                                 <?php } ?>
                             </select>
                         </div>

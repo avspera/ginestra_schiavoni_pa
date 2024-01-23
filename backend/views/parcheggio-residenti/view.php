@@ -8,7 +8,7 @@ use common\components\Utils;
 /** @var yii\web\View $this */
 /** @var common\models\ParcheggioResidenti $model */
 
-$this->title = $model->id . " di " . Utils::getCittadino($model->id_cittadino);
+$this->title = $model->id . " del " .  Utils::formatDate($model->created_at);
 $this->params['breadcrumbs'][] = [
     'label' => 'Parcheggio residenti',
     'template' => "<li class='breadcrumb-item'><span class='separator'>/</span>{link}</li>",
@@ -44,9 +44,13 @@ $this->params['breadcrumbs'][] = [
         'attributes' => [
             'id',
             [
-                'attribute' => 'id_cittadino',
+                'attribute' => 'cittadino',
                 'value' => function ($model) {
-                    return Utils::getCittadino($model->id_cittadino);
+                    if (is_numeric($model->cittadino)) {
+                        return Utils::getCittadino($model->cittadino);
+                    } else {
+                        return $model->cittadino;
+                    }
                 }
             ],
             'indirizzo',

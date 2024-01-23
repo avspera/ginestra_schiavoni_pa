@@ -20,8 +20,14 @@ $this->params['breadcrumbs'][] = [
 
     <h1><?= Html::encode($this->title) ?></h1>
 
-    <?= $this->render('_form', [
-        'model' => $model,
-    ]) ?>
+    <div class="card-wrapper card-space">
+        <div class="card card-bg  no-after">
+            <div class="card-body p-3 p-md-5 lightgrey-bg-c1">
+                <?= $this->render('_form', [
+                    'model' => $model,
+                ]) ?>
+            </div>
+        </div>
+    </div>
 
 </div>

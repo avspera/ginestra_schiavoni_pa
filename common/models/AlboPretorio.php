@@ -121,7 +121,6 @@ class AlboPretorio extends \yii\db\ActiveRecord
         $formatter = new JsonParser();
         $decodedResponse = $formatter->parse($response, 'json');
         return $decodedResponse;
-        // return isset($this->tipologia_choices[$this->id_tipologia]) ? $this->tipologia_choices[$this->id_tipologia] : "-";
     }
 
     public function getSorgente()

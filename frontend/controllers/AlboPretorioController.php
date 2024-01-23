@@ -62,6 +62,11 @@ class AlboPretorioController extends Controller
         $searchModel = new AlboPretorioSearch();
         $model = $searchModel->getCurl($id);
 
+        if (empty($model)) {
+            \Yii::$app->session->setFlash("error", "Elemento non trovato");
+            return $this->redirect(\Yii::$app->request->referrer);
+        }
+        
         return $this->render('view', [
             'model' => $model,
         ]);

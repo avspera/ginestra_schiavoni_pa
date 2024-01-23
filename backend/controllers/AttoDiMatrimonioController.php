@@ -3,6 +3,7 @@
 namespace backend\controllers;
 
 use common\models\AlboPretorio;
+use common\models\AlboPretorioSearch;
 use common\models\AttoDiMatrimonio;
 use common\models\AttoDiMatrimonioSearch;
 use yii\web\Controller;
@@ -40,8 +41,9 @@ class AttoDiMatrimonioController extends Controller
      */
     public function actionIndex()
     {
-        $searchModel = new AttoDiMatrimonioSearch();
-        $dataProvider = $searchModel->search($this->request->queryParams);
+        $searchModel = new AlboPretorioSearch();
+        $searchModel->id_tipologia = 710;
+        $dataProvider = $searchModel->searchCurl($this->request->queryParams);
 
         return $this->render('index', [
             'searchModel' => $searchModel,
@@ -49,16 +51,43 @@ class AttoDiMatrimonioController extends Controller
         ]);
     }
 
+    public function actionIndexRequests()
+    {
+        $searchModel = new AttoDiMatrimonioSearch();
+        $dataProvider = $searchModel->search($this->request->queryParams);
+        $dataProvider->sort->defaultOrder = ["created_at" => SORT_DESC];
+        return $this->render('index-requests', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
+
     /**
-     * Displays a single AttoDiMatrimonio model.
+     * Displays a single AttoDiMatrimonio request from user model.
+     * @param int $id ID
+     * @return string
+     * @throws NotFoundHttpException if the model cannot be found
+     */
+    public function actionViewRequest($id)
+    {
+        return $this->render('view-request', [
+            'model' => $this->findModel($id)
+        ]);
+    }
+
+    /**
+     * Displays a single AlboPretorio model.
      * @param int $id ID
      * @return string
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionView($id)
     {
+        $searchModel = new AlboPretorioSearch();
+        $model = $searchModel->getCurl($id);
+
         return $this->render('view', [
-            'model' => $this->findModel($id)
+            'model' => $model,
         ]);
     }
 

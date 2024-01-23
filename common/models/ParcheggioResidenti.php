@@ -8,7 +8,7 @@ use Yii;
  * This is the model class for table "parcheggio_residenti".
  *
  * @property int $id
- * @property int $id_cittadino
+ * @property int $cittadino
  * @property string $indirizzo
  * @property int|null $qnt_auto
  * @property string $created_at
@@ -37,8 +37,8 @@ class ParcheggioResidenti extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id_cittadino', 'indirizzo', 'created_at', 'created_by', 'targa', 'approved', 'durata'], 'required'],
-            [['id_cittadino', 'qnt_auto', 'created_by', 'updated_by', 'payed', 'durata', 'approved_by'], 'integer'],
+            [['cittadino', 'indirizzo', 'created_at', 'created_by', 'targa', 'approved', 'durata'], 'required'],
+            [['qnt_auto', 'created_by', 'updated_by', 'payed', 'durata', 'approved_by'], 'integer'],
             [['created_at', 'updated_at', 'veicolo', 'carta_circolazione', 'carta_identita', 'data_rilascio', 'approved_by'], 'safe'],
             [['price'], 'number'],
             [['carta_identita', 'carta_circolazione'], 'file', 'skipOnEmpty' => true, 'extensions' => 'pdf'],
@@ -53,7 +53,7 @@ class ParcheggioResidenti extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'id_cittadino' => 'Cittadino',
+            'cittadino' => 'Cittadino',
             'indirizzo' => 'Indirizzo',
             'qnt_auto' => 'N. Auto',
             'created_at' => 'Creato il',

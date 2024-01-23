@@ -89,13 +89,17 @@ class AlboPretorioSearch extends AlboPretorio
     public function searchCurl($params)
     {
         $url = 'https://api.trasparenzapa.it/Albo/Pubblicazioni?comune=' . \Yii::$app->params["codiceCatastale"];
-        $params["storico"] = isset($params["storico"]) ? (string) $params["storico"] : 'false';
-        $url .= "&storico=" . $params["storico"];
-        if (!empty($params["AlboPretorioSearch"]["id_tipologia"])) {
-            $url .= "&tipoDocumento=" . $params["AlboPretorioSearch"]["id_tipologia"];
+        $this->load($params);
+        if (!empty($this->anno)) {
+            $url .= "&storico=true&anno=" . $this->anno;
+        } else {
+            $url .= "&storico=false";
         }
-        if (!empty($params["AlboPretorioSearch"]["oggetto"])) {
-            $url .= "&oggetto=" . urlencode($params["AlboPretorioSearch"]["oggetto"]);
+        if (!empty($this->id_tipologia)) {
+            $url .= "&tipoDocumento=" . $this->id_tipologia;
+        }
+        if (!empty($this->oggetto)) {
+            $url .= "&oggetto=" . urlencode($this->oggetto);
         }
         
         //Init curl
@@ -125,6 +129,8 @@ class AlboPretorioSearch extends AlboPretorio
 
     private function parseAtto($item)
     {
+        if(empty($item)) return false;
+
         $formattedItem                  = new AlboPretorio();
         $formattedItem->id              = $item["id"];
         $formattedItem->numero_atto     = $item["numero"];
@@ -154,6 +160,7 @@ class AlboPretorioSearch extends AlboPretorio
         $response = $curl->get('https://api.trasparenzapa.it/Albo/Pubblicazione/' . $id . '?comune=' . \Yii::$app->params["codiceCatastale"]);
         $formatter = new JsonParser();
         $decodedResponse = $formatter->parse($response, 'json');
+        
         return $this->parseAtto($decodedResponse);
     }
 }
