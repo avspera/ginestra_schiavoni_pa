@@ -147,6 +147,13 @@ AppAsset::register($this);
             <?= Breadcrumbs::widget([
                 'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
             ]) ?>
+
+            <?php
+            $token =  Yii::$app->session->get("jwt_token");
+            if (!empty($token)) {
+                echo "<div class=='row'>" . $token["access_token"] . "</div>";
+            }
+            ?>
             <?php if (Yii::$app->session->hasFlash("success")) {
                 $flashMessage = YIi::$app->session->getFlash("success");
             ?>

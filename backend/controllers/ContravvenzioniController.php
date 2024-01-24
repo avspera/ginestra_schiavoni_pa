@@ -79,7 +79,8 @@ class ContravvenzioniController extends Controller
                 }
             }
         }
-
+        print("<pre>");
+        print_r($out);die;
         return [
             "esito" => $parsedResponse["esito"],
             "errore" => isset($parsedResponse["errore"]) ? $parsedResponse["errore"] : NULL,
@@ -215,6 +216,7 @@ class ContravvenzioniController extends Controller
         ]);
 
         $compressedParams = gzcompress($params, 9);
+        
         $response = $curl->setPostParams([
             'applicazione' => 'pagamenti',
             'numero' => 1,

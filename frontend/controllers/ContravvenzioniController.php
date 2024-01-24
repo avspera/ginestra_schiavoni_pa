@@ -2,6 +2,7 @@
 
 namespace frontend\controllers;
 
+use common\components\ContravvenzioniApi;
 use Yii;
 use common\models\Contravvenzione;
 use common\models\ContravvenzioneSearch;
@@ -48,9 +49,13 @@ class ContravvenzioniController extends Controller
             $dataProvider = new \yii\data\ArrayDataProvider();
         }
 
+        $api = new ContravvenzioniApi();
+        $tipoDovuto = $api->getTipoDovuti();
+
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'tipoDovuto' => $tipoDovuto
         ]);
     }
 

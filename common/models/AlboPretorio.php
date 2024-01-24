@@ -161,7 +161,9 @@ class AlboPretorio extends \yii\db\ActiveRecord
         $decodedResponse = $formatter->parse($response, 'json');
         $items = [];
         foreach ($decodedResponse as $item) {
-            $items[$item["id"]] = $item["descrizione"];
+            if (is_array($item)) {
+                $items[$item["id"]] = $item["descrizione"];
+            }
         }
 
         return $items;

@@ -88,12 +88,14 @@ class AlboPretorioSearch extends AlboPretorio
      */
     public function searchCurl($params)
     {
-        $url = 'https://api.trasparenzapa.it/Albo/Pubblicazioni?comune=' . \Yii::$app->params["codiceCatastale"];
+        // $url = 'https://api.trasparenzapa.it/Albo/Pubblicazioni?comune=' . \Yii::$app->params["codiceCatastale"];
+        $url = 'https://api.trasparenzapa.it/pubblicazioni/' . \Yii::$app->params["codiceCatastale"] . '?';
+
         $this->load($params);
         if (!empty($this->anno)) {
-            $url .= "&storico=true&anno=" . $this->anno;
+            $url .= "storico=true&anno=" . $this->anno;
         } else {
-            $url .= "&storico=false";
+            $url .= "storico=false";
         }
         if (!empty($this->id_tipologia)) {
             $url .= "&tipoDocumento=" . $this->id_tipologia;
@@ -101,15 +103,18 @@ class AlboPretorioSearch extends AlboPretorio
         if (!empty($this->oggetto)) {
             $url .= "&oggetto=" . urlencode($this->oggetto);
         }
-        
+
         //Init curl
         $curl = new curl\Curl();
         $response = $curl->get($url);
         $formatter = new JsonParser();
         $decodedResponse = $formatter->parse($response, 'json');
-        $items = [];
+
+        $items = NULL;
         foreach ($decodedResponse as $response) {
-            $items[] = $this->parseAtto($response);
+            if (is_array($response)) {
+                $items[] = $this->parseAtto($response);
+            }
         }
 
         $dataProvider = new ArrayDataProvider([
@@ -129,7 +134,7 @@ class AlboPretorioSearch extends AlboPretorio
 
     private function parseAtto($item)
     {
-        if(empty($item)) return false;
+        if (!is_array($item)) return false;
 
         $formattedItem                  = new AlboPretorio();
         $formattedItem->id              = $item["id"];
@@ -157,10 +162,12 @@ class AlboPretorioSearch extends AlboPretorio
     {
         //Init curl
         $curl = new curl\Curl();
-        $response = $curl->get('https://api.trasparenzapa.it/Albo/Pubblicazione/' . $id . '?comune=' . \Yii::$app->params["codiceCatastale"]);
+        // $response = $curl->get('https://api.trasparenzapa.it/Albo/Pubblicazione/' .  . '?comune=' . \Yii::$app->params["codiceCatastale"]);
+        $url = 'https://api.trasparenzapa.it/pubblicazioni/' . \Yii::$app->params["codiceCatastale"] . '/' . $id;
+        $response = $curl->get($url);
         $formatter = new JsonParser();
         $decodedResponse = $formatter->parse($response, 'json');
-        
+
         return $this->parseAtto($decodedResponse);
     }
 }
