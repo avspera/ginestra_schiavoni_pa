@@ -55,17 +55,16 @@ $this->params['breadcrumbs'][] = [
 
     <div class="row">
         <div class="col-md-12">
-            <div class="card card-info mt-1 border border-<?= $statoFlusso["esito"] == "ko" ? "danger" : "success" ?>">
-                <div class="card-body">
-                    <?php if ($statoFlusso["esito"] == "ko") { ?>
-                        <div><?= $statoFlusso["errore"] ?></div>
-                    <?php } else { ?>
-                        <div><?= $statoFlusso["esito"] ?></div>
-                    <?php } ?>
-                </div>
+            <div class="alert alert-<?= $statoFlusso["esito"] == "ko" ? "danger" : "success" ?>">
+                <?php if ($statoFlusso["esito"] == "ko") { ?>
+                    <div>Non riesco a contattare DedaGroup per avere informazioni aggiornate sul pagamento</div>
+                <?php } else { ?>
+                    <div><?= $statoFlusso["esito"] ?></div>
+                <?php } ?>
             </div>
         </div>
     </div>
+
     <div class="row">
         <div class="col-md-6">
             <div class="card card-info">

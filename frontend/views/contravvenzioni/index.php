@@ -17,10 +17,6 @@ $this->params['breadcrumbs'][] = [
 ?>
 <div class="contravvenzione-index">
 
-
-    <?php //$this->render('_search', ['model' => $searchModel]); 
-    ?>
-
     <div id="pre_auth" class="row">
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
             <legend><?= $this->title ?></legend>

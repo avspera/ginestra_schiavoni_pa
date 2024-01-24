@@ -2,6 +2,7 @@
 
 namespace backend\controllers;
 
+use common\components\ContravvenzioniApi;
 use Yii;
 use common\models\Contravvenzione;
 use common\models\ContravvenzioneSearch;
@@ -80,7 +81,8 @@ class ContravvenzioniController extends Controller
             }
         }
         print("<pre>");
-        print_r($out);die;
+        print_r($out);
+        die;
         return [
             "esito" => $parsedResponse["esito"],
             "errore" => isset($parsedResponse["errore"]) ? $parsedResponse["errore"] : NULL,
@@ -126,14 +128,15 @@ class ContravvenzioniController extends Controller
 
     public function actionGeneratePagopaItem($id)
     {
-        $token = $this->getToken();
+        $api = new ContravvenzioniApi();
+        $token = $api->token;
 
-        if (!$token) {
+        if (empty($token)) {
             Yii::$app->session->setFlash("error", "Errore critico: impossibile connettersi a sistema DedaGroup");
             return $this->redirect(Yii::$app->request->referrer);
         }
 
-        $tipo_dovuto = $this->getTipoDovuti();
+        $tipo_dovuto = $api->getTipoDovuti();
 
         if ($tipo_dovuto["esito"] == "ko") {
             Yii::$app->session->setFlash("error", "Errore critico: " . $tipo_dovuto["errore"]);
@@ -142,9 +145,9 @@ class ContravvenzioniController extends Controller
 
         $model = $this->findModel($id);
 
-        $structure = $this->parseInviaMultidovutoData($model);
+        $structure = $api->parseInviaMultidovutoData($model);
 
-        $response = $this->inviaMultidovuto(json_encode($structure));
+        $response = $api->inviaMultidovuto($structure);
 
         if ($response["esito"] == "ko") {
             Yii::$app->session->setFlash("error", "Errore critico: " . $response["errore"]);
@@ -152,100 +155,6 @@ class ContravvenzioniController extends Controller
         }
 
         //save IUV in my db
-    }
-
-    private function parseInviaMultidovutoData($model)
-    {
-        $structure["pagatore"] = [
-            'tipo_persona' => $model->tipo_persona,
-            'nome' => $model->nome,
-            'cognome' => $model->cognome,
-            'cf' => $model->cf,
-            'via' => $model->via,
-            'civico' => $model->civico,
-            'comune' => $model->comune,
-            'cap' => $model->cap,
-            'prov' => $model->prov,
-            'nazione' => $model->nazione,
-            'email' => $model->email
-        ];
-
-        $structure["data_documento"] = null;
-        $structure["numero_protocollo"] = "";
-        $structure["data_protocollo"] = null;
-        $structure["dettaglio_riga1"] = null;
-        $structure["dettaglio_riga2"] = null;
-        $structure["dettaglio_riga3"] = null;
-        $structure["dettaglio_riga4"] = null;
-        $structure["dettaglio_riga5"] = null;
-        $structure["istruttore_procedimento"] = null;
-        $structure["telefono_procedimento"] = null;
-        $structure["email_procedimento"] = null;
-        $structure["note"] = null;
-        $structure["id_doc_civilianext"] = null;
-        $structure["url_documento"] = null;
-
-        $structure["rate"][] = [
-            "tipo_rata" => "U",
-            'id_univoco_versamento' => null,
-            'dovuti'    => [
-                [
-                    //'tipo_dovuto' => $tipo_dovuto['out']["tipo_elemento"],
-                    'tipo_dovuto' => 'a',
-                    'id_univoco_dovuto' => $model->getNextIdUnivocoDovuto(),
-                    'causale' => $model->causale,
-                    'importo' => floatval($model->amount),
-                    'anno_competenza' => intval(date("Y"))
-                ]
-            ],
-        ];
-
-        return $structure;
-    }
-
-    private function inviaMultidovuto($params)
-    {
-        $token = $this->getToken();
-
-        $url = Yii::$app->params["testEndPoint"] . "invia_multidovuto";
-        
-        $curl = new curl\Curl();
-        $curl->setHeaders([
-            'Authorization' => "Bearer " . $token["access_token"],
-            'Content-Type' => 'application/x-www-form-urlencoded',
-        ]);
-
-        $compressedParams = gzcompress($params, 9);
-        
-        $response = $curl->setPostParams([
-            'applicazione' => 'pagamenti',
-            'numero' => 1,
-            'nome_flusso' => "0", //singolo pagamento
-            'caricamento_da_confermare' => false,
-            'content_json' => base64_encode($compressedParams),
-        ])->post($url);
-            
-        $parsedResponse = $this->parseJsonResponse($response);
-        return $parsedResponse;
-    }
-
-    private function getGestioneMultiflusso($model, $action)
-    {
-        $token = $this->getToken();
-        $url = Yii::$app->params["testEndPoint"] . "gestione_multidovuto";
-        $curl = new curl\Curl();
-        $curl->setHeaders([
-            'Authorization' => "Bearer " . $token["access_token"],
-            'Content-Type' => 'application/x-www-form-urlencoded',
-        ]);
-        $response = $curl->setGetParams([
-            'applicazione' => 'pagamenti',
-            'nome_flusso' => $model->nome_flusso,
-            'id_flusso' => $model->id_flusso,
-            'operazione' => $action
-        ])->get($url);
-
-        return $this->parseJsonResponse($response);
     }
 
     /**
@@ -257,8 +166,9 @@ class ContravvenzioniController extends Controller
     public function actionView($id)
     {
         $model = $this->findModel($id);
-        $statoFlusso = $this->getGestioneMultiflusso($model, "info");
-        
+        $api = new ContravvenzioniApi();
+        $statoFlusso = $api->getGestioneMultiflusso($model, "info");
+
         return $this->render('view', [
             'model' => $model,
             'statoFlusso' => $statoFlusso
@@ -274,7 +184,7 @@ class ContravvenzioniController extends Controller
     {
         $model = new Contravvenzione();
         $model->id = $model->getNextIdUnivocoDovuto();
-        
+
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save(false)) {
                 return $this->redirect(['view', 'id' => $model->id]);
@@ -290,32 +200,6 @@ class ContravvenzioniController extends Controller
         ]);
     }
 
-    private function modificaDovuto($id)
-    {
-        $model = $this->findModel($id);
-        $token = $this->getToken();
-
-        $url = Yii::$app->params["testEndPoint"] . "modifica_dovuto";
-
-        $curl = new curl\Curl();
-        $curl->setHeaders([
-            'Authorization' => "Bearer " . $token["access_token"],
-        ]);
-
-        $response = $curl->setPostParams([
-            'applicazione'  => 'pagamenti',
-            'tipo_dovuto'   => 'a',
-            'id_univoco_dovuto' => $model->id_univoco_dovuto,
-            'iuv' => $model->id_univoco_versamento,
-            'causale'   => $model->causale,
-            'importo'   => $model->amount,
-            'scadenza'  => $model->scadenza
-        ])->post($url);
-
-        $parsedResponse = $this->parseJsonResponse($response);
-
-        return $parsedResponse;
-    }
     /**
      * Updates an existing Contravvenzione model.
      * If update is successful, the browser will be redirected to the 'view' page.
@@ -328,8 +212,10 @@ class ContravvenzioniController extends Controller
         $model = $this->findModel($id);
 
         if ($this->request->isPost && $model->load($this->request->post())) {
-            $parsedResponse = $this->modificaDovuto($id);
-            
+            $api = new ContravvenzioniApi();
+
+            $parsedResponse = $api->modificaDovuto($model);
+
             if ($model->save(false) && $parsedResponse["esito"] == "ok") {
                 Yii::$app->session->setFlash("success", "Operazione completata correttamente");
             } else {
@@ -349,22 +235,8 @@ class ContravvenzioniController extends Controller
     public function actionScaricaAvviso($id)
     {
         $model = $this->findModel($id);
-        $token = $this->getToken();
-
-        $url = Yii::$app->params["testEndPoint"] . "scarica_avviso";
-
-        $curl = new curl\Curl();
-        $curl->setHeaders([
-            'Authorization' => "Bearer " . $token["access_token"],
-            'Content-Type' => 'application/x-www-form-urlencoded',
-        ]);
-
-        $response = $curl->setGetParams([
-            'applicazione' => 'pagamenti',
-            'iuv' => $model->id_univoco_versamento
-        ])->get($url);
-
-        $parsedResponse = $this->parseJsonResponse($response);
+        $api = new ContravvenzioniApi();
+        $parsedResponse = $api->scaricaAvviso($model->id_univoco_versamento);
 
         if ($parsedResponse["esito"] == "ko") {
             Yii::$app->session->setFlash("error", "Errore critico: " . $parsedResponse["errore"]);
@@ -383,7 +255,8 @@ class ContravvenzioniController extends Controller
         $model = $this->findModel($id);
         if ($model->stato !== $model->stato_choices_flipped["payed"]) {
             $model->stato = $model->stato_choices_flipped["deleted"];
-            $changeStatus = $this->getGestioneMultiflusso($model, "elimina");
+            $api = new ContravvenzioniApi();
+            $changeStatus = $api->getGestioneMultiflusso($model, "elimina");
             if ($changeStatus["esito"] == "ko") {
                 Yii::$app->session->setFlash("error", "Errore: " . $changeStatus["errore"]);
             } else {

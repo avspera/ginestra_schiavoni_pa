@@ -50,95 +50,101 @@ AppAsset::register($this);
                                 </div>
                                 <div class="it-right-zone">
                                     <div class="d-none d-md-flex">
-                                        <?php
-                                        if (Yii::$app->user->isGuest) {
-                                            echo Html::tag('div', Html::a('Login', ['/site/login'], ['class' => ['btn btn-link login text-decoration-none']]), ['class' => ['d-flex']]);
-                                        } else {
-                                            echo Html::beginForm(['/site/logout'], 'post', ['class' => 'd-flex'])
-                                                . Html::submitButton(
-                                                    'Logout (' . Yii::$app->user->identity->username . ')',
-                                                    ['class' => 'btn btn-link logout text-decoration-none']
-                                                )
-                                                . Html::endForm();
-                                        }
-                                        ?>
-
+                                        <button type="button" class="btn btn-link" data-bs-toggle="modal" data-bs-target="#tokenModal">
+                                            <svg class="icon">
+                                                <use href="/bootstrap-italia/svg/sprites.svg#it-info-circle"></use>
+                                            </svg>
+                                        </button>
                                     </div>
+
+                                    <?php
+                                    if (Yii::$app->user->isGuest) {
+                                        echo Html::tag('div', Html::a('Login', ['/site/login'], ['class' => ['btn btn-link login text-decoration-none']]), ['class' => ['d-flex']]);
+                                    } else {
+                                        echo Html::beginForm(['/site/logout'], 'post', ['class' => 'd-flex'])
+                                            . Html::submitButton(
+                                                'Logout (' . Yii::$app->user->identity->username . ')',
+                                                ['class' => 'btn btn-link logout text-decoration-none']
+                                            )
+                                            . Html::endForm();
+                                    }
+                                    ?>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="it-header-navbar-wrapper theme-light-desk">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-12">
-                            <!--start nav-->
-                            <nav class="navbar navbar-expand-lg has-megamenu" aria-label="Navigazione principale">
-                                <button class="custom-navbar-toggler" type="button" aria-controls="navC2" aria-expanded="false" aria-label="Mostra/Nascondi la navigazione" data-bs-toggle="navbarcollapsible" data-bs-target="#navC2">
-                                    <svg class="icon">
-                                        <use href="/bootstrap-italia/svg/sprites.svg#it-burger"></use>
-                                    </svg>
-                                </button>
-                                <div class="navbar-collapsable" id="navC2" style="display: none;">
-                                    <div class="overlay" style="display: none;"></div>
-                                    <div class="close-div">
-                                        <button class="btn close-menu" type="button">
-                                            <span class="visually-hidden">Nascondi la navigazione</span>
-                                            <svg class="icon">
-                                                <use href="/bootstrap-italia/svg/sprites.svg#it-close-big"></use>
-                                            </svg>
-                                        </button>
-                                    </div>
-                                    <div class="menu-wrapper">
-                                        <ul class="navbar-nav">
-                                            <li class="nav-item active"><a class="nav-link <?= Yii::$app->controller->id == "albo-pretorio" ? "active" : "" ?>" href="<?= Url::to(["albo-pretorio/index"]) ?>" aria-current="page"><span>Albo pretorio</span></a></li>
-                                            <li class="nav-item dropdown">
-                                                <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false" id="mainNavDropdown0">
-                                                    <span>Pubblicazioni di matrimonio</span>
-                                                    <svg class="icon icon-xs">
-                                                        <use href="/bootstrap-italia/svg/sprites.svg#it-expand"></use>
-                                                    </svg>
-                                                </a>
-                                                <div class="dropdown-menu" role="region" aria-labelledby="mainNavDropdown0">
-                                                    <div class="link-list-wrapper">
-                                                        <ul class="link-list">
-                                                            <li class="nav-item"><a class="nav-link <?= Yii::$app->controller->id == "cittadino" ? "active" : "" ?>" href="<?= Url::to(["atto-di-matrimonio/index-requests"]) ?>"><span>Richieste</span></a></li>
-                                                            <li class="nav-item"><a class="nav-link <?= Yii::$app->controller->id == "anagrafica-comune" ? "active" : "" ?>" href="<?= Url::to(["atto-di-matrimonio/index"]) ?>"><span>Pubblicazioni</span></a></li>
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                            </li>
-                                            <li class="nav-item"><a class="nav-link <?= Yii::$app->controller->id == "contravvenzioni" ? "active" : "" ?>" href="<?= Url::to(["contravvenzioni/index"]) ?>"><span>Contravvenzioni</span></a></li>
-                                            <li class="nav-item"><a class="nav-link <?= Yii::$app->controller->id == "parcheggio-residenti" ? "active" : "" ?>" href="<?= Url::to(["parcheggio-residenti/index"]) ?>"><span>Parcheggio residenti</span></a></li>
-                                            <li class="nav-item dropdown">
-                                                <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false" id="mainNavDropdown0">
-                                                    <span>Altro</span>
-                                                    <svg class="icon icon-xs">
-                                                        <use href="/bootstrap-italia/svg/sprites.svg#it-expand"></use>
-                                                    </svg>
-                                                </a>
-                                                <div class="dropdown-menu" role="region" aria-labelledby="mainNavDropdown0">
-                                                    <div class="link-list-wrapper">
-                                                        <ul class="link-list">
-                                                            <li class="nav-item"><a class="nav-link <?= Yii::$app->controller->id == "cittadino" ? "active" : "" ?>" href="<?= Url::to(["cittadino/index"]) ?>"><span>Anagrafica cittadini</span></a></li>
-                                                            <?php if (Yii::$app->user->identity->isAdmin()) : ?>
-                                                                <li class="nav-item"><a class="nav-link <?= Yii::$app->controller->id == "anagrafica-comune" ? "active" : "" ?>" href="<?= Url::to(["anagrafica-comune/index"]) ?>"><span>Anagrafica Comune</span></a></li>
-                                                            <?php endif; ?>
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                            </li>
-
-                                        </ul>
-                                    </div>
+        </div>
+        <div class="it-header-navbar-wrapper theme-light-desk">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <!--start nav-->
+                        <nav class="navbar navbar-expand-lg has-megamenu" aria-label="Navigazione principale">
+                            <button class="custom-navbar-toggler" type="button" aria-controls="navC2" aria-expanded="false" aria-label="Mostra/Nascondi la navigazione" data-bs-toggle="navbarcollapsible" data-bs-target="#navC2">
+                                <svg class="icon">
+                                    <use href="/bootstrap-italia/svg/sprites.svg#it-burger"></use>
+                                </svg>
+                            </button>
+                            <div class="navbar-collapsable" id="navC2" style="display: none;">
+                                <div class="overlay" style="display: none;"></div>
+                                <div class="close-div">
+                                    <button class="btn close-menu" type="button">
+                                        <span class="visually-hidden">Nascondi la navigazione</span>
+                                        <svg class="icon">
+                                            <use href="/bootstrap-italia/svg/sprites.svg#it-close-big"></use>
+                                        </svg>
+                                    </button>
                                 </div>
-                            </nav>
-                        </div>
+                                <div class="menu-wrapper">
+                                    <ul class="navbar-nav">
+                                        <li class="nav-item active"><a class="nav-link <?= Yii::$app->controller->id == "albo-pretorio" ? "active" : "" ?>" href="<?= Url::to(["albo-pretorio/index"]) ?>" aria-current="page"><span>Albo pretorio</span></a></li>
+                                        <li class="nav-item dropdown">
+                                            <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false" id="mainNavDropdown0">
+                                                <span>Pubblicazioni di matrimonio</span>
+                                                <svg class="icon icon-xs">
+                                                    <use href="/bootstrap-italia/svg/sprites.svg#it-expand"></use>
+                                                </svg>
+                                            </a>
+                                            <div class="dropdown-menu" role="region" aria-labelledby="mainNavDropdown0">
+                                                <div class="link-list-wrapper">
+                                                    <ul class="link-list">
+                                                        <li class="nav-item"><a class="nav-link <?= Yii::$app->controller->id == "cittadino" ? "active" : "" ?>" href="<?= Url::to(["atto-di-matrimonio/index-requests"]) ?>"><span>Richieste</span></a></li>
+                                                        <li class="nav-item"><a class="nav-link <?= Yii::$app->controller->id == "anagrafica-comune" ? "active" : "" ?>" href="<?= Url::to(["atto-di-matrimonio/index"]) ?>"><span>Pubblicazioni</span></a></li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li class="nav-item"><a class="nav-link <?= Yii::$app->controller->id == "contravvenzioni" ? "active" : "" ?>" href="<?= Url::to(["contravvenzioni/index"]) ?>"><span>Contravvenzioni</span></a></li>
+                                        <li class="nav-item"><a class="nav-link <?= Yii::$app->controller->id == "parcheggio-residenti" ? "active" : "" ?>" href="<?= Url::to(["parcheggio-residenti/index"]) ?>"><span>Parcheggio residenti</span></a></li>
+                                        <li class="nav-item dropdown">
+                                            <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false" id="mainNavDropdown0">
+                                                <span>Altro</span>
+                                                <svg class="icon icon-xs">
+                                                    <use href="/bootstrap-italia/svg/sprites.svg#it-expand"></use>
+                                                </svg>
+                                            </a>
+                                            <div class="dropdown-menu" role="region" aria-labelledby="mainNavDropdown0">
+                                                <div class="link-list-wrapper">
+                                                    <ul class="link-list">
+                                                        <li class="nav-item"><a class="nav-link <?= Yii::$app->controller->id == "cittadino" ? "active" : "" ?>" href="<?= Url::to(["cittadino/index"]) ?>"><span>Anagrafica cittadini</span></a></li>
+                                                        <?php if (Yii::$app->user->identity->isAdmin()) : ?>
+                                                            <li class="nav-item"><a class="nav-link <?= Yii::$app->controller->id == "anagrafica-comune" ? "active" : "" ?>" href="<?= Url::to(["anagrafica-comune/index"]) ?>"><span>Anagrafica Comune</span></a></li>
+                                                        <?php endif; ?>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </li>
+
+                                    </ul>
+                                </div>
+                            </div>
+                        </nav>
                     </div>
                 </div>
             </div>
+        </div>
         </div>
     </header>
 
@@ -148,12 +154,6 @@ AppAsset::register($this);
                 'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
             ]) ?>
 
-            <?php
-            $token =  Yii::$app->session->get("jwt_token");
-            if (!empty($token)) {
-                echo "<div class=='row'>" . $token["access_token"] . "</div>";
-            }
-            ?>
             <?php if (Yii::$app->session->hasFlash("success")) {
                 $flashMessage = YIi::$app->session->getFlash("success");
             ?>
@@ -202,6 +202,29 @@ AppAsset::register($this);
             <p class="float-end">Powered by Apps&Projects S.r.l.s</p>
         </div>
     </footer>
+
+    <div class="modal fade" id="tokenModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">DedaGroup Info</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body table-responsive">
+                    <?php
+                    $token =  Yii::$app->session->get("jwt_token");
+                    if (!empty($token)) { ?>
+                        <span><strong>Token</strong></span> <br />
+                        <p class='text-break text-wrap'><?= $token["access_token"]  ?></p>
+                    <?php } ?>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Chiudi</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <?php $this->endBody() ?>
 </body>

@@ -87,6 +87,38 @@ class ContravvenzioniController extends Controller
     }
 
     /**
+     * search for given iuv input
+     * @param String $cf - codice fiscale pagatore
+     * @param String $iuv - iuv pagamento
+     */
+    public function actionSearch($cf, $iuv)
+    {
+        if (Yii::$app->request->isAjax) {
+            $out = ["status" => 100, "msg" => "", "data" => []];
+            $contravvenzione = Contravvenzione::findOne(["cf" => $cf, "id_univoco_versamento" => $iuv]);
+
+            if (empty($contravvenzione)) {
+                $out["msg"] = "Contravvenzione non trovata. Controlla i dati inseriti";
+                return json_encode($out);
+            }
+
+            $api = new ContravvenzioniApi();
+            $searchResult = $api->statoPagamenti($contravvenzione);
+
+            if ($searchResult["esito"] == "ko") {
+                $out["msg"] = $searchResult["errore"];
+            } else {
+                $out["data"] = $searchResult;
+                $out["status"] = 200;
+            }
+
+            \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+            return $out;
+        }
+
+        return false;
+    }
+    /**
      * Creates a new Contravvenzione model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return string|\yii\web\Response
