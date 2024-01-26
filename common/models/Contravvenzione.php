@@ -135,7 +135,7 @@ class Contravvenzione extends \yii\db\ActiveRecord
             $this->created_by   = Yii::$app->user->identity->id;
             $this->payed        = 0;
             $this->stato        = 0;
-            $this->causale = "Contravvenzione N. " . $this->id . " del " . Yii::$app->formatter->asDate($this->data_accertamento) . " TARGA: " . $this->targa;
+            $this->causale = "Contravvenzione N " . $this->id . " del " . Yii::$app->formatter->asDate($this->data_accertamento) . " TARGA " . $this->targa;
         } else {
             $this->updated_at = date("Y-m-d H:i:s");
             $this->created_by   = Yii::$app->user->identity->id;
@@ -143,6 +143,10 @@ class Contravvenzione extends \yii\db\ActiveRecord
 
         if ($this->cf) {
             $this->cf = strtoupper($this->cf);
+        }
+
+        if ($this->targa) {
+            $this->targa = strtoupper($this->targa);
         }
 
         return true;

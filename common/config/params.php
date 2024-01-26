@@ -12,7 +12,8 @@ return [
     'payPasswordTest' => "PswCivilia1",
     'payGrantType' => 'password',
     'payClientId' => 'uin892IO!',
-    'testEndPoint' => 'http://civilianext.soluzionipa.it/portal/servizi/pagamenti/ws/',
-    'paymentAuthUrlTest' => 'https://starttest.soluzionipa.it/auth_hub/oauth/token',
-    'paymentAuthUrl' => 'https://start.soluzionipa.it/auth_hub/oauth/token'
+    'testEndPoint' => 'http://civilianext.soluzionipa.it/portal/servizi/pagamenti/ws/10/',
+    'prodEndPoint' => 'https://www.comune.ginestradeglischiavoni.bn.it/portal/servizi/pagamenti/ws/10/',
+    'paymentAuthUrlTest' => 'https://starttest.soluzionipa.it/auth_hub/oauth/token/',
+    'paymentAuthUrl' => 'https://start.soluzionipa.it/auth_hub/oauth/token/'
 ];
