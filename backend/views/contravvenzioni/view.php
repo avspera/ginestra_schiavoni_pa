@@ -32,9 +32,10 @@ $this->params['breadcrumbs'][] = [
     <?php } ?>
     <p>
         <?php if (empty($model->id_univoco_versamento)) { ?>
-            <?= Html::a('Genera pagamento PagoPa', ['generate-pagopa-item', 'id' => $model->id], ['class' => 'btn btn-xs btn-warning']) ?>
-            <?= Html::a('Scarica avviso', ['scarica-avviso', 'id' => $model->id], ['class' => 'btn btn-xs btn-success']) ?>
             <?= Html::a('Modifica', ['update', 'id' => $model->id], ['class' => 'btn btn-xs btn-primary']) ?>
+            <?= Html::a('Genera pagamento PagoPa', ['generate-pagopa-item', 'id' => $model->id], ['class' => 'btn btn-xs btn-warning']) ?>
+        <?php } else { ?>
+            <?= Html::a('Scarica avviso', ['scarica-avviso', 'id' => $model->id], ['class' => 'btn btn-xs btn-success']) ?>
         <?php } ?>
         <?php
         $url = "delete";

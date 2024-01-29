@@ -92,7 +92,7 @@ class ContravvenzioniApi
             $parsedResponse = $formatter->parse($response, 'json');
             return $parsedResponse;
         } catch (yii\web\BadRequestHttpException $e) {
-            return ["esito" => 'ko', "errore" => $response];
+            return ["esito" => 'ko', "errore" => $e->getMessage(), "response" => $response];
         }
     }
 
@@ -493,6 +493,7 @@ class ContravvenzioniApi
         $token = $this->token;
 
         $url = Yii::$app->params["testEndPoint"] . "scarica_avviso";
+
         $curl = new curl\Curl();
         $curl->setHeaders([
             'Authorization' => "Bearer " . $token["access_token"],
@@ -504,8 +505,12 @@ class ContravvenzioniApi
             'iuv' => $iuv
         ])->get($url);
 
-        $parsedResponse = $this->parseJsonResponse($response);
+        $pdfFilePath    = Yii::getAlias("@webroot") . "/avvisi/avviso".$iuv."_".date("Y-m-dH:i:s").".pdf";
+        $pdfLink        = "/avvisi/avviso".$iuv."_".date("Y-m-dH:i:s").".pdf";
+        $file = fopen($pdfFilePath, 'w');
+        fwrite($file, $response);
+        fclose($file);
 
-        return $parsedResponse;
+        return is_file($pdfFilePath) ? ["esito" => "ok", "path" => $pdfLink] : ["esito" => "ko", "errore" => "Impossibile scaricare avviso"];
     }
 }

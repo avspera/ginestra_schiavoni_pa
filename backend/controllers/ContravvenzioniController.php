@@ -263,11 +263,14 @@ class ContravvenzioniController extends Controller
         $model = $this->findModel($id);
         $api = new ContravvenzioniApi();
         $parsedResponse = $api->scaricaAvviso($model->id_univoco_versamento);
-
+        
         if ($parsedResponse["esito"] == "ko") {
             Yii::$app->session->setFlash("error", "Errore critico: " . $parsedResponse["errore"]);
-            return $this->redirect(Yii::$app->request->referrer);
+        } else {
+            Yii::$app->session->setFlash("success", \yii\helpers\Html::a("Scarica avviso", \yii\helpers\Url::to([$parsedResponse["path"]])));
         }
+
+        return $this->redirect(Yii::$app->request->referrer);
     }
     /**
      * Deletes an existing Contravvenzione model.
