@@ -147,14 +147,40 @@ class ContravvenzioniController extends Controller
 
         $structure = $api->parseInviaMultidovutoData($model);
 
-        $response = $api->inviaMultidovuto($structure);
+        $response = $api->inviaMultidovuto($structure, $model->id);
 
         if ($response["esito"] == "ko") {
-            Yii::$app->session->setFlash("error", "Errore critico: " . $response["errore"]);
+            Yii::$app->session->setFlash("error", "Errore critico: " . json_encode($response["errore"]));
             return $this->redirect(Yii::$app->request->referrer);
         }
 
-        //save IUV in my db
+        $decodedResponse = $api->parseContentJsonResponse($response["content_json"]);
+        if ($decodedResponse["esito"] == "ko") {
+            Yii::$app->session->setFlash("error", "Errore critico: " . $decodedResponse["errore"]);
+            return $this->redirect(Yii::$app->request->referrer);
+        }
+
+        $rate = $decodedResponse["content"][0]["rate"];
+        $esito = "ok";
+        foreach ($rate as $item) {
+            $model->id_univoco_versamento = $item["id_univoco_versamento"];
+            $model->id_flusso   = $response["id_flusso"];
+            $model->nome_flusso = $response["nome_flusso"];
+            $model->id_univoco_dovuto = isset($item["dovuti"][0]) ? $item["dovuti"][0]["id_univoco_dovuto"] : NULL;
+
+            if (!$model->save(false)) {
+                $esito = "ko";
+                break;
+            }
+        }
+
+        if ($esito == "ok") {
+            Yii::$app->session->setFlash("success", "Operazione completata correttamente");
+        } else {
+            Yii::$app->session->setFlash("error", "Ops...c'è stato qualche problema. [ERR-CONTR 103]");
+        }
+
+        return $this->redirect(Yii::$app->request->referrer);
     }
 
     /**
@@ -167,7 +193,7 @@ class ContravvenzioniController extends Controller
     {
         $model = $this->findModel($id);
         $api = new ContravvenzioniApi();
-        $statoFlusso = $api->getGestioneMultiflusso($model, "info");
+        $statoFlusso = $api->getGestioneMultidovuto($model, "info");
 
         return $this->render('view', [
             'model' => $model,
@@ -256,7 +282,7 @@ class ContravvenzioniController extends Controller
         if ($model->stato !== $model->stato_choices_flipped["payed"]) {
             $model->stato = $model->stato_choices_flipped["deleted"];
             $api = new ContravvenzioniApi();
-            $changeStatus = $api->getGestioneMultiflusso($model, "elimina");
+            $changeStatus = $api->getGestioneMultidovuto($model, "elimina");
             if ($changeStatus["esito"] == "ko") {
                 Yii::$app->session->setFlash("error", "Errore: " . $changeStatus["errore"]);
             } else {

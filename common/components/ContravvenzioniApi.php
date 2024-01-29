@@ -148,39 +148,118 @@ class ContravvenzioniApi
             'email' => $model->email
         ];
 
-        // $structure["data_documento"] = null;
-        $structure["numero_protocollo"] = "";
-        // $structure["data_protocollo"] = null;
-        // $structure["dettaglio_riga1"] = null;
-        // $structure["dettaglio_riga2"] = null;
-        // $structure["dettaglio_riga3"] = null;
-        // $structure["dettaglio_riga4"] = null;
-        // $structure["dettaglio_riga5"] = null;
-        // $structure["istruttore_procedimento"] = null;
-        // $structure["telefono_procedimento"] = null;
-        // $structure["email_procedimento"] = null;
-        // $structure["note"] = null;
-        // $structure["id_doc_civilianext"] = null;
-        // $structure["url_documento"] = null;
+        $structure["versante"] = [
+            "tipo_persona" => "F",
+            "nome" => "Loris",
+            "cognome" => "Pizzo",
+            "cf" => "PGLSVT74A09E514A",
+            "via" => null,
+            "civico" => null,
+            "comune" => null,
+            "cap" => null,
+            "prov" => null,
+            "nazione" => null,
+            "email" => null
+        ];
 
-        $structure["rate"][] = [
-            "tipo_rata" => "U",
-            'id_univoco_versamento' => null,
-            'dovuti'    => [
-                [
-                    //'tipo_dovuto' => $tipo_dovuto['out']["tipo_elemento"],
-                    'tipo_dovuto' => 'a',
-                    'id_univoco_dovuto' => $model->getNextIdUnivocoDovuto(),
-                    'causale' => $model->causale,
-                    'importo' => floatval($model->amount),
-                    'anno_competenza' => intval(date("Y"))
-                ]
+        $structure["data_documento"] = null;
+        $structure["numero_protocollo"] = "";
+        $structure["data_protocollo"] = null;
+        $structure["dettaglio_riga1"] = null;
+        $structure["dettaglio_riga2"] = null;
+        $structure["dettaglio_riga3"] = null;
+        $structure["dettaglio_riga4"] = null;
+        $structure["dettaglio_riga5"] = null;
+        $structure["istruttore_procedimento"] = null;
+        $structure["telefono_procedimento"] = null;
+        $structure["email_procedimento"] = null;
+        $structure["note"] = null;
+        $structure["id_doc_civilianext"] = null;
+        $structure["url_documento"] = null;
+
+        $structure["rate"] = [
+            [
+                "tipo_rata" => "U",
+                'id_univoco_versamento' => null,
+                'scadenza' => date("Y-m-d", strtotime($model->data_accertamento)),
+                // 'scadenza'  => '30/04/2024',
+                'dovuti'    => [
+                    [
+                        //'tipo_dovuto' => $tipo_dovuto['out']["tipo_elemento"],
+                        'tipo_dovuto' => 'multe',
+                        'id_univoco_dovuto' => "1",
+                        'causale' => $model->causale,
+                        'importo' => floatval($model->amount),
+                        'anno_competenza' => intval(date("Y"))
+                    ]
+                ],
             ],
+            [
+                "tipo_rata" => "U",
+                'id_univoco_versamento' => null,
+                'scadenza' => date("Y-m-d", strtotime($model->data_accertamento . "+ 60 days")),
+                // 'scadenza'  => '30/06/2024',
+                'dovuti'    => [
+                    [
+                        'tipo_dovuto' => 'multe',
+                        'id_univoco_dovuto' => "2",
+                        'causale' => $model->causale,
+                        'importo' => floatval($model->amount),
+                        'anno_competenza' => intval(date("Y"))
+                    ]
+                ],
+            ]
         ];
 
         return $structure;
     }
 
+    public function parseContentJsonResponse($content)
+    {
+        $out = ["esito" => 'ko', "errore" => '', "content" => []];
+        // Base64 encoded ZIP file content
+        $base64EncodedZip = $content;
+        // Decode the base64 encoded ZIP content
+        $zipContent = base64_decode($base64EncodedZip);
+        // Create a temporary file to save the ZIP content
+        $tempZipFile = tempnam(sys_get_temp_dir(), 'zip');
+        file_put_contents($tempZipFile, $zipContent);
+        // Create a ZipArchive instance to extract the ZIP file
+        $zip = new \ZipArchive();
+        if ($zip->open($tempZipFile) === TRUE) {
+            // Extract the files from the ZIP archive
+            $extractedFile = null;
+            for ($i = 0; $i < $zip->numFiles; $i++) {
+                $extractedFile = $zip->getNameIndex($i);
+            }
+
+            if ($extractedFile) {
+                // Extract the JSON file to a temporary location
+                $extractedFilePath = tempnam(sys_get_temp_dir(), 'json');
+                $jsonContent = $zip->getFromName($extractedFile);
+                file_put_contents($extractedFilePath, $jsonContent);
+
+                // Do whatever you need with the JSON file
+                $response = file_get_contents($extractedFilePath);
+
+                // Close the ZIP archive
+                $zip->close();
+
+                // Delete the temporary files
+                unlink($tempZipFile);
+                unlink($extractedFilePath);
+
+                $out["content"] = json_decode($response, true);
+                $out["esito"] = "ok";
+            } else {
+                $out["errore"] = "Risposta non pervenuta da DedaGroup [ERR-CONTR - 101]";
+            }
+        } else {
+            $out["errore"] = "Impossibile leggere file zip risposta da DedaGroup [ERR-CONTR - 102]";
+        }
+
+        return $out;
+    }
     /**
      * as suggested by Mimmo Carapella from ASFweb
      * rules to create the content_json structure
@@ -192,194 +271,79 @@ class ContravvenzioniApi
      */
     private function createContentJson($params)
     {
-        $params = [
-            [
-                "pagatore" => [
-                    "tipo_persona" => "F",
-                    "nome" => "Verduzzo",
-                    "cognome" => "Verdi",
-                    "cf" => "vvvgkd34f33v123m",
-                    "via" => "via europa",
-                    "civico" => "34",
-                    "comune" => "torino",
-                    "cap" => "22205",
-                    "prov" => "to",
-                    "nazione" => "IT",
-                    "email" => "oooo@gmail.com"
-                ],
-                "versante" => [
-                    "tipo_persona" => "F",
-                    "nome" => "Loris",
-                    "cognome" => "Pizzo",
-                    "cf" => "PGLSVT74A09E514A",
-                    "via" => null,
-                    "civico" => null,
-                    "comune" => null,
-                    "cap" => null,
-                    "prov" => null,
-                    "nazione" => null,
-                    "email" => null
-                ],
-                "data_documento" => null,
-                "numero_protocollo" => "",
-                "data_protocollo" => null,
-                "dettaglio_riga1" => null,
-                "dettaglio_riga2" => null,
-                "dettaglio_riga3" => null,
-                "dettaglio_riga4" => null,
-                "dettaglio_riga5" => null,
-                "istruttore_procedimento" => null,
-                "telefono_procedimento" => null,
-                "email_procedimento" => null,
-                "note" => null,
-                "id_doc_civilianext" => null,
-                "url_documento" => null,
-                "rate" => [
-                    [
-                        "tipo_rata" => "1",
-                        "id_univoco_versamento" => "487287982",
-                        "scadenza" => "30/04/2019",
-                        "dovuti" => [
-                            [
-                                "tipo_dovuto" => "metoda",
-                                "id_univoco_dovuto" => "6",
-                                "causale" => "descrizione della causale r1d1",
-                                "importo" => 0.1
-                            ],
-                            [
-                                "tipo_dovuto" => "cimi_diritti",
-                                "id_univoco_dovuto" => "7",
-                                "causale" => "descrizione della causale r1d2",
-                                "importo" => 19
-                            ],
-                            [
-                                "tipo_dovuto" => "cimi_diritti",
-                                "id_univoco_dovuto" => "8",
-                                "causale" => "descrizione della causale r1d3",
-                                "importo" => 3
-                            ],
-                            [
-                                "tipo_dovuto" => "tari",
-                                "id_univoco_dovuto" => "9",
-                                "causale" => "descrizione della causale r1d4",
-                                "importo" => 3883.07
-                            ],
-                            [
-                                "tipo_dovuto" => "diritti",
-                                "id_univoco_dovuto" => "10",
-                                "causale" => "descrizione della causale r1d5",
-                                "importo" => 2
-                            ]
-                        ]
-                    ],
-                    [
-                        "tipo_rata" => "2",
-                        "id_univoco_versamento" => "4872879824",
-                        "scadenza" => "30/08/2019",
-                        "dovuti" => [
-                            [
-                                "tipo_dovuto" => "metoda",
-                                "id_univoco_dovuto" => "11",
-                                "causale" => "descrizione della causale r2d1",
-                                "importo" => 11
-                            ],
-                            [
-                                "tipo_dovuto" => "cimi_diritti",
-                                "id_univoco_dovuto" => "12",
-                                "causale" => "descrizione della causale r2d2",
-                                "importo" => 0.2
-                            ],
-                            [
-                                "tipo_dovuto" => "tari",
-                                "id_univoco_dovuto" => "13",
-                                "causale" => "descrizione della causale r2d3",
-                                "importo" => 22
-                            ],
-                            [
-                                "tipo_dovuto" => "tari",
-                                "id_univoco_dovuto" => "14",
-                                "causale" => "descrizione della causale r2d4",
-                                "importo" => 3883.07
-                            ],
-                            [
-                                "tipo_dovuto" => "diritti",
-                                "id_univoco_dovuto" => "15",
-                                "causale" => "descrizione della causale r2d5",
-                                "importo" => 2
-                            ]
-                        ]
-                    ]
-                ]
-            ],
-            [
-                "pagatore" => [
-                    "tipo_persona" => "G",
-                    "nome" => null,
-                    "cognome" => "Euroservizi",
-                    "cf" => "01234567890",
-                    "via" => "Viale della Navigazione Interna ",
-                    "civico" => "72",
-                    "comune" => "Padova",
-                    "cap" => "35129",
-                    "prov" => "PD",
-                    "nazione" => "IT",
-                    "email" => "euros@gmail.it"
-                ],
-                "data_documento" => null,
-                "numero_protocollo" => "",
-                "data_protocollo" => null,
-                "dettaglio_riga1" => null,
-                "dettaglio_riga2" => null,
-                "dettaglio_riga3" => null,
-                "dettaglio_riga4" => null,
-                "dettaglio_riga5" => null,
-                "istruttore_procedimento" => null,
-                "telefono_procedimento" => null,
-                "email_procedimento" => null,
-                "note" => null,
-                "id_doc_civilianext" => null,
-                "url_documento" => null,
-                "rate" => [
-                    [
-                        "tipo_rata" => "U",
-                        "id_univoco_versamento" => "",
-                        "scadenza" => "29/04/2019",
-                        "dovuti" => [
-                            [
-                                "tipo_dovuto" => "tari",
-                                "id_univoco_dovuto" => "1",
-                                "causale" => "descrizione della causale r2d1",
-                                "importo" => 1
-                            ],
-                            [
-                                "tipo_dovuto" => "cimi_diritti",
-                                "id_univoco_dovuto" => "2",
-                                "causale" => "descrizione della causale r2d2",
-                                "importo" => 2
-                            ],
-                            [
-                                "tipo_dovuto" => "tari",
-                                "id_univoco_dovuto" => "3",
-                                "causale" => "descrizione della causale r2d3",
-                                "importo" => 3
-                            ],
-                            [
-                                "tipo_dovuto" => "diritti",
-                                "id_univoco_dovuto" => "4",
-                                "causale" => "descrizione della causale r2d4",
-                                "importo" => 4
-                            ],
-                            [
-                                "tipo_dovuto" => "diritti",
-                                "id_univoco_dovuto" => "5",
-                                "causale" => "descrizione della causale r2d5",
-                                "importo" => 5
-                            ]
-                        ]
-                    ]
-                ]
-            ]
-        ];
+        // $params = [
+        //     [
+        //         "pagatore" => [
+        //             "tipo_persona" => "F",
+        //             "nome" => "Verduzzo",
+        //             "cognome" => "Verdi",
+        //             "cf" => "vvvgkd34f33v123m",
+        //             "via" => "via europa",
+        //             "civico" => "34",
+        //             "comune" => "torino",
+        //             "cap" => "22205",
+        //             "prov" => "to",
+        //             "nazione" => "IT",
+        //             "email" => "oooo@gmail.com"
+        //         ],
+        //         "versante" => [
+        //             "tipo_persona" => "F",
+        //             "nome" => "Loris",
+        //             "cognome" => "Pizzo",
+        //             "cf" => "PGLSVT74A09E514A",
+        //             "via" => null,
+        //             "civico" => null,
+        //             "comune" => null,
+        //             "cap" => null,
+        //             "prov" => null,
+        //             "nazione" => null,
+        //             "email" => null
+        //         ],
+        //         "data_documento" => null,
+        //         "numero_protocollo" => "",
+        //         "data_protocollo" => null,
+        //         "dettaglio_riga1" => null,
+        //         "dettaglio_riga2" => null,
+        //         "dettaglio_riga3" => null,
+        //         "dettaglio_riga4" => null,
+        //         "dettaglio_riga5" => null,
+        //         "istruttore_procedimento" => null,
+        //         "telefono_procedimento" => null,
+        //         "email_procedimento" => null,
+        //         "note" => null,
+        //         "id_doc_civilianext" => null,
+        //         "url_documento" => null,
+        //         "rate" => [
+        //             [
+        //                 "tipo_rata" => "U",
+        //                 "id_univoco_versamento" => "",
+        //                 "scadenza" => "29/04/2019",
+        //                 "dovuti" => [
+        //                     [
+        //                         "tipo_dovuto" => "tari",
+        //                         "id_univoco_dovuto" => "1",
+        //                         "causale" => "descrizione della causale r2d1",
+        //                         "importo" => 1
+        //                     ],
+        //                 ]
+        //             ],
+        //             //i need 2 elements. one expires in 5 days from delivery, the other one will replace it
+        //             [
+        //                 "tipo_rata" => "U",
+        //                 "id_univoco_versamento" => "",
+        //                 "scadenza" => "29/04/2019",
+        //                 "dovuti" => [
+        //                     [
+        //                         "tipo_dovuto" => "tari",
+        //                         "id_univoco_dovuto" => "1",
+        //                         "causale" => "descrizione della causale r2d1",
+        //                         "importo" => 1
+        //                     ],
+        //                 ]
+        //             ]
+        //         ]
+        //     ],
+        // ];
 
         $params = json_encode($params);
 
@@ -419,7 +383,7 @@ class ContravvenzioniApi
      * performs invia_multidovuto action (backend to insert a new multa into dedagroup system)
      * @param Array $params
      */
-    public function inviaMultidovuto($params)
+    public function inviaMultidovuto($params, $internalId)
     {
         $token = $this->token;
 
@@ -438,8 +402,8 @@ class ContravvenzioniApi
         // $compressedParams   = gzcompress(base64_encode($params), 9);
         $response = $curl->setPostParams([
             'applicazione'  => 'pagamenti',
-            'numero'        => 1,
-            'nome_flusso'   => "0", //singolo pagamento
+            'numero'        => 2,
+            'nome_flusso'   => "contravvenzione_" . $internalId, //singolo pagamento
             'caricamento_da_confermare' => 'false',
             'cancellabile' => '0',
             'content_json'  => $contentJson,
@@ -455,7 +419,7 @@ class ContravvenzioniApi
      * @param Object $model
      * @param String $action (info|update|delete)
      */
-    public function getGestioneMultiflusso($model, $action)
+    public function getGestioneMultidovuto($model, $action)
     {
         $token = $this->token;
         $url = Yii::$app->params["testEndPoint"] . "gestione_multidovuto";
@@ -464,12 +428,12 @@ class ContravvenzioniApi
             'Authorization' => "Bearer " . $token["access_token"],
             'Content-Type' => 'application/x-www-form-urlencoded',
         ]);
-        $response = $curl->setGetParams([
-            'applicazione' => 'pagamenti',
-            'nome_flusso' => $model->nome_flusso,
-            'id_flusso' => $model->id_flusso,
-            'operazione' => $action
-        ])->get($url);
+        $response = $curl->setPostParams([
+            'applicazione'  => 'pagamenti',
+            'nome_flusso'   => $model->nome_flusso,
+            'id_flusso'     => $model->id_flusso,
+            'operazione'    => $action
+        ])->post($url);
 
         return $this->parseJsonResponse($response);
     }

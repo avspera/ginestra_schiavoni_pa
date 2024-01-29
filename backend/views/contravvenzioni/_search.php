@@ -18,7 +18,7 @@ use yii\widgets\ActiveForm;
 
     <div class="card-wrapper card-space">
         <div class="card card-bg  no-after">
-            <div class="card-body p-3 p-md-5 lightgrey-bg-c1">
+            <div class="card-body p-1 p-md-5 lightgrey-bg-c1">
                 <div class="mb-4">
                     <div class="float-start col-md-6 mb-0 mb-md-5">
                         <span class="card-title h4">Cerca</span>
@@ -28,14 +28,10 @@ use yii\widgets\ActiveForm;
 
                 <div class="row">
                     <div class="form-group col-md-2 col-xs-12">
-                        <?= $form->field($model, 'id')->label("ID", ["class" => "control-label active"]) ?>
+                        <?= $form->field($model, 'id_univoco_versamento')->label("IUV", ["class" => "control-label active"]) ?>
                     </div>
 
-                    <div class="form-group col-md-2 col-xs-12">
-                        <?= $form->field($model, 'amount')->label("Importo", ["class" => "control-label active"]) ?>
-                    </div>
-
-                    <div class="form-group col-md-2 col-xs-12">
+                    <div class="form-group col-md-3 col-xs-12">
                         <?= $form->field($model, 'articolo_codice')->label("Articolo codice", ["class" => "control-label active"]) ?>
                     </div>
 

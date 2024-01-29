@@ -32,16 +32,9 @@ $this->params['breadcrumbs'][] = [
                     <div class="table table-responsive">
                         <?= GridView::widget([
                             'dataProvider' => $dataProvider,
-
                             'columns' => [
                                 'id',
-                                [
-                                    'attribute' => 'amount',
-                                    'value' => function ($model) {
-                                        return Utils::formatCurrency($model->amount);
-                                    }
-                                ],
-                                'articolo_codice',
+                                'id_univoco_versamento',
                                 'data_accertamento:datetime',
                                 'targa',
                                 [

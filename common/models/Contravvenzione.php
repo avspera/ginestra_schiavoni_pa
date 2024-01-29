@@ -36,6 +36,7 @@ use Yii;
  * @property int|null $rata
  * @property int|null $stato
  * @property string|null $id_univoco_versamento
+ * @property string|null $id_univoco_dovuto
  * @property string|null $tipo_persona
  * @property string|null $nome_flusso
  * @property string|null $id_flusso
@@ -66,14 +67,14 @@ class Contravvenzione extends \yii\db\ActiveRecord
             [['amount', 'articolo_codice', 'data_accertamento', 'created_at', 'targa', 'created_by'], 'required'],
             [['amount'], 'number'],
             [['email'], 'email'],
-            [['provincia'], 'string', 'max' => '2'],
+            [['provincia', 'nazione'], 'string', 'max' => '2'],
             [[
                 'data_accertamento', 'created_at', 'data_pagamento', 'orario_accertamento', 'causale',
                 'tipo_persona', 'updated_at', 'nome_flusso', 'id_flusso', 'id_univoco_dovuto', 'scadenza', 'id_univoco_versamento'
             ], 'safe'],
             [['punti_patente', 'payed', 'updated_by', 'created_by', 'id_cittadino', 'strumento', 'rata', 'stato'], 'integer'],
             [[
-                'articolo_codice', 'ricevuta_pagamento', 'nome', 'cognome', 'via', 'comune', 'nazione', 'email', 'id_univoco_versamento',
+                'articolo_codice', 'ricevuta_pagamento', 'nome', 'cognome', 'via', 'comune', 'email', 'id_univoco_versamento',
                 'id_univoco_dovuto', 'causale',
             ], 'string', 'max' => 255],
             [['targa', 'civico', 'prov'], 'string', 'max' => 10],

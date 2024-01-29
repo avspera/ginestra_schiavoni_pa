@@ -53,115 +53,118 @@ $this->params['breadcrumbs'][] = [
         ]) ?>
     </p>
 
-    <div class="row">
-        <div class="col-md-12">
-            <div class="alert alert-<?= $statoFlusso["esito"] == "ko" ? "danger" : "success" ?>">
-                <?php if ($statoFlusso["esito"] == "ko") { ?>
-                    <div>Non riesco a contattare DedaGroup per avere informazioni aggiornate sul pagamento</div>
-                <?php } else { ?>
-                    <div><?= $statoFlusso["esito"] ?></div>
-                <?php } ?>
-            </div>
-        </div>
-    </div>
 
-    <div class="row">
-        <div class="col-md-6">
-            <div class="card card-info">
-                <div class="card-header">
-                    <h3>Dati contravvenzione</h3>
-                </div>
-                <div class="card-body">
-                    <?= DetailView::widget([
-                        'model' => $model,
-                        'attributes' => [
-                            'id',
-                            'id_univoco_versamento',
-                            'causale',
-                            [
-                                'attribute' => 'stato',
-                                'value' => function ($model) {
-                                    return $model->getStato();
-                                }
-                            ],
-                            [
-                                'attribute' => 'strumento',
-                                'value' => function ($model) {
-                                    return $model->getStrumento();
-                                }
-                            ],
-                            [
-                                'attribute' => 'amount',
-                                'value' => Utils::formatCurrency($model->amount)
-                            ],
-                            'articolo_codice',
-                            'data_accertamento:date',
-                            'orario_accertamento:time',
-                            [
-                                'attribute' => 'targa',
-                                'value' => function ($model) {
-                                    return strtoupper($model->targa);
-                                }
-                            ],
-                            'luogo',
-                            'punti_patente',
-                            [
-                                'attribute' => 'payed',
-                                'value' => function ($model) {
-                                    $msg = $model->payed ? "SI" : "NO";
-                                    $color = $model->payed ? "green" : "red";
-                                    return "<span style='color:$color'>$msg</span>";
-                                },
-                                'format' => "raw"
-                            ],
-                            'data_pagamento:datetime',
-                            'ricevuta_pagamento',
-                            'created_at:datetime',
-                            'updated_at:datetime',
-                            [
-                                'attribute' => 'created_by',
-                                'value' => Utils::getCreatedBy($model->created_by)
-                            ],
-                            [
-                                'attribute' => 'updated_by',
-                                'value' => Utils::getCreatedBy($model->updated_by)
-                            ],
-                        ],
-                    ]) ?>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="card card-info">
+            <div class="card-header">
+                <h3>Dati contravvenzione</h3>
+
+                <div class="alert alert-<?= $statoFlusso["esito"] == "ko" ? "danger" : "success" ?>">
+                    <?php if ($statoFlusso["esito"] == "ko") { ?>
+                        <div>Non riesco a contattare DedaGroup per avere informazioni aggiornate sul pagamento</div>
+                    <?php } else { ?>
+                        Esito: <strong><?= $statoFlusso["esito"] ?></strong> <br>
+                        Stato: <strong><?= $statoFlusso["stato"] ?></strong> <br>
+                        Importo totale: <strong><?= $statoFlusso["importo_totale"] ?></strong>
+                    <?php } ?>
                 </div>
             </div>
-        </div>
-        <div class="col-md-6">
-            <div class="card card-info">
-                <div class="card-header">
-                    <h3>Dati pagatore</h3>
-                </div>
-                <div class="card-body">
-                    <?= DetailView::widget([
-                        'model' => $model,
-                        'attributes' => [
-                            [
-                                'attribute' => "tipo_persona",
-                                'value' => function ($model) {
-                                    return $model->getTipoPersona();
-                                }
-                            ],
-                            'nome',
-                            'cognome',
-                            'email',
-                            'cf',
-                            'via',
-                            'civico',
-                            'cap',
-                            'comune',
-                            'prov',
-                            'nazione'
+            <div class="card-body">
+                <?= DetailView::widget([
+                    'model' => $model,
+                    'attributes' => [
+                        'id',
+                        'id_univoco_versamento',
+                        'nome_flusso',
+                        'id_flusso',
+                        'causale',
+                        [
+                            'attribute' => 'stato',
+                            'value' => function ($model) {
+                                return $model->getStato();
+                            }
                         ],
-                    ]) ?>
-                </div>
+                        [
+                            'attribute' => 'strumento',
+                            'value' => function ($model) {
+                                return $model->getStrumento();
+                            }
+                        ],
+                        [
+                            'attribute' => 'amount',
+                            'value' => Utils::formatCurrency($model->amount)
+                        ],
+                        'articolo_codice',
+                        'data_accertamento:date',
+                        'orario_accertamento:time',
+                        [
+                            'attribute' => 'targa',
+                            'value' => function ($model) {
+                                return strtoupper($model->targa);
+                            }
+                        ],
+                        'luogo',
+                        'punti_patente',
+                        [
+                            'attribute' => 'payed',
+                            'value' => function ($model) {
+                                $msg = $model->payed ? "SI" : "NO";
+                                $color = $model->payed ? "green" : "red";
+                                return "<span style='color:$color'>$msg</span>";
+                            },
+                            'format' => "raw"
+                        ],
+                        'data_pagamento:datetime',
+                        'ricevuta_pagamento',
+                        'created_at:datetime',
+                        'updated_at:datetime',
+                        [
+                            'attribute' => 'created_by',
+                            'value' => Utils::getCreatedBy($model->created_by)
+                        ],
+                        [
+                            'attribute' => 'updated_by',
+                            'value' => Utils::getCreatedBy($model->updated_by)
+                        ],
+                    ],
+                ]) ?>
             </div>
         </div>
     </div>
+    <div class="col-md-6">
+        <div class="card card-info">
+            <div class="card-header">
+                <h3>Dati pagatore</h3>
+            </div>
+            <div class="card-body">
+                <?= DetailView::widget([
+                    'model' => $model,
+                    'attributes' => [
+                        [
+                            'attribute' => "tipo_persona",
+                            'value' => function ($model) {
+                                return $model->getTipoPersona();
+                            }
+                        ],
+                        'nome',
+                        'cognome',
+                        'email',
+                        'cf',
+                        'via',
+                        'civico',
+                        'cap',
+                        'comune',
+                        'prov',
+                        'nazione'
+                    ],
+                ]) ?>
+            </div>
+        </div>
+    </div>
+</div>
 
 
 </div>

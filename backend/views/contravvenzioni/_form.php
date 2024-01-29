@@ -179,7 +179,7 @@ use yii\widgets\ActiveForm;
                     <div class="col-md-4">
                         <div class="form-group">
                             <label class="active control-label" for="nazione">Nazione</label>
-                            <input type="text" name="Contravvenzione[nazione]" id="contravvenzione-nazione" value="<?= $model->nazione ?>" class="form-control" />
+                            <input maxlength="2" type="text" name="Contravvenzione[nazione]" id="contravvenzione-nazione" value="<?= $model->nazione ?>" class="form-control" />
                         </div>
                     </div>
                 </div>
