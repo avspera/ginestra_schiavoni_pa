@@ -502,15 +502,19 @@ class ContravvenzioniApi
 
         $response = $curl->setGetParams([
             'applicazione' => 'pagamenti',
-            'iuv' => $iuv
+            'iuv' => "123"
         ])->get($url);
 
-        $pdfFilePath    = Yii::getAlias("@webroot") . "/avvisi/avviso".$iuv."_".date("Y-m-dH:i:s").".pdf";
-        $pdfLink        = "/avvisi/avviso".$iuv."_".date("Y-m-dH:i:s").".pdf";
-        $file = fopen($pdfFilePath, 'w');
-        fwrite($file, $response);
-        fclose($file);
+        if ($response == "Avviso non disponibile") {
+            return ["esito" => "ko", "errore" => "Impossibile scaricare avviso"];
+        } else {
+            $pdfFilePath    = Yii::getAlias("@webroot") . "/avvisi/avviso" . $iuv . "_" . date("Y-m-dH:i:s") . ".pdf";
+            $pdfLink        = "/avvisi/avviso" . $iuv . "_" . date("Y-m-dH:i:s") . ".pdf";
+            $file = fopen($pdfFilePath, 'w');
+            fwrite($file, $response);
+            fclose($file);
 
-        return is_file($pdfFilePath) ? ["esito" => "ok", "path" => $pdfLink] : ["esito" => "ko", "errore" => "Impossibile scaricare avviso"];
+            return is_file($pdfFilePath) ? ["esito" => "ok", "path" => $pdfLink] : ["esito" => "ko", "errore" => "Impossibile scaricare avviso"];
+        }
     }
 }
