@@ -21,7 +21,7 @@ use yii\widgets\ActiveForm;
             <input type="text" required maxlength="16" name="Contravvenzione[cf]" id="contravvenzioni-cf" value="<?= $model->cf ?>" class="form-control">
         </div>
         <div class="form-group col-md-3">
-            <label class="active control-label" for="contravvenzione-articolo_codice">Identificativo univoco</label>
+            <label class="active control-label" for="contravvenzione-id_univoco_versamento">Identificativo univoco</label>
             <input type="text" required name="Contravvenzione[id_univoco_versamento]" id="contravvenzioni-id_univoco_versamento" value="<?= $model->id_univoco_versamento ?>" class="form-control">
         </div>
         <div class="form-group col-md-3"><?= Html::button('Cerca', ['class' => 'btn btn-xs btn-primary', 'onclick' => "search()"]) ?></div>

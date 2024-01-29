@@ -56,8 +56,8 @@ use yii\widgets\ActiveForm;
                             <label class="active control-label" for="defaultSelect">Pagato</label>
                             <select id="contravvenzione-payed" name="Contravvenzione[payed]">
                                 <option selected="" value="">Scegli un'opzione</option>
-                                <option <?= $model->payed == 0 ? "payed" : "" ?> value=0>NO</option>
-                                <option <?= $model->payed == 1 ? "payed" : "" ?> value=1>SI</option>
+                                <option <?= $model->payed == 0 ? "selected" : "" ?> value="0">NO</option>
+                                <option <?= $model->payed == 1 ? "selected" : "" ?> value="1">SI</option>
                             </select>
                         </div>
                     </div>

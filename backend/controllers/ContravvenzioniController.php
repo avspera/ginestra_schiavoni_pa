@@ -2,6 +2,7 @@
 
 namespace backend\controllers;
 
+use app\models\ContravvenzioneRata;
 use common\components\ContravvenzioniApi;
 use Yii;
 use common\models\Contravvenzione;
@@ -160,20 +161,28 @@ class ContravvenzioniController extends Controller
             return $this->redirect(Yii::$app->request->referrer);
         }
 
-        $rate = $decodedResponse["content"][0]["rate"];
-        $esito = "ok";
+        $rate   = $decodedResponse["content"][0]["rate"];
+        $esito  = "ok";
+        $i      = 0;
         foreach ($rate as $item) {
-            $model->id_univoco_versamento = $item["id_univoco_versamento"];
-            $model->id_flusso   = $response["id_flusso"];
-            $model->nome_flusso = $response["nome_flusso"];
-            $model->id_univoco_dovuto = isset($item["dovuti"][0]) ? $item["dovuti"][0]["id_univoco_dovuto"] : NULL;
+            $rata                           = new ContravvenzioneRata();
+            $rata->id_contravvenzione       = $model->id;
+            $rata->id_univoco_versamento    = $item["id_univoco_versamento"];
+            $rata->id_univoco_dovuto        = isset($item["dovuti"][0]) ? $item["dovuti"][0]["id_univoco_dovuto"] : NULL;
+            $rata->importo                  = isset($item["dovuti"][0]) ? $item["dovuti"][0]["importo"] : 0;
+            $rata->causale                  = isset($item["dovuti"][0]) ? $item["dovuti"][0]["causale"] : NULL;
+            $rata->stato                    = $model->stato;
+            $rata->scadenza                 = isset($item["dovuti"][0]) ? $item["dovuti"][0]["scadenza"] : NULL;
 
-            if (!$model->save(false)) {
-                $esito = "ko";
-                break;
-            }
+            $rata->save(false);
         }
 
+        $model->id_flusso   = $response["id_flusso"];
+        $model->nome_flusso = $response["nome_flusso"];
+
+        if (!$model->save(false)) {
+            $esito = "ko";
+        }
         if ($esito == "ok") {
             Yii::$app->session->setFlash("success", "Operazione completata correttamente");
         } else {
@@ -263,7 +272,7 @@ class ContravvenzioniController extends Controller
         $model = $this->findModel($id);
         $api = new ContravvenzioniApi();
         $parsedResponse = $api->scaricaAvviso($model->id_univoco_versamento);
-        
+
         if ($parsedResponse["esito"] == "ko") {
             Yii::$app->session->setFlash("error", "Errore critico: " . $parsedResponse["errore"]);
         } else {

@@ -32,9 +32,9 @@ $this->params['breadcrumbs'][] = [
     <?php } ?>
     <p>
         <?php if (empty($model->id_univoco_versamento)) { ?>
-            <?= Html::a('Modifica', ['update', 'id' => $model->id], ['class' => 'btn btn-xs btn-primary']) ?>
             <?= Html::a('Genera pagamento PagoPa', ['generate-pagopa-item', 'id' => $model->id], ['class' => 'btn btn-xs btn-warning']) ?>
         <?php } else { ?>
+            <?= Html::a('Modifica', ['update', 'id' => $model->id], ['class' => 'btn btn-xs btn-primary']) ?>
             <?= Html::a('Scarica avviso', ['scarica-avviso', 'id' => $model->id], ['class' => 'btn btn-xs btn-success']) ?>
         <?php } ?>
         <?php
@@ -82,12 +82,6 @@ $this->params['breadcrumbs'][] = [
                         'nome_flusso',
                         'id_flusso',
                         'causale',
-                        [
-                            'attribute' => 'stato',
-                            'value' => function ($model) {
-                                return $model->getStato();
-                            }
-                        ],
                         [
                             'attribute' => 'strumento',
                             'value' => function ($model) {

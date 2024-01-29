@@ -198,7 +198,6 @@ class ContravvenzioniApi
                 "tipo_rata" => "U",
                 'id_univoco_versamento' => null,
                 'scadenza' => date("Y-m-d", strtotime($model->data_accertamento . "+ 60 days")),
-                // 'scadenza'  => '30/06/2024',
                 'dovuti'    => [
                     [
                         'tipo_dovuto' => 'multe',
@@ -451,12 +450,12 @@ class ContravvenzioniApi
 
         $response = $curl->setPostParams([
             'applicazione'  => 'pagamenti',
-            'tipo_dovuto'   => 'a',
+            'tipo_dovuto'   => 'multe',
             'id_univoco_dovuto' => $model->id_univoco_dovuto,
-            'iuv' => $model->id_univoco_versamento,
-            'causale'   => $model->causale,
-            'importo'   => $model->amount,
-            'scadenza'  => $model->scadenza
+            'iuv'               => $model->id_univoco_versamento,
+            'causale'           => $model->causale,
+            'importo'           => $model->amount,
+            'scadenza'          => $model->scadenza
         ])->post($url);
 
         $parsedResponse = $this->parseJsonResponse($response);
@@ -488,6 +487,7 @@ class ContravvenzioniApi
 
         return $parsedResponse;
     }
+
     public function scaricaAvviso($iuv)
     {
         $token = $this->token;
@@ -502,7 +502,7 @@ class ContravvenzioniApi
 
         $response = $curl->setGetParams([
             'applicazione' => 'pagamenti',
-            'iuv' => "123"
+            'iuv' => $iuv
         ])->get($url);
 
         if ($response == "Avviso non disponibile") {
@@ -516,5 +516,23 @@ class ContravvenzioniApi
 
             return is_file($pdfFilePath) ? ["esito" => "ok", "path" => $pdfLink] : ["esito" => "ko", "errore" => "Impossibile scaricare avviso"];
         }
+    }
+
+    public function avviaPagamento($model)
+    {
+        $token = $this->token;
+
+        $url = Yii::$app->params["testEndPoint"] . "avvia_pagamento";
+
+        $curl = new curl\Curl();
+        $curl->setHeaders([
+            'Authorization' => "Bearer " . $token["access_token"],
+            'Content-Type' => 'application/x-www-form-urlencoded',
+        ]);
+
+        $response = $curl->setGetParams([
+            'applicazione' => 'pagamenti',
+            'iuv' => $model->id_univoco_versamento
+        ])->get($url);
     }
 }
