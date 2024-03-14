@@ -7,31 +7,64 @@ use yii\widgets\ActiveForm;
 /** @var yii\web\View $this */
 /** @var common\models\ParcheggioResidenti $model */
 /** @var yii\widgets\ActiveForm $form */
+$indirizzo = "";
+if (!empty($loggedUser["attributes"])) {
+    $indirizzo .= $loggedUser["attributes"]["spid_address"] . ", " . $loggedUser["attributes"]["spid_postal_code"] . " - " . $loggedUser["attributes"]["spid_city"];
+}
 ?>
 
 <div class="parcheggio-residenti-form mt-5">
 
-    <?php $form = ActiveForm::begin(); ?>
+    <?php $form = ActiveForm::begin([
+        'options' => ['enctype' => 'multipart/form-data']
+    ]); ?>
 
     <div class="row">
-        <div class="col-12 col-md-4"><?= $form->field($model, 'cittadino')->textInput(['maxlength' => true])->label("Nome richiedente", ["class" => "active control-label"]) ?></div>
-        <div class="col-12 col-md-4"><?= $form->field($model, 'indirizzo')->textInput(['maxlength' => true])->label("Indirizzo", ["class" => "active control-label"]) ?></div>
-        <div class="col-12 col-md-4"><?= $form->field($model, 'qnt_auto')->textInput(['maxlength' => true])->label("N. auto", ["class" => "active control-label"]) ?></div>
+        <div class="form-group col-md-4">
+            <label class="active control-label" for="parcheggioresidenti-cittadino">Nome</label>
+            <input type="text" name="ParcheggioResidenti[cittadino]" id="parcheggioresidenti-cittadino" value="<?= !empty($loggedUser["name"]) ? $loggedUser["name"] : $model->cittadino ?>" class="form-control">
+        </div>
+        <div class="form-group col-md-4">
+            <label class="active control-label" for="parcheggioresidenti-cf_richiedente">Nome</label>
+            <input type="text" name="ParcheggioResidenti[cf_richiedente]" id="parcheggioresidenti-cf_richiedente" value="<?= !empty($loggedUser["fiscal_code"]) ? $loggedUser["fiscal_code"] : $model->cf_richiedente ?>" class="form-control">
+        </div>
+        <div class="form-group col-md-4">
+            <label class="active control-label" for="parcheggioresidenti-indirizzo">Indirizzo</label>
+            <input type="text" name="ParcheggioResidenti[indirizzo]" id="parcheggioresidenti-indirizzo" value="<?= !empty($indirizzo) ? $indirizzo : $model->indirizzo ?>" class="form-control">
+        </div>
     </div>
     <div class="row">
-        <div class="col-12 col-md-4"><?= $form->field($model, 'targa')->textInput(['maxlength' => true])->label("Targa (separate da virgola se più di una)", ["class" => "active control-label"]) ?></div>
-        <div class="col-12 col-md-4"><?= $form->field($model, 'veicolo')->textInput(['maxlength' => true])->label("Modello Veicolo (separati da virgola se più di una)", ["class" => "active control-label"]) ?></div>
-        <div class="col-12 col-md-4">
+        <div class="form-group col-md-3">
+            <label class="active control-label" for="parcheggioresidenti-qnt_auto">N. auto</label>
+            <input type="text" name="ParcheggioResidenti[qnt_auto]" id="parcheggioresidenti-qnt_auto" value="<?= $model->qnt_auto ?>" class="form-control">
+        </div>
+        <div class="form-group col-md-4">
+            <label class="active control-label" for="parcheggioresidenti-targa">Targa (separate da virgola se più di una)</label>
+            <input type="text" name="ParcheggioResidenti[targa]" id="parcheggioresidenti-targa" value="<?= $model->targa ?>" class="form-control">
+        </div>
+        <div class="form-group col-md-4">
+            <label class="active control-label" for="parcheggioresidenti-veicolo">Modello Veicolo (separati da virgola se più di uno)</label>
+            <input type="text" name="ParcheggioResidenti[veicolo]" id="parcheggioresidenti-veicolo" value="<?= $model->targa ?>" class="form-control">
+        </div>
+        <div class="form-group col-md-4">
             <div class="select-wrapper">
-                <?= $form->field($model, 'durata')->dropDownList($model->durata_choices, ['prompt' => "Scegli"])->label("Durata", ["class" => "active control-label"]) ?>
+                <label class="active control-label" for="user-status">Durata</label>
+                <select id="parcheggio-residenti-durata" name="ParcheggioResidenti[durata]">
+                    <option selected="" value="">Scegli un'opzione</option>
+                    <?php foreach ($model->durata_choices as $key => $value) { ?>
+                        <option <?= $model->durata == $key ? "selected" : "" ?> value="<?= $key ?>"><?= $value ?></option>
+                    <?php } ?>
+                </select>
             </div>
         </div>
+
     </div>
 
     <label>Carta di identità</label>
     <?php
     if (!empty($model->carta_identita)) {
         $attachments = json_decode($model->carta_identita, true);
+        //$attachments = $model->carta_identita;
         foreach ($attachments as $item) {
             $fileUrl = Yii::getAlias("@web") . "/uploads/parcheggio-residenti/" . $item;
             $icon = substr($item, strrpos($item, ".")) == ".pdf" ? "it-file-pdf" : "it-file";
@@ -61,7 +94,7 @@ use yii\widgets\ActiveForm;
             <label class="control-label active" for="ParcheggioResidenti[carta_identita]">
                 Carica carta di identità (.jpg, .png., .pdf)
             </label>
-            <input accept="image/*,.pdf" type="file" name="ParcheggioResidenti[carta_identita][]" id="parcheggio-residenti-carta_identita" multiple="multiple" />
+            <input required accept="image/*,.pdf" type="file" name="ParcheggioResidenti[carta_identita][]" id="parcheggio-residenti-carta_identita" multiple="true" />
         </div>
     </div>
 
@@ -71,7 +104,7 @@ use yii\widgets\ActiveForm;
     <?php
     if (!empty($model->carta_circolazione)) {
         $attachments = json_decode($model->carta_circolazione, true);
-
+        //$attachments = $model->carta_circolazione;
         foreach ($attachments as $item) {
             $fileUrl = Yii::getAlias("@web") . "/uploads/parcheggio-residenti/" . $item;
             $icon = substr($item, strrpos($item, ".")) == ".pdf" ? "it-file-pdf" : "it-file";
@@ -101,7 +134,7 @@ use yii\widgets\ActiveForm;
             <label class="control-label active" for="ParcheggioResidenti[carta_circolazione]">
                 Carica allegati (.jpg, .png., .pdf)
             </label>
-            <input accept="image/*,.pdf" type="file" name="ParcheggioResidenti[carta_circolazione][]" id="parcheggio-residenti-carta_circolazione" multiple="multiple" />
+            <input required accept="image/*,.pdf" type="file" name="ParcheggioResidenti[carta_circolazione][]" id="parcheggio-residenti-carta_circolazione" multiple="multiple" />
         </div>
     </div>
 

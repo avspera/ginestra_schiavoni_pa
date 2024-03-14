@@ -18,7 +18,7 @@ class SegnalazioneDisservizioSearch extends SegnalazioneDisservizio
     {
         return [
             [['id', 'id_tipologia', 'luogo'], 'integer'],
-            [['note', 'attachments', 'created_at', 'nome_richiedente', 'cognome_richiedente', 'email_richiedente'], 'safe'],
+            [['note', 'attachments', 'created_at', 'nome_richiedente', 'cf_richiedente', 'email_richiedente'], 'safe'],
         ];
     }
 
@@ -67,7 +67,7 @@ class SegnalazioneDisservizioSearch extends SegnalazioneDisservizio
         $query->andFilterWhere(['like', 'note', $this->note])
             ->andFilterWhere(['like', 'attachments', $this->attachments])
             ->andFilterWhere(['like', 'nome_richiedente', $this->nome_richiedente])
-            ->andFilterWhere(['like', 'cognome_richiedente', $this->cognome_richiedente])
+            ->andFilterWhere(['like', 'cf_richiedente', $this->cf_richiedente])
             ->andFilterWhere(['like', 'email_richiedente', $this->email_richiedente]);
 
         return $dataProvider;

@@ -10,7 +10,7 @@ use Yii;
  * @property int $id
  * @property string $email_richiedente
  * @property string $nome_richiedente
- * @property string $cognome_richiedente
+ * @property string $cf_richiedente
  * @property string $data
  * @property int $sede_riferimento
  * @property string|null $note
@@ -33,11 +33,12 @@ class RichiestaAppuntamento extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['email_richiedente', 'nome_richiedente', 'cognome_richiedente', 'data', 'sede_riferimento'], 'required'],
+            [['email_richiedente', 'nome_richiedente', 'data', 'sede_riferimento'], 'required'],
             [['data'], 'safe'],
             [['sede_riferimento'], 'integer'],
             [['note'], 'string'],
-            [['email_richiedente', 'nome_richiedente', 'cognome_richiedente', 'attachments'], 'string', 'max' => 255],
+            [['email_richiedente', 'nome_richiedente', 'attachments'], 'string', 'max' => 255],
+            [['cf_richiedente'], 'string', 'max' => 16],
         ];
     }
 
@@ -50,9 +51,9 @@ class RichiestaAppuntamento extends \yii\db\ActiveRecord
             'id' => 'ID',
             'email_richiedente' => 'Email Richiedente',
             'nome_richiedente' => 'Nome Richiedente',
-            'cognome_richiedente' => 'Cognome Richiedente',
+            'cf_richiedente' => 'Codice fiscale',
             'data' => 'Data',
-            'sede_riferimento' => 'Sede Riferimento',
+            'sede_riferimento' => 'Ufficio di Riferimento',
             'note' => 'Note',
             'attachments' => 'Allegati',
         ];

@@ -36,13 +36,12 @@ $this->params['breadcrumbs'][] = [
                     <div class="table table-responsive">
                         <?= GridView::widget([
                             'dataProvider' => $dataProvider,
-                            'filterModel' => $searchModel,
                             'columns' => [
                                 ['class' => 'yii\grid\SerialColumn'],
 
                                 'id',
                                 'nome_richiedente',
-                                'cognome_richiedente',
+                                'cf_richiedente',
                                 'email_richiedente',
                                 [
                                     'attribute' => 'motivo_richiesta',

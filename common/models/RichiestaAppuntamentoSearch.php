@@ -18,7 +18,7 @@ class RichiestaAppuntamentoSearch extends RichiestaAppuntamento
     {
         return [
             [['id', 'sede_riferimento'], 'integer'],
-            [['email_richiedente', 'nome_richiedente', 'cognome_richiedente', 'data', 'note', 'attachments'], 'safe'],
+            [['email_richiedente', 'nome_richiedente', 'cf_richiedente', 'data', 'note', 'attachments'], 'safe'],
         ];
     }
 
@@ -65,7 +65,7 @@ class RichiestaAppuntamentoSearch extends RichiestaAppuntamento
 
         $query->andFilterWhere(['like', 'email_richiedente', $this->email_richiedente])
             ->andFilterWhere(['like', 'nome_richiedente', $this->nome_richiedente])
-            ->andFilterWhere(['like', 'cognome_richiedente', $this->cognome_richiedente])
+            ->andFilterWhere(['like', 'cf_richiedente', $this->cf_richiedente])
             ->andFilterWhere(['like', 'note', $this->note])
             ->andFilterWhere(['like', 'attachments', $this->attachments]);
 

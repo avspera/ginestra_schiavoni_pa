@@ -2,11 +2,14 @@
 
 namespace frontend\controllers;
 
+use Yii;
 use common\models\ParcheggioResidenti;
 use common\models\ParcheggioResidentiSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\web\UploadedFile;
+use common\models\Cittadino;
 
 /**
  * ParcheggioResidentiController implements the CRUD actions for ParcheggioResidenti model.
@@ -55,6 +58,13 @@ class ParcheggioResidentiController extends Controller
      */
     public function actionView($id)
     {
+        $model = $this->findModel($id);
+        $loggedUser = Cittadino::getFakeCittadino();
+
+        if ($model->cf_richiedente !== $loggedUser["fiscal_code"]) {
+            return $this->goHome();
+        }
+        
         return $this->render('view', [
             'model' => $this->findModel($id),
         ]);
@@ -69,16 +79,35 @@ class ParcheggioResidentiController extends Controller
     {
         $model = new ParcheggioResidenti();
 
+        $loggedUser = Cittadino::getFakeCittadino();
+
         if ($this->request->isPost) {
-            if ($model->load($this->request->post()) && $model->save()) {
-                return $this->redirect(['view', 'id' => $model->id]);
+            if ($model->load($this->request->post())) {
+                $model->created_by = $loggedUser["id"];
+
+                $model->carta_identita = UploadedFile::getInstances($model, "carta_identita");
+                if (!empty($model->carta_identita)) {
+                    $model->carta_identita = $model->uploadFiles($model->carta_identita);
+                }
+                $model->carta_circolazione = UploadedFile::getInstances($model, "carta_circolazione");
+                if (!empty($model->carta_circolazione)) {
+                    $model->carta_circolazione = $model->uploadFiles($model->carta_circolazione);
+                }
+
+                if ($model->save(false)) {
+                    return $this->redirect(['view', 'id' => $model->id]);
+                }
+            } else {
+                Yii::$app->session->setFlash("error", "Ops...c'è stato qualche problema." . json_encode($model->getErrors()));
             }
         } else {
             $model->loadDefaultValues();
         }
 
+
         return $this->render('create', [
             'model' => $model,
+            'loggedUser' => $loggedUser
         ]);
     }
 
@@ -93,12 +122,29 @@ class ParcheggioResidentiController extends Controller
     {
         $model = $this->findModel($id);
 
-        if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        $loggedUser = Cittadino::getFakeCittadino();
+
+        $oldCartaCircolazione   = $model->carta_circolazione;
+        $oldCartaIdentita       = $model->carta_identita;
+        if ($this->request->isPost && $model->load($this->request->post())) {
+            $model->updated_by = $loggedUser["id"];
+            $model->carta_identita = UploadedFile::getInstances($model, "carta_identita");
+            if (!empty($model->carta_identita) && $model->carta_identita !== $oldCartaIdentita) {
+                $model->carta_identita = $model->uploadFiles($model->carta_identita);
+            }
+
+            $model->carta_circolazione = UploadedFile::getInstances($model, "carta_circolazione");
+            if (!empty($model->carta_circolazione) && $model->carta_circolazione !== $oldCartaCircolazione) {
+                $model->carta_circolazione = $model->uploadFiles($model->carta_circolazione);
+            }
+            if ($model->save(false)) {
+                return $this->redirect(['view', 'id' => $model->id]);
+            }
         }
 
         return $this->render('update', [
             'model' => $model,
+            'loggedUser' => $loggedUser
         ]);
     }
 

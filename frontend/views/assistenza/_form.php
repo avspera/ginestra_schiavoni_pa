@@ -16,22 +16,36 @@ use yii\widgets\ActiveForm;
         </div>
         <div class="card-body p-0 my-2">
             <div class="row">
-                <div class="col-4 col-md-4"><?= $form->field($model, 'nome_richiedente')->textInput(['maxlength' => true])->label("Nome richiedente", ["class" => "active control-label"]) ?></div>
-                <div class="col-4 col-md-4"><?= $form->field($model, 'cognome_richiedente')->textInput(['maxlength' => true])->label("Cognome richiedente", ["class" => "active control-label"]) ?></div>
-                <div class="col-4 col-md-4"><?= $form->field($model, 'email_richiedente')->textInput(['maxlength' => true, "type" => "email"])->label("Email richiedente", ["class" => "active control-label"]) ?></div>
+                <div class="form-group col-md-4">
+                    <label class="active control-label" for="assistenza-nome_richiedente">Nome</label>
+                    <input type="text" name="Assistenza[nome_richiedente]" id="assistenza-nome_richiedente" value="<?= !empty($loggedUser["name"]) ? $loggedUser["name"] : $model->nome_richiedente ?>" class="form-control">
+                </div>
+                <div class="form-group col-md-4">
+                    <label class="active control-label" for="assistenza-cf_richiedente">Codice fiscale</label>
+                    <input type="text" name="Assistenza[cf_richiedente]" id="assistenza-cf_richiedente" value="<?= !empty($loggedUser["fiscal_code"]) ? $loggedUser["fiscal_code"] : $model->cf_richiedente ?>" class="form-control">
+                </div>
+                <div class="form-group col-md-4">
+                    <label class="active control-label" for="assistenza-email_richiedente">Email</label>
+                    <input type="text" name="Assistenza[email_richiedente]" id="assistenza-email_richiedente" value="<?= !empty($loggedUser["email"]) ? $loggedUser["email"] : $model->email_richiedente ?>" class="form-control">
+                </div>
             </div>
 
             <div class="row">
                 <div class="col-4 col-md-4">
                     <div class="select-wrapper">
-                        <?= $form->field($model, 'motivo_richiesta')->dropDownList($model->motivo_richiesta_choices, ['prompt' => "Scegli"])->label("Motivo richiesta", ["class" => "active control-label"]) ?>
+                        <label class="active control-label" for="assistenza-motivo_richiesta">Motivo richiesta</label>
+                        <select id="assistenza-motivo_richiesta" name="Assistenza[motivo_richiesta]">
+                            <option selected="" value="">Scegli un'opzione</option>
+                            <?php foreach ($model->motivo_richiesta_choices as $key => $value) { ?>
+                                <option <?= $model->motivo_richiesta == $key ? "selected" : "" ?> value="<?= $key ?>"><?= $value ?></option>
+                            <?php } ?>
+                        </select>
                     </div>
                 </div>
-                <div class="col-4 col-md-4"><?= $form->field($model, 'data_appuntamento')->textInput(['type' => "date"])->label("Data apputamento", ["class" => "active control-label"]) ?></div>
                 <div class="col-4 col-md-4">
                     <div class="form-group">
-                        <label class="active control-label" for="exampleFormControlTextarea1">Note</label>
-                        <textarea id="assistenza-note" name="Assistenza[note]" rows="3"></textarea>
+                        <label for="assistenza-note">Messaggio</label>
+                        <textarea class="form-control" id="assistenza-note" name="Assistenza[note]" rows="3"></textarea>
                     </div>
                 </div>
             </div>

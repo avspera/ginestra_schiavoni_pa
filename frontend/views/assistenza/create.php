@@ -23,6 +23,7 @@ $this->params['breadcrumbs'][] = [
 
     <?= $this->render('_form', [
         'model' => $model,
+        'loggedUser' => $loggedUser
     ]) ?>
 
 </div>

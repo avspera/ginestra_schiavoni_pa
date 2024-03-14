@@ -37,7 +37,7 @@ class ParcheggioResidenti extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['cittadino', 'indirizzo', 'created_at', 'created_by', 'targa', 'approved', 'durata'], 'required'],
+            [['cittadino', 'indirizzo', 'created_at', 'created_by', 'targa', 'approved', 'durata', 'cf_richiedente'], 'required'],
             [['qnt_auto', 'created_by', 'updated_by', 'payed', 'durata', 'approved_by'], 'integer'],
             [['created_at', 'updated_at', 'veicolo', 'carta_circolazione', 'carta_identita', 'data_rilascio', 'approved_by'], 'safe'],
             [['price'], 'number'],
@@ -54,6 +54,7 @@ class ParcheggioResidenti extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'cittadino' => 'Cittadino',
+            'cf_richiedente' => "Codice fiscale",
             'indirizzo' => 'Indirizzo',
             'qnt_auto' => 'N. Auto',
             'created_at' => 'Creato il',
@@ -81,12 +82,10 @@ class ParcheggioResidenti extends \yii\db\ActiveRecord
 
         if ($this->isNewRecord) {
             $this->created_at   = date("Y-m-d H:i:s");
-            $this->created_by   = Yii::$app->user->identity->id;
             $this->payed        = 0;
             $this->approved     = 0;
         } else {
             $this->updated_at   = date("Y-m-d H:i:s");
-            $this->updated_by   = Yii::$app->user->identity->id;
         }
 
         return true;

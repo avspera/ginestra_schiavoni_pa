@@ -10,7 +10,7 @@ use Yii;
  * @property int $id
  * @property string $email_richiedente
  * @property string $nome_richiedente
- * @property string $cognome_richiedente
+ * @property string $cf_richiedente
  * @property int $motivo_richiesta
  * @property string|null $data_appuntamento
  * @property int $stato_richiesta
@@ -55,11 +55,12 @@ class Assistenza extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['email_richiedente', 'nome_richiedente', 'cognome_richiedente', 'motivo_richiesta', 'stato_richiesta', 'created_at'], 'required'],
+            [['email_richiedente', 'nome_richiedente', 'motivo_richiesta', 'stato_richiesta', 'created_at', 'cf_richiedente'], 'required'],
             [['motivo_richiesta', 'stato_richiesta', 'updated_by'], 'integer'],
             [['created_at', 'updated_at', 'data_appuntamento'], 'safe'],
             [['note', 'data_appuntamento'], 'string'],
-            [['email_richiedente', 'nome_richiedente', 'cognome_richiedente'], 'string', 'max' => 255],
+            [['email_richiedente', 'nome_richiedente',], 'string', 'max' => 255],
+            [['cf_richiedente'], 'string', 'max' => 16],
         ];
     }
 
@@ -72,7 +73,7 @@ class Assistenza extends \yii\db\ActiveRecord
             'id' => 'ID',
             'email_richiedente' => 'Email Richiedente',
             'nome_richiedente' => 'Nome Richiedente',
-            'cognome_richiedente' => 'Cognome Richiedente',
+            'cf_richiedete' => "Codice fiscale",
             'motivo_richiesta' => 'Motivo Richiesta',
             'data_appuntamento' => 'Data',
             'stato_richiesta' => 'Stato Richiesta',

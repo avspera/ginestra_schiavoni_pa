@@ -2,6 +2,7 @@
 
 namespace frontend\controllers;
 
+use common\models\Cittadino;
 use common\models\SegnalazioneDisservizio;
 use common\models\SegnalazioneDisservizioSearch;
 use yii\web\Controller;
@@ -39,6 +40,8 @@ class SegnalaDisservizioController extends Controller
     public function actionIndex()
     {
         $searchModel = new SegnalazioneDisservizioSearch();
+        $loggedUser = Cittadino::getFakeCittadino();
+        $searchModel->cf_richiedente = $loggedUser["fiscal_code"];
         $dataProvider = $searchModel->search($this->request->queryParams);
 
         return $this->render('index', [
@@ -55,8 +58,13 @@ class SegnalaDisservizioController extends Controller
      */
     public function actionView($id)
     {
+        $model = $this->findModel($id);
+        $loggedUser = Cittadino::getFakeCittadino();
+        if ($model->cf_richiedente !== $loggedUser["fiscal_code"]) {
+            return $this->goHome();
+        }
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'model' => $model
         ]);
     }
 

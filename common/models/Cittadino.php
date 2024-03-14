@@ -142,4 +142,22 @@ class Cittadino extends \yii\db\ActiveRecord
     {
         return isset($this->stato_civile_choices[$this->stato_civile]) ? $this->stato_civile_choices[$this->stato_civile] : "";
     }
+
+    public static function getFakeCittadino()
+    {
+        return [
+            "id" => "123456789",
+            "name" => "Mario Rossi",
+            "email" => "mario@example.com",
+            "fiscal_code" => "RSSMRA80A01H501X",
+            "attributes" => [
+                "spid_level" => "1",
+                "spid_mobile_phone" => "+393331234567",
+                "spid_address" => "Via Roma 123",
+                "spid_postal_code" => "00100",
+                "spid_city" => "Roma",
+                "spid_country" => "IT"
+            ]
+        ];
+    }
 }

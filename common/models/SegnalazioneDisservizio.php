@@ -14,7 +14,7 @@ use Yii;
  * @property string|null $attachments
  * @property string $created_at
  * @property string $nome_richiedente
- * @property string $cognome_richiedente
+ * @property string $cf_richiedente
  * @property string $email_richiedente
  */
 class SegnalazioneDisservizio extends \yii\db\ActiveRecord
@@ -34,11 +34,12 @@ class SegnalazioneDisservizio extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id_tipologia', 'luogo', 'note', 'created_at', 'nome_richiedente', 'cognome_richiedente', 'email_richiedente'], 'required'],
+            [['id_tipologia', 'note', 'created_at', 'nome_richiedente', 'cf_richiedente', 'email_richiedente'], 'required'],
             [['id_tipologia', 'luogo'], 'integer'],
             [['note', 'attachments'], 'string'],
-            [['created_at'], 'safe'],
-            [['nome_richiedente', 'cognome_richiedente', 'email_richiedente'], 'string', 'max' => 255],
+            [['luogo'], 'safe'],
+            [['nome_richiedente', 'email_richiedente'], 'string', 'max' => 255],
+            [['cf_richiedente',], 'string', 'max' => 16],
         ];
     }
 
@@ -55,7 +56,7 @@ class SegnalazioneDisservizio extends \yii\db\ActiveRecord
             'attachments' => 'Allegati',
             'created_at' => 'Creato il',
             'nome_richiedente' => 'Nome Richiedente',
-            'cognome_richiedente' => 'Cognome Richiedente',
+            'cf_richiedente' => 'Codice fiscale',
             'email_richiedente' => 'Email Richiedente',
         ];
     }

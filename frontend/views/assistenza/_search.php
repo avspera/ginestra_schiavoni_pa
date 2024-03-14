@@ -21,8 +21,6 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'nome_richiedente') ?>
 
-    <?= $form->field($model, 'cognome_richiedente') ?>
-
     <?= $form->field($model, 'motivo_richiesta') ?>
 
     <?php // echo $form->field($model, 'data') ?>

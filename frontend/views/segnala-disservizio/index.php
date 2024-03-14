@@ -21,7 +21,8 @@ $this->params['breadcrumbs'][] = $this->title;
         <?= Html::a('Create Segnalazione Disservizio', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+    <?php // echo $this->render('_search', ['model' => $searchModel]); 
+    ?>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
@@ -30,19 +31,18 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'yii\grid\SerialColumn'],
 
             'id',
+            'nome_richiedente',
+            'cf_richiedente',
             'id_settore',
             'luogo',
             'note:ntext',
             'attachments:ntext',
-            //'created_at',
-            //'nome_richiedente',
-            //'cognome_richiedente',
-            //'email_richiedente:email',
+            'created_at:datetime',
             [
                 'class' => ActionColumn::className(),
                 'urlCreator' => function ($action, SegnalazioneDisservizio $model, $key, $index, $column) {
                     return Url::toRoute([$action, 'id' => $model->id]);
-                 }
+                }
             ],
         ],
     ]); ?>

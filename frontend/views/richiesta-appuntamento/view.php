@@ -33,7 +33,7 @@ $this->params['breadcrumbs'][] = [
             'id',
             'email_richiedente:email',
             'nome_richiedente',
-            'cognome_richiedente',
+            'cf_richiedente',
             'data:date',
             [
                 'attribute' => "sede_riferimento",

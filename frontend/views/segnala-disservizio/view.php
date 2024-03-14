@@ -32,7 +32,7 @@ $this->params['breadcrumbs'][] = [
         'attributes' => [
             'id',
             'nome_richiedente',
-            'cognome_richiedente',
+            'cf_richiedente',
             'email_richiedente:email',
             [
                 'attribute' => 'id_tipologia',

@@ -18,7 +18,8 @@ class AssistenzaSearch extends Assistenza
     {
         return [
             [['id', 'motivo_richiesta', 'stato_richiesta', 'updated_by'], 'integer'],
-            [['email_richiedente', 'nome_richiedente', 'cognome_richiedente', 'created_at', 'updated_at', 'note'], 'safe'],
+            [['cf_richiedente'], 'string'],
+            [['email_richiedente', 'nome_richiedente', 'created_at', 'updated_at', 'note', 'cf_richiedente'], 'safe'],
         ];
     }
 
@@ -64,11 +65,11 @@ class AssistenzaSearch extends Assistenza
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
             'updated_by' => $this->updated_by,
+            'cf_richiedente' => $this->cf_richiedente
         ]);
 
         $query->andFilterWhere(['like', 'email_richiedente', $this->email_richiedente])
             ->andFilterWhere(['like', 'nome_richiedente', $this->nome_richiedente])
-            ->andFilterWhere(['like', 'cognome_richiedente', $this->cognome_richiedente])
             ->andFilterWhere(['like', 'note', $this->note]);
 
         return $dataProvider;

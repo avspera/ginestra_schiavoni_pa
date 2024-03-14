@@ -2,6 +2,8 @@
 
 namespace frontend\controllers;
 
+use common\models\Cittadino;
+use Yii;
 use common\models\RichiestaAppuntamento;
 use common\models\RichiestaAppuntamentoSearch;
 use yii\web\Controller;
@@ -40,6 +42,8 @@ class RichiestaAppuntamentoController extends Controller
     public function actionIndex()
     {
         $searchModel = new RichiestaAppuntamentoSearch();
+        $loggedUser = Cittadino::getFakeCittadino();
+        $searchModel->cf_richiedente = $loggedUser["fiscal_code"];
         $dataProvider = $searchModel->search($this->request->queryParams);
 
         return $this->render('index', [
@@ -56,8 +60,14 @@ class RichiestaAppuntamentoController extends Controller
      */
     public function actionView($id)
     {
+        $model = $this->findModel($id);
+        $loggedUser = Cittadino::getFakeCittadino();
+
+        if ($model->cf_richiedente !== $loggedUser["fiscal_code"]) {
+            return $this->goHome();
+        }
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'model' => $model
         ]);
     }
 
@@ -71,12 +81,15 @@ class RichiestaAppuntamentoController extends Controller
         $model = new RichiestaAppuntamento();
 
         if ($this->request->isPost) {
+
             if ($model->load($this->request->post())) {
                 $model->attachments = UploadedFile::getInstances($model, 'attachments');
                 $model->attachments = $model->uploadFiles($model->attachments);
 
-                if ($model->save()) {
+                if ($model->save(false)) {
                     return $this->redirect(['view', 'id' => $model->id]);
+                } else {
+                    Yii::$app->session->setFlash("error", "Ops...c'è stato qualche problema." . json_encode($model->getErrors()));
                 }
             }
         } else {

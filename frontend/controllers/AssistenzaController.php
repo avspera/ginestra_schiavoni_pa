@@ -6,6 +6,7 @@ use common\models\Assistenza;
 use common\models\AssistenzaReply;
 use common\models\AssistenzaReplySearch;
 use common\models\AssistenzaSearch;
+use common\models\Cittadino;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -41,6 +42,8 @@ class AssistenzaController extends Controller
     public function actionIndex()
     {
         $searchModel = new AssistenzaSearch();
+        $loggedUser = Cittadino::getFakeCittadino();
+        $searchModel->cf_richiedente = $loggedUser["fiscal_code"];
         $dataProvider = $searchModel->search($this->request->queryParams);
 
         return $this->render('index', [
@@ -77,6 +80,7 @@ class AssistenzaController extends Controller
     {
         $model = new Assistenza();
 
+        $loggedUser = Cittadino::getFakeCittadino();
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save(false)) {
                 \Yii::$app->session->setFlash("success", "La richiesta di assistenza è stata presa in carico.");
@@ -90,6 +94,7 @@ class AssistenzaController extends Controller
 
         return $this->render('create', [
             'model' => $model,
+            'loggedUser' => $loggedUser
         ]);
     }
 

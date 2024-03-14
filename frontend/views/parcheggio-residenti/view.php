@@ -27,9 +27,6 @@ $this->params['breadcrumbs'][] = [
 
     <p>
         <?= Html::a('Modifica', ['update', 'id' => $model->id], ['class' => 'btn btn-xs btn-primary']) ?>
-        <?php if (!$model->approved) { ?>
-            <?= Html::a('Approva', ['approve', 'id' => $model->id], ['class' => 'btn btn-xs btn-success']) ?>
-        <?php } ?>
         <?= Html::a('Cancella', ['delete', 'id' => $model->id], [
             'class' => 'btn btn-xs btn-danger',
             'data' => [
@@ -53,16 +50,11 @@ $this->params['breadcrumbs'][] = [
                     }
                 }
             ],
+            'cf_richiedente',
             'indirizzo',
             'qnt_auto',
             'targa',
             'veicolo',
-            [
-                'attribute' => 'price',
-                'value' => function ($model) {
-                    return Utils::formatCurrency($model->price);
-                }
-            ],
             [
                 'attribute' => 'durata',
                 'value' => function ($model) {

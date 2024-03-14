@@ -42,7 +42,7 @@ use kartik\file\FileInput;
 
         <div class="form-group col-md-4">
             <div class="select-wrapper">
-                <label class="active control-label" for="defaultSelect">Stato</label>
+                <label class="active control-label" for="user-status">Stato</label>
                 <select id="user-status" name="User[status]">
                     <option selected="" value="">Scegli un'opzione</option>
                     <?php foreach ($model->statusList as $key => $value) { ?>
