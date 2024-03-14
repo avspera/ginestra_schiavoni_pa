@@ -18,7 +18,7 @@ class AppAsset extends AssetBundle
     ];
     
     public $js = [
-        "/bootstrap-italia/js/bootstrap-italia.bundle.min.js"
+        // "/bootstrap-italia/js/bootstrap-italia.bundle.min.js"
     ];
     
     public $depends = [

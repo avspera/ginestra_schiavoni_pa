@@ -43,8 +43,6 @@ class AlboPretorioController extends Controller
     {
         $searchModel = new AlboPretorioSearch();
         $dataProvider = $searchModel->searchCurl($this->request->queryParams);
-        // $dataProvider = $searchModel->search($this->request->queryParams);
-        // $dataProvider->sort->defaultOrder = ["numero_atto" => SORT_DESC];
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,

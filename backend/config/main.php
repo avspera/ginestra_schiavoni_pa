@@ -13,6 +13,13 @@ return [
     'bootstrap' => ['log'],
     'modules' => [],
     'components' => [
+        [
+            'class' => 'yii\filters\HttpCache',
+            'lastModified' => function ($action, $params) {
+                return time();
+            },
+            'sessionCacheLimiter' => 'public',
+        ],
         'request' => [
             'csrfParam' => '_csrf-backend',
         ],
@@ -40,8 +47,7 @@ return [
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
-            'rules' => [
-            ],
+            'rules' => [],
         ],
     ],
     'params' => $params,

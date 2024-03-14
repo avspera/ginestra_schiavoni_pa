@@ -117,7 +117,9 @@ class AlboPretorio extends \yii\db\ActiveRecord
     {
         //Init curl
         $curl = new curl\Curl();
-        $response = $curl->get('https://api.trasparenzapa.it/Albo/TipoDocumento/' . $id . '?comune=' . \Yii::$app->params["codiceCatastale"]);
+        // $url = 'https://api.trasparenzapa.it/Albo/TipoDocumento/' . $id . '?comune=' . \Yii::$app->params["codiceCatastale"];
+        $url = "https://api.trasparenzapa.it/tipidocumento/" . \Yii::$app->params["codiceCatastale"] . "/" . $id;
+        $response = $curl->get($url);
         $formatter = new JsonParser();
         $decodedResponse = $formatter->parse($response, 'json');
         return $decodedResponse;
@@ -156,7 +158,9 @@ class AlboPretorio extends \yii\db\ActiveRecord
     public function getTipiDocumento()
     {
         $curl = new curl\Curl();
-        $response = $curl->get('https://api.trasparenzapa.it/Albo/TipiDocumento?comune=' . \Yii::$app->params["codiceCatastale"]);
+        $url = "https://api.trasparenzapa.it/tipidocumento/" . \Yii::$app->params["codiceCatastale"];
+
+        $response = $curl->get($url);
         $formatter = new JsonParser();
         $decodedResponse = $formatter->parse($response, 'json');
         $items = [];

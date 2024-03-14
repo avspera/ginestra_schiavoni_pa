@@ -14,7 +14,7 @@ $this->title = 'Login';
     <div class="card card-info">
         <div class="mt-5 offset-lg-3 col-lg-6">
             <div class="car-header">
-                <?= Html::img(Yii::getAlias("@web") . "/images/logo.png", ["class" => "mx-auto d-block"]) ?>
+                <?= Html::img(Yii::getAlias("@web") . "/images/logo.webp", ["class" => "mx-auto d-block"]) ?>
                 <h4>Accedi qui</h4>
             </div>
             <div class="card-body">

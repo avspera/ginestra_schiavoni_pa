@@ -98,28 +98,6 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
         return $this->role === $this->roleListFlipped["amministratore"];
     }
 
-    //used for quotes from web
-    public function getWebUserId()
-    {
-        $user = User::findOne(["username" => "web", "role" => self::ROLE_WEB]);
-        return !empty($user) ? $user->id : NULL;
-    }
-
-    public function isQuote()
-    {
-        return $this->role === self::ROLE_QUOTE;
-    }
-
-    public function isPayment()
-    {
-        return $this->role === self::ROLE_PAYMENT;
-    }
-
-    public function isClient()
-    {
-        return $this->role === self::ROLE_CLIENT;
-    }
-
     /**
      * Generates new password reset token
      */

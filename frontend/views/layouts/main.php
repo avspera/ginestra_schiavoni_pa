@@ -56,7 +56,7 @@ AppAsset::register($this);
                             <div class="it-header-center-content-wrapper">
                                 <div class="it-brand-wrapper">
                                     <a href="/">
-                                        <?= Html::img(Yii::getAlias("@web") . "/images/logo.png", ["style" => "width: 50px;"]) ?>
+                                        <?= Html::img(Yii::getAlias("@web") . "/images/logo.webp", ["style" => "width: 50px; height: 100%"]) ?>
                                         <div class="it-brand-text" style="margin-left: 10px;">
                                             <div class="it-brand-title">Comune di Ginestra Degli Schiavoni</div>
                                             <div class="it-brand-tagline d-none d-md-block">Regione Campania</div>
@@ -118,13 +118,13 @@ AppAsset::register($this);
                                             <li class="nav-item"><a class="nav-link <?= Yii::$app->controller->id == "contravvenzioni" ? "active" : "" ?>" href="<?= Url::to(["contravvenzioni/index"]) ?>"><span>Contravvenzioni</span></a></li>
                                             <li class="nav-item"><a class="nav-link <?= Yii::$app->controller->id == "parcheggio-residenti" ? "active" : "" ?>" href="<?= Url::to(["parcheggio-residenti/index"]) ?>"><span>Parcheggio residenti</span></a></li>
                                             <li class="nav-item dropdown">
-                                                <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false" id="mainNavDropdown1">
+                                                <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false" id="actionsDropdown">
                                                     <span>Assistenza</span>
                                                     <svg class="icon icon-xs">
                                                         <use href="/bootstrap-italia/svg/sprites.svg#it-expand"></use>
                                                     </svg>
                                                 </a>
-                                                <div class="dropdown-menu" role="region" aria-labelledby="mainNavDropdown1">
+                                                <div class="dropdown-menu" role="region" aria-labelledby="actionsDropdown">
                                                     <div class="link-list-wrapper">
                                                         <ul class="link-list">
                                                             <li><a class="dropdown-item list-item" href="<?= Url::to(["assistenza/index"]) ?>"><span>Le tue richieste</span></a></li>
@@ -212,7 +212,7 @@ AppAsset::register($this);
                                         <h3 class="d-none d-md-block">Inserire qui la tag line</h3>
                                     </div>
                                 </a> -->
-                                <?= Html::img("/images/logo_ue.png", ["style" => "width: 300px;"]) ?>
+                                <?= Html::img("/images/logo_ue.webp", ["style" => "width: 300px; height: 100%"]) ?>
                             </div>
                         </div>
                     </div>

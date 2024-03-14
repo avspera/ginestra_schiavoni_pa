@@ -9,17 +9,17 @@ use common\components\Utils;
         <div class="neutral-2-bg-b1 border neutral-2-border-color-b2 mb-2 mb-lg-0">
             <div class="card-body row text-start text-md-center p-1 p-lg-2 my-0 my-lg-2">
                 <div class="col-auto col-lg-12 float-start float-lg-none">
-                    <span class="h5 mb-0">
+                    <span class="mb-0">
                         <div class="text-value">N. <b><?= $model->id ?></b></div>
                     </span>
                 </div>
                 <div class="col-auto col-lg-12 float-start float-lg-none">
-                    <span class="h5 mb-0">
-                        <div>pubblicata il</div>
+                    <span class="mb-0">
+                        <div>pubblicato il</div>
                     </span>
                 </div>
                 <div class="col-auto col-lg-12 float-start float-lg-none">
-                    <span class="h5 mb-0">
+                    <span class="mb-0">
                         <div class="text-uppercase"><b><?= Utils::formatDate($model->data_pubblicazione) ?></b></div>
                     </span>
                 </div>
@@ -39,7 +39,7 @@ use common\components\Utils;
                         <span><b><?= Utils::formatDate($model->data_pubblicazione) ?></b></span>
                     </li>
                     <li>
-                        <span class="d-inline-block col-12 col-md-3 ps-0">Fine pubblicazione:</span>
+                        <span class="d-inline-block col-12 col-md-3 ps-0">Data Fine pubblicazione:</span>
                         <span><b><?= Utils::formatDate($model->data_fine_pubblicazione) ?></b></span>
                     </li>
                     <li><span class="d-inline-block col-12 col-md-3 ps-0">Atto:</span> N. <strong><?= $model->numero_atto ?></strong> del <strong><?= Utils::formatDate($model->data_pubblicazione) ?></strong></li>
@@ -52,7 +52,7 @@ use common\components\Utils;
                         <span class="d-inline-block col-12 col-md-3 ps-0">Tipo documento:</span> <strong>
                             <?php
                             $tipologia = $model->getTipologia($model->id_tipologia);
-                            echo isset($tipologia["descrizioneDocumento"]) ? $tipologia["descrizioneDocumento"] : "-";
+                            echo isset($tipologia["descrizioneDocumento"]) ? $tipologia["descrizioneDocumento"] : $model->id_tipologia;
                             ?>
                         </strong>
                     </li>

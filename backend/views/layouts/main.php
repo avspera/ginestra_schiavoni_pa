@@ -41,7 +41,7 @@ AppAsset::register($this);
                             <div class="it-header-center-content-wrapper">
                                 <div class="it-brand-wrapper">
                                     <a href="/">
-                                        <?= Html::img(Yii::getAlias("@web") . "/images/logo.png", ["style" => "width: 50px;"]) ?>
+                                        <?= Html::img(Yii::getAlias("@web") . "/images/logo.webp", ["style" => "width: 50px;"]) ?>
                                         <div class="it-brand-text" style="margin-left: 10px;">
                                             <div class="it-brand-title">Comune di Ginestra Degli Schiavoni</div>
                                             <div class="it-brand-tagline d-none d-md-block">Regione Campania</div>
@@ -59,7 +59,7 @@ AppAsset::register($this);
 
                                     <?php
                                     if (Yii::$app->user->isGuest) {
-                                        echo Html::tag('div', Html::a('Login', ['/site/login'], ['class' => ['btn btn-link login text-decoration-none']]), ['class' => ['d-flex']]);
+                                        echo Html::tag('div', Html::a('Login', ['/site/login'], ['class' => ['btn btn-link login text-decoration-none d-flex'], 'data-element' => "personal-area-login"]));
                                     } else {
                                         echo Html::beginForm(['/site/logout'], 'post', ['class' => 'd-flex'])
                                             . Html::submitButton(

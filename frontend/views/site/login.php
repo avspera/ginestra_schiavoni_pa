@@ -7,7 +7,7 @@
 $path = getcwd();
 $relativePath = dirname($path, 3);
 
-require_once($relativePath . "/spid-cie-php/spid-php.php");
+require_once("/Users/avspera/Desktop/spid-cie-php/spid-php.php");
 
 use yii\bootstrap5\ActiveForm;
 use yii\helpers\Html;
@@ -16,7 +16,6 @@ $this->title = 'Login';
 
 $spidsdk = new SPID_PHP();
 
-die;
 if (!$spidsdk->isAuthenticated()) {
     if (!isset($_GET['idp'])) {
         $spidsdk->insertSPIDButtonCSS();
@@ -48,7 +47,7 @@ $sp->login($idpName, $assertId, $attrId);
     <div class="card card-info">
         <div class="mt-5 offset-lg-3 col-lg-6">
             <div class="car-header">
-                <?= Html::img(Yii::getAlias("@web") . "/images/logo.png", ["class" => "mx-auto d-block"]) ?>
+                <?= Html::img(Yii::getAlias("@web") . "/images/logo.webp", ["class" => "mx-auto d-block"]) ?>
                 <h4 class="text-center">Effettua l'accesso</h4>
             </div>
             <div class="card-body">
