@@ -17,7 +17,7 @@ $this->params['breadcrumbs'][] = [
     'url' => ["index"]
 ];
 $models = $dataProvider->getModels();
-$latestUpdate = !empty($models[count($models) - 1]) ? Utils::formatDate($models[count($models) - 1]->data_pubblicazione) : "N/A";
+$latestUpdate = !empty($models[0]) ? Utils::formatDate($models[0]->data_pubblicazione) : "N/A";
 ?>
 <div class="albo-pretorio-index">
 
@@ -52,8 +52,8 @@ $latestUpdate = !empty($models[count($models) - 1]) ? Utils::formatDate($models[
                                     'class' => ActionColumn::className(),
                                     'template' => "{view}",
                                     'buttons' => [
-                                        'view' => function($url, $model){
-                                            return Html::a("<button class='btn btn-xs btn-success'>Vedi</button>", Url::to(["view", "id" => $model->id])); 
+                                        'view' => function ($url, $model) {
+                                            return Html::a("<button class='btn btn-xs btn-success'>Vedi</button>", Url::to(["view", "id" => $model->id]));
                                         }
                                     ]
                                 ],

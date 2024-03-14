@@ -45,12 +45,12 @@ $this->params['breadcrumbs'][] = [
                                 ],
                                 'indirizzo',
                                 'qnt_auto',
-                                [
-                                    'attribute' => "price",
-                                    'value' => function ($model) {
-                                        return Utils::formatCurrency($model->price);
-                                    }
-                                ],
+                                // [
+                                //     'attribute' => "price",
+                                //     'value' => function ($model) {
+                                //         return Utils::formatCurrency($model->price);
+                                //     }
+                                // ],
                                 [
                                     'attribute' => 'durata',
                                     'value' => function ($model) {
@@ -63,7 +63,7 @@ $this->params['breadcrumbs'][] = [
                                         return $model->payed ? "SI" : "NO";
                                     }
                                 ],
-                                'created_at',
+                                'created_at:date',
                                 //'updated_at',
                                 //'created_by',
                                 //'updated_by',

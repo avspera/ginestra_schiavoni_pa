@@ -276,7 +276,7 @@ class ContravvenzioniController extends Controller
         if ($parsedResponse["esito"] == "ko") {
             Yii::$app->session->setFlash("error", "Errore critico: " . $parsedResponse["errore"]);
         } else {
-            Yii::$app->session->setFlash("success", \yii\helpers\Html::a("Scarica avviso", \yii\helpers\Url::to([$parsedResponse["path"]])));
+            Yii::$app->session->setFlash("success", \yii\helpers\Html::a("File pronto per il download", \yii\helpers\Url::to([$parsedResponse["path"]])));
         }
 
         return $this->redirect(Yii::$app->request->referrer);
