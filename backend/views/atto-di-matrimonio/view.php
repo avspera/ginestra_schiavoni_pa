@@ -20,7 +20,7 @@ $this->params['breadcrumbs'][] = [
     'template' => "<li class='breadcrumb-item'>" . $this->title . "</li>",
 ];
 
-\yii\web\YiiAsset::register($this);
+
 ?>
 <div class="atto-di-matrimonio-view">
 

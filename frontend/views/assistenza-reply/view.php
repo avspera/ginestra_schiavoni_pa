@@ -10,7 +10,6 @@ use yii\widgets\DetailView;
 $this->title = $model->id;
 $this->params['breadcrumbs'][] = ['label' => 'Assistenza Replies', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
-\yii\web\YiiAsset::register($this);
 ?>
 <div class="assistenza-reply-view">
 

@@ -16,35 +16,47 @@ use yii\widgets\ActiveForm;
         'method' => 'get',
     ]); ?>
 
-    <?= $form->field($model, 'id') ?>
+    <div class="card-wrapper card-space">
+        <div class="card card-bg  no-after">
+            <div class="card-body p-3 p-md-5 lightgrey-bg-c1">
+                <div class="mb-4">
+                    <div class="float-start col-md-6 mb-0 mb-md-5">
+                        <span class="card-title h4">Cerca</span>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group field-usersearch-id">
+                            <label class="control-label active" for="usersearch-id">ID</label>
+                            <input type="text" value="<?= $model->id ?>" id="usersearch-id" class="form-control" name="UserSearch[id]" data-focus-mouse="false">
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group field-usersearch-nome">
+                            <label class="control-label active" for="usersearch-nome">Nome</label>
+                            <input type="text" value="<?= $model->nome ?>" id="usersearch-nome" class="form-control" name="UserSearch[nome]" data-focus-mouse="false">
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group field-usersearch-email">
+                            <label class="control-label active" for="usersearch-email">Email</label>
+                            <input type="text" value="<?= $model->email ?>" id="usersearch-email" class="form-control" name="UserSearch[email]" data-focus-mouse="false">
+                        </div>
+                    </div>
+                </div>
 
-    <?= $form->field($model, 'nome') ?>
+                <div class="float-start col-md-6 col-xs-12">
+                    <div class="form-group">
+                        <div class="py-1">
+                            <?= Html::submitButton('Cerca', ['class' => 'btn btn-xs btn-primary m-1']) ?>
+                            <?= Html::a('Annulla', Url::to(["index"]), ['class' => 'btn btn-xs btn-outline-secondary m-1']) ?>
+                        </div>
+                    </div>
 
-    <?= $form->field($model, 'username') ?>
-
-    <?= $form->field($model, 'password') ?>
-
-    <?= $form->field($model, 'auth_key') ?>
-
-    <?php // echo $form->field($model, 'created') ?>
-
-    <?php // echo $form->field($model, 'status') ?>
-
-    <?php // echo $form->field($model, 'last_login') ?>
-
-    <?php // echo $form->field($model, 'email') ?>
-
-    <?php // echo $form->field($model, 'picture') ?>
-
-    <?php // echo $form->field($model, 'password_reset_token') ?>
-
-    <?php // echo $form->field($model, 'role') ?>
-
-    <?php // echo $form->field($model, 'updated') ?>
-
-    <div class="form-group">
-        <?= Html::submitButton('Search', ['class' => 'btn btn-xs btn-primary']) ?>
-        <?= Html::a('Reset', Url::to(["index"]), ['class' => 'btn btn-xs btn-outline-secondary']) ?>
+                </div>
+            </div>
+        </div>
     </div>
 
     <?php ActiveForm::end(); ?>

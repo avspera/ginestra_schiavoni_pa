@@ -17,7 +17,6 @@ $this->params['breadcrumbs'][] = [
     'label' => $this->title,
     'template' => "<li class='breadcrumb-item'>" . $this->title . "</li>",
 ];
-\yii\web\YiiAsset::register($this);
 ?>
 <div class="cittadino-view">
 

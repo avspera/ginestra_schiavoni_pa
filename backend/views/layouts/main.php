@@ -25,7 +25,7 @@ AppAsset::register($this);
     <link rel="icon" type="image/png" sizes="16x16" href="<?= Yii::getAlias("@web") ?>/favicon/favicon-16x16.png">
     <link rel="manifest" href="<?= Yii::getAlias("@web") ?>/favicon/site.webmanifest">
     <link rel="mask-icon" href="<?= Yii::getAlias("@web") ?>/favicon/safari-pinned-tab.svg" color="#5bbad5">
-
+    
     <?php $this->head() ?>
 </head>
 
@@ -130,6 +130,7 @@ AppAsset::register($this);
                                                     <ul class="link-list">
                                                         <li class="nav-item"><a class="nav-link <?= Yii::$app->controller->id == "cittadino" ? "active" : "" ?>" href="<?= Url::to(["cittadino/index"]) ?>"><span>Anagrafica cittadini</span></a></li>
                                                         <?php if (Yii::$app->user->identity->isAdmin()) : ?>
+                                                            <li class="nav-item"><a class="nav-link <?= Yii::$app->controller->id == "anagrafica-comune" ? "active" : "" ?>" href="<?= Url::to(["users/index"]) ?>"><span>Anagrafica Utenti</span></a></li>
                                                             <li class="nav-item"><a class="nav-link <?= Yii::$app->controller->id == "anagrafica-comune" ? "active" : "" ?>" href="<?= Url::to(["anagrafica-comune/index"]) ?>"><span>Anagrafica Comune</span></a></li>
                                                         <?php endif; ?>
                                                     </ul>

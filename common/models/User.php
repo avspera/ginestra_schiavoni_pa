@@ -26,7 +26,7 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
     const STATUS_INACTIVE   = 9;
     const STATUS_ACTIVE     = 10;
     public $statusList      = [self::STATUS_INACTIVE => "Non attivo", self::STATUS_ACTIVE => "Attivo", self::STATUS_DELETED => "Cancellato"];
-    public $roleList        = [0 => "Amministratore", 1 => "Cerfificati/Documenti", 2 => "Servizi Demografici", 3 => "Polizia Municipale", 4 => "Urbanistica"];
+    public $roleList        = [0 => "Amministratore", 1 => "Certificati/Documenti", 2 => "Servizi Demografici", 3 => "Polizia Municipale", 4 => "Urbanistica"];
     public $roleListFlipped = ["amministratore" => 0, "certificati" => 1, "servizi_demografici" => 2, "polizia_municipale" => 3, "urbanistica" => 4];
     public $new_password            = "";
     public $new_password_confirm    = "";

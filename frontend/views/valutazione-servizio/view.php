@@ -9,7 +9,6 @@ use yii\widgets\DetailView;
 $this->title = $model->id;
 $this->params['breadcrumbs'][] = ['label' => 'Valutazione Servizios', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
-\yii\web\YiiAsset::register($this);
 ?>
 <div class="valutazione-servizio-view">
 

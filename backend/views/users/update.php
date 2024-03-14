@@ -6,9 +6,16 @@ use yii\helpers\Html;
 /** @var common\models\User $model */
 
 $this->title = 'Modifica Utente: ' . $model->nome;
-$this->params['breadcrumbs'][] = ['label' => 'Utenti', 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => $model->nome, 'url' => ['view', 'id' => $model->id]];
-$this->params['breadcrumbs'][] = 'Modifica';
+$this->params['breadcrumbs'][] = [
+    'label' => "Utenti",
+    'template' => "<li class='breadcrumb-item'><span class='separator'>/</span>{link}</li>",
+    'url' => ["index"]
+];
+$this->params['breadcrumbs'][] = [
+    'label' => $this->title,
+    'template' => "<li class='breadcrumb-item'>" . $this->title . "</li>",
+];
+
 ?>
 <div class="user-update">
 

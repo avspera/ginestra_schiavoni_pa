@@ -21,7 +21,6 @@ $this->params['breadcrumbs'][] = [
     'label' => $this->title,
     'template' => "<li class='breadcrumb-item'><span class='separator'>/</span>" . $this->title . "</li>",
 ];
-\yii\web\YiiAsset::register($this);
 ?>
 <div class="atto-di-matrimonio-view">
 
