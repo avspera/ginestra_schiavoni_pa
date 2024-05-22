@@ -24,13 +24,19 @@ AppAsset::register($this);
     <link rel="icon" type="image/png" sizes="16x16" href="<?= Yii::getAlias("@web") ?>/favicon/favicon-16x16.png">
     <link rel="manifest" href="<?= Yii::getAlias("@web") ?>/favicon/site.webmanifest">
     <link rel="mask-icon" href="<?= Yii::getAlias("@web") ?>/favicon/safari-pinned-tab.svg" color="#5bbad5">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <?php $this->head() ?>
 </head>
 
 <body class="d-flex flex-column h-100">
     <?php $this->beginBody() ?>
+    <div class="skiplink">
+        <a class="visually-hidden-focusable" href="#main-container">Vai ai contenuti</a>
+        <a class="visually-hidden-focusable" href="#footer">Vai al
+            footer</a>
+    </div>
 
-    <header class="it-header-wrapper it-shadow">
+    <!-- <header class="it-header-wrapper it-shadow">
         <div class="it-header-slim-wrapper">
             <div class="container">
                 <div class="row">
@@ -75,14 +81,6 @@ AppAsset::register($this);
                                             </li>
                                         </ul>
                                     </div>
-                                    <!-- <div class="it-search-wrapper">
-                                        <span class="d-none d-md-block">Cerca</span>
-                                        <button class="search-link rounded-icon" type="button" data-bs-toggle="modal" data-bs-target="#search-modal" aria-label="Cerca nel sito" data-focus-mouse="false">
-                                            <svg class="icon">
-                                                <use href="/bootstrap-italia/svg/sprites.svg#it-search"></use>
-                                            </svg>
-                                        </button>
-                                    </div> -->
                                 </div>
                             </div>
                         </div>
@@ -93,7 +91,7 @@ AppAsset::register($this);
                 <div class="container">
                     <div class="row">
                         <div class="col-12">
-                            <!--start nav-->
+                            
                             <nav class="navbar navbar-expand-lg has-megamenu" aria-label="Navigazione principale">
                                 <button class="custom-navbar-toggler" type="button" aria-controls="navC2" aria-expanded="false" aria-label="Mostra/Nascondi la navigazione" data-bs-toggle="navbarcollapsible" data-bs-target="#navC2">
                                     <svg class="icon">
@@ -143,9 +141,11 @@ AppAsset::register($this);
                 </div>
             </div>
         </div>
-    </header>
+    </header> -->
 
-    <main role="main" class="flex-shrink-0">
+    <?= $this->render("snippets/_header") ?>
+
+    <main>
         <div class="container">
             <div class="breadcrumb-container">
                 <?= Breadcrumbs::widget([
@@ -194,79 +194,8 @@ AppAsset::register($this);
         </div>
     </main>
 
+    <?= $this->render("snippets/_footer") ?>
 
-    <footer class="it-footer">
-        <div class="it-footer-main">
-            <div class="container">
-                <section>
-                    <div class="row clearfix">
-                        <div class="col-sm-12">
-                            <div class="it-brand-wrapper">
-                                <!-- <a href="#" data-focus-mouse="false" class="">
-                                    <svg class="icon">
-                                        <use xlink:href="/bootstrap-italia/svg/sprites.svg#it-code-circle"></use>
-                                    </svg>
-                                    <div class="it-brand-text">
-                                        <h2>Lorem Ipsum</h2>
-                                        <h3 class="d-none d-md-block">Inserire qui la tag line</h3>
-                                    </div>
-                                </a> -->
-                                <?= Html::img("/images/logo_ue.webp", ["style" => "width: 300px; height: 100%"]) ?>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-                <section class="py-4 border-white border-top">
-                    <div class="row">
-                        <div class="col-lg-5 col-md-5 pb-2">
-                            <h4><a href="#" title="Vai alla pagina: Contatti">Contatti</a></h4>
-                            <p>
-                                <strong>Comune di Ginestra Degli Schiavoni</strong><br>
-                                Via Porta Nuova 2 - 82020 Ginestra Degli Schiavoni
-                            </p>
-                            <p>
-                                <span class="bold">PEC:</span> <a style="color:white" href="mailto:uff.amm.vo.moffa.ginestra@asmepec.it">uff.amm.vo.moffa.ginestra@asmepec.it</a><br>
-                                <span class="bold">P.Iva:</span> 00688690627<br>
-                                <span class="bold">C.F.:</span> 8000443062
-                            </p>
-                            <div class="link-list-wrapper">
-                                <ul class="footer-list link-list clearfix">
-                                    <li>
-                                        <a class="list-item" href="#" title="Vai alla pagina: URP - Ufficio Relazioni con il Pubblico">URP - Ufficio Relazioni con il Pubblico</a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="col-lg-4 col-md-4 pb-2">
-                            <div class="pb-2">
-                                <h4><a href="#" title="Vai alla pagina: Seguici su">Seguici su</a></h4>
-                                <ul class="list-inline text-left social">
-                                    <li class="list-inline-item">
-                                        <a class="p-2 text-white" href="#" target="_blank"><svg class="icon icon-sm icon-white align-top">
-                                                <use xlink:href="/bootstrap-italia/svg/sprites.svg#it-facebook"></use>
-                                            </svg><span class="visually-hidden">Facebook</span></a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-            </div>
-        </div>
-        <div class="it-footer-small-prints clearfix">
-            <div class="container">
-                <h3 class="visually-hidden">Sezione Link Utili</h3>
-                <ul class="it-footer-small-prints-list list-inline mb-0 d-flex flex-column flex-md-row">
-                    <!-- <li class="list-inline-item"><a href="#" title="Note Legali">Media policy</a></li> -->
-                    <li class="list-inline-item"><a href="#" title="Note Legali">Note legali</a></li>
-                    <li class="list-inline-item"><a href="<?= Url::to(["site/privacy"]) ?>" title="Privacy-Cookies">Privacy policy</a></li>
-                    <li class="list-inline-item"><a href="<?= Url::to(["site/map"]) ?>" title="Mappa del sito">Mappa del sito</a></li>
-                    <li class="list-inline-item"><a href="<?= Url::to(["backend/login"]) ?>" title="Accedi all'area privata">Accedi all'area privata</a></li>
-                </ul>
-            </div>
-        </div>
-
-    </footer>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <?php $this->endBody() ?>
 </body>

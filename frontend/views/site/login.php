@@ -4,47 +4,23 @@
 /** @var yii\bootstrap5\ActiveForm $form */
 /** @var \common\models\LoginForm $model */
 
-// $path = getcwd();
-// $relativePath = dirname($path, 3);
+$spidLoginUrl = Yii::$app->params["spidLoginEndPoint"] . "?authorityId=" . Yii::$app->params["spidAuthorityId"] . 
+                    "&scope=" . Yii::$app->params["spidScope"] . 
+                    "&state=" . Yii::$app->params["spidState"]. 
+                    "&response_type=".Yii::$app->params["spidResponseType"].
+                    "&client_id=".Yii::$app->params["spidClientId"].
+                    "&redirect_uri=".Yii::$app->params["spidRedirectUri"];
 
-// require_once("/Users/avspera/Desktop/spid-cie-php/spid-php.php");
-
-// use yii\bootstrap5\ActiveForm;
-// use yii\helpers\Html;
-
-// $this->title = 'Login';
-
-// $spidsdk = new SPID_PHP();
-
-// if (!$spidsdk->isAuthenticated()) {
-//     if (!isset($_GET['idp'])) {
-//         $spidsdk->insertSPIDButtonCSS();
-//         $spidsdk->insertSPIDButton("L");
-//         $spidsdk->insertSPIDButtonJS();
-//     } else {
-//         $spidsdk->login($_GET['idp'], 1);
-//     }
-// } else {
-//     foreach ($spidsdk->getAttributes() as $attribute => $value) {
-//         echo "<p>" . $attribute . ": <b>" . $value[0] . "</b></p>";
-//     }
-
-//     echo "<hr/><p><a href='" . $spidsdk->getLogoutURL() . "'>Logout</a></p>";
-// }
-
-// // shortname of IdP, same as the name of corresponding IdP metadata file, without .xml
-// $idpName = 'testenv';
-// // index of assertion consumer service as per the SP metadata (sp_assertionconsumerservice in settings array)
-// $assertId = 0;
-// // index of attribute consuming service as per the SP metadata (sp_attributeconsumingservice in settings array)
-// $attrId = 1;
-
-// // Generate the login URL and redirect to the IdP login page
-// $sp->login($idpName, $assertId, $attrId);
-use yii\helpers\Html;
-use yii\widgets\ActiveForm;
-
+$this->registerJsFile(
+    '@web/js/spid/spid-idps.js',
+    ['depends' => [\yii\web\JqueryAsset::class]]
+);
+$this->registerJsFile(
+    '@web/js/spid/spid-sp-access-button.min.js',
+    ['depends' => [\yii\web\JqueryAsset::class]]
+);
 ?>
+<link href="<?= Yii::getAlias('@web') ?>/css/spid/spid-sp-access-button.min.css" rel="stylesheet">
 <div class="site-login">
 
     <div class="card card-info">
@@ -53,19 +29,21 @@ use yii\widgets\ActiveForm;
                 <h4 class="text-center">Effettua l'accesso</h4>
             </div>
             <div class="card-body">
-                <?php $form = ActiveForm::begin(['id' => 'login-form']); ?>
-
-                <?= $form->field($model, 'username')->textInput(['autofocus' => true]) ?>
-
-                <?= $form->field($model, 'password')->passwordInput() ?>
-
-                <?= $form->field($model, 'rememberMe')->checkbox()->label("Rimani connesso") ?>
-
-                <div class="form-group">
-                    <?= Html::submitButton('Login', ['class' => 'btn btn-xs btn-primary btn-block', 'name' => 'login-button']) ?>
+                <div class="text-center">
+                    <a href="#" class="italia-it-button italia-it-button-size-l button-spid" spid-idp-button="#spid-idp-button-large-get" aria-haspopup="true" aria-expanded="false">
+                        <span class="italia-it-button-icon">
+                            <img src="<?= Yii::getAlias("@web/images") ?>/spid/spid-ico-circle-bb.svg" onerror="this.src='img/spid-ico-circle-bb.png'; this.onerror=null;" alt="" />
+                        </span>
+                        <span class="italia-it-button-text"> Entra con SPID </span>
+                    </a>
+                    <div id="spid-idp-button-large-get" class="spid-idp-button spid-idp-button-tip spid-idp-button-relative">
+                        <ul id="spid-idp-list-large-root-get" class="spid-idp-button-menu" aria-labelledby="spid-idp" data-spid-remote>
+                            <li><a class="dropdown-item" href="https://www.spid.gov.it">Maggiori informazioni</a></li>
+                            <li><a class="dropdown-item" href="https://www.spid.gov.it/richiedi-spid">Non hai SPID?</a></li>
+                            <li><a class="dropdown-item" href="https://www.spid.gov.it/serve-aiuto">Serve aiuto?</a></li>
+                        </ul>
+                    </div>
                 </div>
-
-                <?php ActiveForm::end(); ?>
             </div>
         </div>
 

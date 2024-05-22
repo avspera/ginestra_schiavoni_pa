@@ -163,16 +163,16 @@ class ContravvenzioniController extends Controller
 
         $rate   = $decodedResponse["content"][0]["rate"];
         $esito  = "ok";
-        $i      = 0;
+        
         foreach ($rate as $item) {
             $rata                           = new ContravvenzioneRata();
             $rata->id_contravvenzione       = $model->id;
             $rata->id_univoco_versamento    = $item["id_univoco_versamento"];
-            $rata->id_univoco_dovuto        = isset($item["dovuti"][0]) ? $item["dovuti"][0]["id_univoco_dovuto"] : NULL;
-            $rata->importo                  = isset($item["dovuti"][0]) ? $item["dovuti"][0]["importo"] : 0;
-            $rata->causale                  = isset($item["dovuti"][0]) ? $item["dovuti"][0]["causale"] : NULL;
+            $rata->id_univoco_dovuto        = isset($item["dovuti"][0]["id_univoco_versamento"]) ? $item["dovuti"][0]["id_univoco_dovuto"] : NULL;
+            $rata->importo                  = isset($item["dovuti"][0]["importo"]) ? $item["dovuti"][0]["importo"] : 0;
+            $rata->causale                  = isset($item["dovuti"][0]["causale"]) ? $item["dovuti"][0]["causale"] : NULL;
             $rata->stato                    = $model->stato;
-            $rata->scadenza                 = isset($item["dovuti"][0]) ? $item["dovuti"][0]["scadenza"] : NULL;
+            $rata->scadenza                 = isset($item["dovuti"][0]["scadenza"]) ? $item["dovuti"][0]["scadenza"] : NULL;
 
             $rata->save(false);
         }
