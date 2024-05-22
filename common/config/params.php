@@ -26,6 +26,5 @@ return [
     'spidState' => 'Bs9_ci1LOzEPNcWrzlATBgpeS9J_sx2k1l3_Wl8yBfU.7AM-8-gRJ74.webapp',
     'spidResponseType' => 'code',
     'spidClientId' => '{client_id}',
-    'spidRedirectUri' => '{redirect_uri}',
-    'something' => ''
+    'spidRedirectUri' => '{redirect_uri}'
 ];
