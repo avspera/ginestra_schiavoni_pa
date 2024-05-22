@@ -2,14 +2,14 @@
 
 return [
     'components' => [
+        // 'db' => [
+        //     'class' => \yii\db\Connection::class,
+        //     'dsn' => 'mysql:host=localhost;dbname=ginestra_degli_schiavoni',
+        //     'username' => 'root',
+        //     'password' => 'Antonio1742',
+        //     'charset' => 'utf8',
+        // ],
         'db' => [
-            'class' => \yii\db\Connection::class,
-            'dsn' => 'mysql:host=localhost;dbname=ginestra_degli_schiavoni',
-            'username' => 'root',
-            'password' => 'Antonio1742',
-            'charset' => 'utf8',
-        ],
-        'db_prod' => [
             'class' => \yii\db\Connection::class,
             'dsn' => 'mysql:host=localhost;dbname=u698294985_manager',
             'username' => 'u698294985_manager',
