@@ -1,9 +1,20 @@
 <?php
+// $params = array_merge(
+//     require __DIR__ . '/../../common/config/params.php',
+//     require __DIR__ . '/../../common/config/params-local.php',
+//     require __DIR__ . '/params.php',
+//     require __DIR__ . '/params-local.php'
+// );
+
+use \yii\web\Request;
+
+$baseUrl = str_replace('/frontend/web', '', (new Request)->getBaseUrl());
+
 $params = array_merge(
-    require __DIR__ . '/../../common/config/params.php',
-    require __DIR__ . '/../../common/config/params-local.php',
-    require __DIR__ . '/params.php',
-    require __DIR__ . '/params-local.php'
+    require(__DIR__ . '/../../common/config/params.php'),
+    require(__DIR__ . '/../../common/config/params-local.php'),
+    require(__DIR__ . '/params.php'),
+    require(__DIR__ . '/params-local.php')
 );
 
 return [
@@ -14,6 +25,10 @@ return [
     'components' => [
         'request' => [
             'csrfParam' => '_csrf-frontend',
+            'baseUrl' => $baseUrl,
+            'parsers' => [
+                'application/json' => 'yii\web\JsonParser',
+            ]
         ],
         'user' => [
             'identityClass' => 'common\models\User',
