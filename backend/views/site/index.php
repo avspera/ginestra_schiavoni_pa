@@ -14,11 +14,11 @@ $this->title = Yii::$app->name;
 
             <div class="row m-2">
                 <div class="col-lg-4">
-                    <h2>Albo pretorio</h2>
+                    <h2>Accesso agli atti</h2>
 
-                    <p class="text-justify">In questa sezione puoi gestire l'albo pretorio del Comune</p>
+                    <p class="text-justify">In questa sezione puoi gestire le richieste di accesso agli atti</p>
 
-                    <p><a class="btn btn-outline-secondary" href="<?= Url::to(["albo-pretorio/index"]) ?>">Vedi tutti &raquo;</a></p>
+                    <p><a class="btn btn-outline-secondary" href="<?= Url::to(["accesso-atti/index"]) ?>">Vedi tutti &raquo;</a></p>
                 </div>
                 <div class="col-lg-4">
                     <h2>Matrimoni</h2>

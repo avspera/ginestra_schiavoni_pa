@@ -12,11 +12,11 @@ class AppAsset extends AssetBundle
     public $basePath = '@webroot';
     public $baseUrl = '@web';
     public $css = [
-        //'css/site.css',
         "bootstrap-italia/css/bootstrap-italia.min.css",
-        //"bootstrap-italia/css/bootstrap-italia-comuni.min.css"
+        "css/fonts.css",
+        'css/style.css'
     ];
-    
+
     public $js = [
         "bootstrap-italia/js/bootstrap-italia.bundle.min.js"
     ];

@@ -4,7 +4,6 @@
 /** @var string $content */
 
 use backend\assets\AppAsset;
-use common\widgets\Alert;
 use yii\widgets\Breadcrumbs;
 use yii\helpers\Html;
 use yii\helpers\Url;
@@ -25,7 +24,7 @@ AppAsset::register($this);
     <link rel="icon" type="image/png" sizes="16x16" href="<?= Yii::getAlias("@web") ?>/favicon/favicon-16x16.png">
     <link rel="manifest" href="<?= Yii::getAlias("@web") ?>/favicon/site.webmanifest">
     <link rel="mask-icon" href="<?= Yii::getAlias("@web") ?>/favicon/safari-pinned-tab.svg" color="#5bbad5">
-    
+
     <?php $this->head() ?>
 </head>
 
@@ -99,7 +98,7 @@ AppAsset::register($this);
                                 </div>
                                 <div class="menu-wrapper">
                                     <ul class="navbar-nav">
-                                        <li class="nav-item active"><a class="nav-link <?= Yii::$app->controller->id == "albo-pretorio" ? "active" : "" ?>" href="<?= Url::to(["albo-pretorio/index"]) ?>" aria-current="page"><span>Albo pretorio</span></a></li>
+                                        <li class="nav-item"><a class="nav-link <?= Yii::$app->controller->id == "accesso-atti" ? "active" : "" ?>" href="<?= Url::to(["accesso-atti/index"]) ?>" aria-current="page"><span>Accesso agli atti</span></a></li>
                                         <li class="nav-item dropdown">
                                             <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false" id="mainNavDropdown0">
                                                 <span>Pubblicazioni di matrimonio</span>

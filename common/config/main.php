@@ -17,12 +17,12 @@ return [
                 'yii\bootstrap\BootstrapAsset' => [
                     'css' => [],
                 ],
-                'italia\bootstrapitalia\bootstrapitaliaAsset' => [
-                    'css' => [
-                        // Seleziona i file CSS necessari da Bootstrap Italia
-                        'bootstra-italia/css/bootstrap-italia.min.css',
-                    ],
-                ],
+                // 'italia\bootstrapitalia\bootstrapitaliaAsset' => [
+                //     'css' => [
+                //         // Seleziona i file CSS necessari da Bootstrap Italia
+                //         'bootstrap-italia/css/bootstrap-italia.min.css',
+                //     ],
+                // ],
             ],
         ],
         'formatter' => [

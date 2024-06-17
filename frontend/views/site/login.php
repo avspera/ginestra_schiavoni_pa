@@ -4,48 +4,42 @@
 /** @var yii\bootstrap5\ActiveForm $form */
 /** @var \common\models\LoginForm $model */
 
-$spidLoginUrl = Yii::$app->params["spidLoginEndPoint"] . "?authorityId=" . Yii::$app->params["spidAuthorityId"] . 
-                    "&scope=" . Yii::$app->params["spidScope"] . 
-                    "&state=" . Yii::$app->params["spidState"]. 
-                    "&response_type=".Yii::$app->params["spidResponseType"].
-                    "&client_id=".Yii::$app->params["spidClientId"].
-                    "&redirect_uri=".Yii::$app->params["spidRedirectUri"];
+$spidLoginUrl = Yii::$app->params["spidLoginEndPoint"] . "?authorityId=" . Yii::$app->params["spidAuthorityId"] .
+    "&scope=" . Yii::$app->params["spidScope"] .
+    "&state=" . Yii::$app->params["spidState"] .
+    "&response_type=" . Yii::$app->params["spidResponseType"] .
+    "&client_id=" . Yii::$app->params["spidClientId"] .
+    "&redirect_uri=" . Yii::$app->params["spidRedirectUri"];
 
 $this->registerJsFile(
-    '@web/js/spid/spid-idps.js',
+    '@web/spid/js/spid-idps.js',
     ['depends' => [\yii\web\JqueryAsset::class]]
 );
 $this->registerJsFile(
-    '@web/js/spid/spid-sp-access-button.min.js',
+    '@web/spid/js/spid-sp-access-button.min.js',
     ['depends' => [\yii\web\JqueryAsset::class]]
 );
+
+$this->title = "Accedi"
 ?>
-<link href="<?= Yii::getAlias('@web') ?>/css/spid/spid-sp-access-button.min.css" rel="stylesheet">
+<link href="<?= Yii::getAlias('@web') ?>/spid/css/spid-sp-access-button.min.css" rel="stylesheet">
 <div class="site-login">
-
-    <div class="card card-info">
-        <div class="mt-5 offset-lg-3 col-lg-6">
-            <div class="car-header">
-                <h4 class="text-center">Effettua l'accesso</h4>
+    <div class="row">
+        <div class="col-12 col-lg-10 offset-lg-1">
+            <div class="cmp-breadcrumbs" role="navigation">
+                <nav class="breadcrumb-container" aria-label="breadcrumb">
+                    <ol class="breadcrumb p-0" data-element="breadcrumb">
+                        <li class="breadcrumb-item"><a href="homepage.html">Home</a><span class="separator">/</span></li>
+                        <li class="breadcrumb-item active" aria-current="page">Accedi</li>
+                    </ol>
+                </nav>
             </div>
-            <div class="card-body">
-                <div class="text-center">
-                    <a href="#" class="italia-it-button italia-it-button-size-l button-spid" spid-idp-button="#spid-idp-button-large-get" aria-haspopup="true" aria-expanded="false">
-                        <span class="italia-it-button-icon">
-                            <img src="<?= Yii::getAlias("@web/images") ?>/spid/spid-ico-circle-bb.svg" onerror="this.src='img/spid-ico-circle-bb.png'; this.onerror=null;" alt="" />
-                        </span>
-                        <span class="italia-it-button-text"> Entra con SPID </span>
-                    </a>
-                    <div id="spid-idp-button-large-get" class="spid-idp-button spid-idp-button-tip spid-idp-button-relative">
-                        <ul id="spid-idp-list-large-root-get" class="spid-idp-button-menu" aria-labelledby="spid-idp" data-spid-remote>
-                            <li><a class="dropdown-item" href="https://www.spid.gov.it">Maggiori informazioni</a></li>
-                            <li><a class="dropdown-item" href="https://www.spid.gov.it/richiedi-spid">Non hai SPID?</a></li>
-                            <li><a class="dropdown-item" href="https://www.spid.gov.it/serve-aiuto">Serve aiuto?</a></li>
-                        </ul>
-                    </div>
-                </div>
+            <div class="cmp-heading pb-3 pb-lg-4">
+                <h1 class="title-xxxlarge">Accedi</h1>
+                <p class="subtitle-small">Per accedere al sito e ai suoi servizi, utilizza una delle seguenti modalità.</p>
             </div>
         </div>
-
     </div>
+    <hr class="d-none d-lg-block mt-0 mb-4">
+    <?= $this->render("../layouts/snippets/servizi/_accesso") ?>
 </div>

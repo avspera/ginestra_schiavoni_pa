@@ -1,6 +1,7 @@
 <?php
 
 use yii\helpers\Html;
+use yii\helpers\Url;
 use yii\widgets\DetailView;
 use common\components\Utils;
 
@@ -44,11 +45,11 @@ $this->params['breadcrumbs'][] = [
             $label = "Cancella definitivamente";
         }
         ?>
-        <?= Html::a($label, [$url, 'id' => $model->id], [
+        <?= Html::a('<i class="fas fa-trash"></i> ' . $label, ['delete', 'id' => $model->id], [
             'class' => 'btn btn-xs btn-danger',
             'data' => [
-                'confirm' => 'Sicuro di voler cancellare questo elemento?',
-                'method' => 'post',
+                'confirm'   => 'Sei sicuro di voler cancellare questo elemento?',
+                'method'    => 'post',
             ],
         ]) ?>
     </p>
@@ -64,7 +65,7 @@ $this->params['breadcrumbs'][] = [
 
                 <div class="alert alert-<?= $statoFlusso["esito"] == "ko" ? "danger" : "success" ?>">
                     <?php if ($statoFlusso["esito"] == "ko") { ?>
-                        <div>Non riesco a contattare DedaGroup per avere informazioni aggiornate sul pagamento</div>
+                        <div>Non riesco a contattare DedaGroup per avere informazioni aggiornate sul pagamento. <br /><strong>Dettaglio errore</strong>: <?= $statoFlusso["errore"] ?></div>
                     <?php } else { ?>
                         Esito: <strong><?= $statoFlusso["esito"] ?></strong> <br>
                         Stato: <strong><?= $statoFlusso["stato"] ?></strong> <br>

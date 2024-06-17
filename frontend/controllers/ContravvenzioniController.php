@@ -139,7 +139,13 @@ class ContravvenzioniController extends Controller
 
         return $this->render('create', [
             'model' => $model,
+
         ]);
+    }
+
+    public function actionEsitoOk()
+    {
+        return $this->render("esito-ok");
     }
 
     /**

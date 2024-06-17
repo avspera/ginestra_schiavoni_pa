@@ -19,6 +19,8 @@ return [
     'prodEndPoint'      => 'https://www.comune.ginestradeglischiavoni.bn.it/portal/servizi/pagamenti/ws/10/',
     'paymentAuthUrlTest' => 'https://starttest.soluzionipa.it/auth_hub/oauth/token/',
     'paymentAuthUrl'    => 'https://start.soluzionipa.it/auth_hub/oauth/token/',
+    'pagoPaPayTest'     => "https://uat.checkout.pagopa.it",
+    'pagoPaPay'         => "https://checkout.pagopa.it",
     //SPID
     'spidLoginEndPoint' => 'https://login.asfweb.it/connect/authorize',
     'spidAuthorityId' => 100,

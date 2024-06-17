@@ -437,6 +437,25 @@ class ContravvenzioniApi
         return $this->parseJsonResponse($response);
     }
 
+    public function getStatoPagamento($model)
+    {
+        $token = $this->token;
+        $url = Yii::$app->params["testEndPoint"] . "stato_pagamenti";
+        $curl = new curl\Curl();
+        $curl->setHeaders([
+            'Authorization' => "Bearer " . $token["access_token"],
+            'Content-Type' => 'application/x-www-form-urlencoded',
+        ]);
+        $response = $curl->setPostParams([
+            'applicazione'      => 'pagamenti',
+            'iuv'               => $model->nome_flusso,
+            'id_univoco_dovuto' => $model->id_univoco_dovuto,
+            'tipo_dovuto'       => 'multe'
+        ])->post($url);
+
+        return $this->parseJsonResponse($response);
+    }
+
     public function modificaDovuto($model)
     {
         $token = $this->token;
@@ -532,7 +551,15 @@ class ContravvenzioniApi
 
         $response = $curl->setGetParams([
             'applicazione' => 'pagamenti',
-            'iuv' => $model->id_univoco_versamento
+            'iuv'       => $model->id_univoco_versamento,
+            'url_ok'    => "esito-ok",
+            'url_ko'    => "esito-ko",
+            'sso'       => 1,
+            'trash_pag' => 1,
         ])->get($url);
+
+        $parsedResponse = $this->parseJsonResponse($response);
+
+        return $parsedResponse;
     }
 }

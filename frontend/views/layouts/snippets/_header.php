@@ -2,7 +2,7 @@
 
 use yii\helpers\Html;
 ?>
-<header class="it-header-wrapper" data-bs-target="#header-nav-wrapper" style="">
+<header class="it-header-wrapper" data-bs-target="#header-nav-wrapper">
     <div class="it-header-slim-wrapper">
         <div class="container">
             <div class="row">
@@ -102,14 +102,14 @@ use yii\helpers\Html;
                                     </button>
                                 </div>
                                 <div class="menu-wrapper">
-                                    <a href="/" class="logo-hamburger">
+                                    <!-- <a href="/" class="logo-hamburger">
                                         <svg class="icon" aria-hidden="true">
                                             <use href="<?= Yii::getAlias("@web") ?>/bootstrap-italia/svg/sprites.svg#it-pa"></use>
                                         </svg>
                                         <div class="it-brand-text">
                                             <div class="it-brand-title">Comune di Ginestra degli Schiavoni</div>
                                         </div>
-                                    </a>
+                                    </a> -->
                                     <nav aria-label="Principale">
                                         <ul class="navbar-nav" data-element="main-navigation">
                                             <li class="nav-item">

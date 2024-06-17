@@ -163,7 +163,7 @@ class ContravvenzioniController extends Controller
 
         $rate   = $decodedResponse["content"][0]["rate"];
         $esito  = "ok";
-        
+
         foreach ($rate as $item) {
             $rata                           = new ContravvenzioneRata();
             $rata->id_contravvenzione       = $model->id;
@@ -202,11 +202,12 @@ class ContravvenzioniController extends Controller
     {
         $model = $this->findModel($id);
         $api = new ContravvenzioniApi();
-        $statoFlusso = $api->getGestioneMultidovuto($model, "info");
+        //$statoFlusso = $api->getGestioneMultidovuto($model, "info");
+        $statoPagamento = $api->getStatoPagamento($model);
 
         return $this->render('view', [
             'model' => $model,
-            'statoFlusso' => $statoFlusso
+            'statoFlusso' => $statoPagamento
         ]);
     }
 
