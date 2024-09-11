@@ -66,4 +66,6 @@ phpunit.phar
 /backend/web/index.php
 /backend/web/index-test.php
 /backend/web/robots.txt
+/frontend/web/images/*
+/frontend/web/uploads/*
 >>>>>>> 7c3b748 (first commit with backend done (interfacce))
