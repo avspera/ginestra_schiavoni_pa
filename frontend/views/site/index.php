@@ -23,7 +23,7 @@ $this->title = Yii::$app->name;
                                 <a class="text-decoration-none title-xsmall-bold mb-2 category text-uppercase" href="#">Ambiente</a>
                             </div>
                             <div class="card-body p-0 my-2">
-                                <h3 class="green-title-big t-primary mb-8"><a href="#" class="text-decoration-none" data-element="service-link">Accesso agli atti</a></h3>
+                                <h3 class="green-title-big t-primary mb-8"><a href="<?= Url::to(["accesso-atti/index"]) ?>" class="text-decoration-none" data-element="service-link">Accesso agli atti</a></h3>
                                 <p class="text-paragraph">Il servizio gestisce gli esposti e le segnalazioni riguardanti l'abbandono di rifiuti in aree
                                     private</p>
                             </div>
@@ -76,7 +76,7 @@ $this->title = Yii::$app->name;
                         <h2 class="title-xsmall-semi-bold"><span>SERVIZI IN EVIDENZA</span></h2>
                         <ul class="link-list t-primary">
                             <li class="mb-3 mt-3">
-                                <a class="list-item ps-0 title-medium" href="#">
+                                <a class="list-item ps-0 title-medium" href="<?= Url::to(["accesso-atti/index"]) ?>">
                                     <span>Accesso agli atti</span>
                                 </a>
                             </li>

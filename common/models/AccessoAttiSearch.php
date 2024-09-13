@@ -4,12 +4,12 @@ namespace common\models;
 
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use common\models\ParcheggioResidenti;
+use common\models\AccessoAtti;
 
 /**
- * ParcheggioResidentiSearch represents the model behind the search form of `common\models\ParcheggioResidenti`.
+ * AccessoAttiSearch represents the model behind the search form of `common\models\AccessoAtti`.
  */
-class ParcheggioResidentiSearch extends ParcheggioResidenti
+class AccessoAttiSearch extends AccessoAtti
 {
     /**
      * {@inheritdoc}
@@ -17,10 +17,8 @@ class ParcheggioResidentiSearch extends ParcheggioResidenti
     public function rules()
     {
         return [
-            [['id', 'qnt_auto', 'created_by', 'updated_by', 'payed'], 'integer'],
-            [['created_at', 'updated_at', 'veicolo', 'targa'], 'safe'],
-            [['indirizzo', 'id_cittadino',], 'string'],
-            [['price'], 'number'],
+            [['id', 'id_cittadino'], 'integer'],
+            [['numero_protocollo', 'oggetto_richiesta', 'data_richiesta', 'stato_richiesta', 'data_risposta', 'note', 'documento_rilasciato', 'data_creazione', 'data_aggiornamento'], 'safe'],
         ];
     }
 
@@ -42,7 +40,7 @@ class ParcheggioResidentiSearch extends ParcheggioResidenti
      */
     public function search($params)
     {
-        $query = ParcheggioResidenti::find();
+        $query = AccessoAtti::find();
 
         // add conditions that should always apply here
 
@@ -62,15 +60,17 @@ class ParcheggioResidentiSearch extends ParcheggioResidenti
         $query->andFilterWhere([
             'id' => $this->id,
             'id_cittadino' => $this->id_cittadino,
-            'indirizzo' => $this->indirizzo,
-            'qnt_auto' => $this->qnt_auto,
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
-            'created_by' => $this->created_by,
-            'updated_by' => $this->updated_by,
-            'price' => $this->price,
-            'payed' => $this->payed,
+            'data_richiesta' => $this->data_richiesta,
+            'data_risposta' => $this->data_risposta,
+            'data_creazione' => $this->data_creazione,
+            'data_aggiornamento' => $this->data_aggiornamento,
         ]);
+
+        $query->andFilterWhere(['like', 'numero_protocollo', $this->numero_protocollo])
+            ->andFilterWhere(['like', 'oggetto_richiesta', $this->oggetto_richiesta])
+            ->andFilterWhere(['like', 'stato_richiesta', $this->stato_richiesta])
+            ->andFilterWhere(['like', 'note', $this->note])
+            ->andFilterWhere(['like', 'documento_rilasciato', $this->documento_rilasciato]);
 
         return $dataProvider;
     }

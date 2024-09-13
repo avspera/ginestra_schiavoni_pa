@@ -4,7 +4,7 @@
 /** @var yii\web\View $this */
 /** @var common\models\Contravvenzione $model */
 
-$this->title = 'Richiedi Pubblicazione di matrimonio';
+$this->title = 'Richiedi Accesso agli Atti';
 $this->params['breadcrumbs'][] = [
     'label' => 'Servizi',
     'url' => ['index'],
@@ -12,7 +12,7 @@ $this->params['breadcrumbs'][] = [
 ];
 
 $this->params['breadcrumbs'][] = [
-    'label' => 'Atti di matrimonio',
+    'label' => 'Accesso agli atti',
     'url' => ['index'],
     'template' => "<li class='breadcrumb-item'><span class='separator'>/</span>{link}</li>",
 ];
@@ -23,7 +23,7 @@ $this->params['breadcrumbs'][] = [
 ];
 
 ?>
-<div class="atto-di-matrimonio-create">
+<div class="accesso-atti-create">
     <?= $this->render('_form', [
         'model' => $model,
     ]) ?>

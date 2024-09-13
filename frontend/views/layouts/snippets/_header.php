@@ -1,6 +1,8 @@
 <?php
 
 use yii\helpers\Html;
+use yii\helpers\Url;
+
 ?>
 <header class="it-header-wrapper" data-bs-target="#header-nav-wrapper">
     <div class="it-header-slim-wrapper">
@@ -31,13 +33,13 @@ use yii\helpers\Html;
                                     </div>
                                 </div>
                             </div>
-                            <a class="btn btn-primary btn-icon btn-full" href="../servizi/accesso-servizio.html" data-element="personal-area-login">
+                            <a class="btn btn-primary btn-icon btn-full" href="<?= Url::to([Yii::$app->user->isGuest ? "site/login" : "users/view", "id" => 1]) ?>" data-element="personal-area-login">
                                 <span class="rounded-icon" aria-hidden="true">
                                     <svg class="icon icon-primary">
                                         <use xlink:href="<?= Yii::getAlias("@web") ?>/bootstrap-italia/svg/sprites.svg#it-user"></use>
                                     </svg>
                                 </span>
-                                <span class="d-none d-lg-block">Accedi all'area personale</span>
+                                <span class="d-none d-lg-block"><?= Yii::$app->user->isGuest ? "Accedi all'area personale"  : Yii::$app->user->identity->name ?></span>
                             </a>
                         </div>
                     </div>

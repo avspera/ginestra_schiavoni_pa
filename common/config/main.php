@@ -1,6 +1,7 @@
 <?php
 return [
     'id' => 'ginestra-pa-manager',
+    'language' => 'it',
     'name' => "Comune di Ginestra degli Schiavoni",
     'aliases' => [
         '@bower' => '@vendor/bower-asset',

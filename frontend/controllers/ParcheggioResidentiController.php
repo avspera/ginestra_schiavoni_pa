@@ -64,7 +64,7 @@ class ParcheggioResidentiController extends Controller
         if ($model->cf_richiedente !== $loggedUser["fiscal_code"]) {
             return $this->goHome();
         }
-        
+
         return $this->render('view', [
             'model' => $this->findModel($id),
         ]);
@@ -78,7 +78,7 @@ class ParcheggioResidentiController extends Controller
     public function actionCreate()
     {
         $model = new ParcheggioResidenti();
-
+        $model->id = !empty($id) ? $id : \common\components\Utils::generateRandomId();
         $loggedUser = Cittadino::getFakeCittadino();
 
         if ($this->request->isPost) {

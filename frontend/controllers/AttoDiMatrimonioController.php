@@ -81,6 +81,7 @@ class AttoDiMatrimonioController extends Controller
     public function actionCreate()
     {
         $model = new AttoDiMatrimonio();
+        $model->id = !empty($id) ? $id : \common\components\Utils::generateRandomId();
 
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {
@@ -101,7 +102,7 @@ class AttoDiMatrimonioController extends Controller
 
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save(false)) {
-                Yii::$app->session->setFlash("success", "Richiesta completata correttamente");
+                \Yii::$app->session->setFlash("success", "Richiesta completata correttamente");
                 return $this->redirect(['view', 'id' => $model->id]);
             }
         } else {

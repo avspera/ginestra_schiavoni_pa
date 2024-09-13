@@ -7,9 +7,16 @@ use common\models\User;
 use common\models\Cittadino;
 use common\models\AlboPretorio;
 use common\models\Indirizzo;
+use yii\base\Security;
 
 class Utils
 {
+
+    public static function generateRandomId($length = 10)
+    {
+        $security = new Security();
+        return substr($security->generateRandomString($length), 0, $length);
+    }
 
     public static function generateRandomPassword($length = 8)
     {
@@ -48,7 +55,7 @@ class Utils
     public static function getResidenza($id)
     {
         $indirizzo = Indirizzo::findOne(["id" => $id]);
-        return !empty($indirizzo) ? $indirizzo->via . ", " . $indirizzo->civico." - ".$indirizzo->cap." ".$indirizzo->provincia : "-" ;
+        return !empty($indirizzo) ? $indirizzo->via . ", " . $indirizzo->civico . " - " . $indirizzo->cap . " " . $indirizzo->provincia : "-";
     }
 
     /**
@@ -121,5 +128,24 @@ class Utils
             $out[$item->anno] = $item->anno;
         }
         return $out;
+    }
+
+    public static function getStatoRichiesta($status)
+    {
+        $stato_richiesta_choices = [0 => "Da completare", 1 => 'In lavorazione', 2 => 'Approvata', 3 => 'Respinta', 4 => 'Completata'];
+
+        return isset($stato_richiesta_choices[$status]) ? $stato_richiesta_choices[$status] : "-";
+    }
+
+    public static function getStatoRichiestaFlipped($status)
+    {
+        $stato_richiesta_choices = ["da_completare" => 0, 'in_lavorazione' => 1, 'approvata' => 2, 'respinta' => 3, 'completata' => 4];
+
+        return isset($stato_richiesta_choices[$status]) ? $stato_richiesta_choices[$status] : "-";
+    }
+
+    public static function richiediNumeroProtocollo()
+    {
+        return self::generateRandomId();
     }
 }

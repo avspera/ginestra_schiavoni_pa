@@ -7,7 +7,7 @@
             <span class="text-button-sm t-primary">Indietro</span>
         </button>
 
-        <button onclick="freezeAction('<?= $step ?>')" type="button" class="btn btn-outline-primary bg-white btn-sm steppers-btn-save d-none d-lg-block saveBtn">
+        <button onclick="showFreezeModal()" type="button" class="btn btn-outline-primary bg-white btn-sm steppers-btn-save d-none d-lg-block saveBtn">
             <span class="text-button-sm t-primary">Salva Richiesta</span>
         </button>
 
@@ -30,3 +30,9 @@
         <span class="d-inline-block text-uppercase cmp-disclaimer__message">Richiesta salvata con successo</span>
     </div>
 </div>
+
+<script>
+    function showFreezeModal() {
+        $("#modal-freeze").modal("show");
+    }
+</script>

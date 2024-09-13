@@ -1,3 +1,6 @@
+<?php
+$spidUrl = Yii::$app->params["spidTestUrl"];
+?>
 <div class="row">
     <div class="col-12 col-lg-8 offset-lg-2">
         <div class="cmp-text-button mt-3">
@@ -12,7 +15,7 @@
                 </a>
             </div>
 
-            <a class="simple-link" href="#">Come attivare SPID <span class="visually-hidden">Come attivare SPID</span></a>
+            <a class="simple-link" href="<?= $spidUrl ?>">Come attivare SPID <span class="visually-hidden">Come attivare SPID</span></a>
         </div>
 
         <div class="cmp-text-button">
@@ -21,7 +24,7 @@
                 <p class="subtitle-small mb-3">Accedi con la tua Carta d’Identità Elettronica.</p>
             </div>
             <div class="button-wrapper mb-2">
-                <a href="#" class="italia-it-button italia-it-button-size-m button-spid" spid-idp-button="#spid-idp-button-medium-get" aria-haspopup="true" aria-expanded="false">
+                <a href="<?= $spidUrl ?>" class="italia-it-button italia-it-button-size-m button-spid" spid-idp-button="#spid-idp-button-medium-get" aria-haspopup="true" aria-expanded="false">
                     <span class="italia-it-button-icon"><img src="<?= Yii::getAlias("@web") . "/spid/" ?>img/spid-ico-circle-bb.svg" onerror="this.src='<?= Yii::getAlias('@web') . '/spid/' ?>img/spid-ico-circle-bb.png'; this.onerror=null;" alt=""></span>
                     <span class="italia-it-button-text">Entra con SPID</span>
                 </a>
@@ -37,14 +40,9 @@
             </div>
             <div class="button-wrapper d-md-flex">
                 <button type="button" class="btn btn-outline-primary btn-re pr-md-4 bg-white">
-
-
-
                     <span class="">Accedi con ID azienda</span>
                 </button>
                 <button type="button" class="btn btn-outline-primary btn-re bg-white">
-
-
 
                     <span class="">Accedi come dipendente</span>
                 </button>

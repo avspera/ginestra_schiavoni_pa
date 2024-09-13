@@ -12,6 +12,8 @@ use Yii;
  * @property int $coniuge_due
  * @property string $data_matrimonio
  * @property int $residenza
+ * @property int $step
+ * @property int|null $stato
  * @property string|null $padre_coniuge_uno
  * @property string|null $madre_coniuge_uno
  * @property string|null $padre_coniuge_due
@@ -31,6 +33,7 @@ use Yii;
  * @property int|null $condizione_non_professionale_coniuge_due
  * @property int $approved,
  * @property int $published
+ * @property int $id_cittadino
  * @property int|null $published_by,
  * @property int|null $id_albo_pretorio
  */
@@ -39,8 +42,8 @@ class AttoDiMatrimonio extends \yii\db\ActiveRecord
     public $tipo_rito_choices = [1 => "Civile",  2 => "Religioso", 3 => "Entrambi"];
     public $regime_matrimoniale_choices = [1 => "Comunione dei beni",  2 => "Separazione dei beni"];
     public $titolo_studio_choices = [
-        0 => "Non applicabile", 
-        1 => "Nessun titolo/licenza elementare", 
+        0 => "Non applicabile",
+        1 => "Nessun titolo/licenza elementare",
         2 => "Licenza media",
         3 => "Diploma scuola superiore",
         4 => "Laurea Triennale",
@@ -97,11 +100,26 @@ class AttoDiMatrimonio extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['coniuge_uno', 'coniuge_due', 'data_matrimonio', 'residenza', 'created_at', 'regime_matrimoniale'], 'required'],
-            [['created_by', 'updated_by', 'tipo_rito', 'regime_matrimoniale', 'approved_by', 'published_by', 'id_albo_pretorio',
-                'titolo_studio_coniuge_uno', 'titolo_studio_coniuge_due', 'posizione_professionale_coniuge_uno', 'posizione_professionale_coniuge_due', 'condizione_non_professionale_coniuge_uno', 'condizione_non_professionale_coniuge_due'], 'integer'],
-            [['created_at', 'updated_at', 'created_by'], 'safe'],
-            [['data_matrimonio', 'coniuge_uno', 'coniuge_due', 'residenza'], 'string'],
+            [['id_cittadino', 'step', 'coniuge_uno', 'coniuge_due', 'data_matrimonio', 'residenza', 'created_at', 'regime_matrimoniale'], 'required'],
+            [[
+                'created_by',
+                'updated_by',
+                'tipo_rito',
+                'regime_matrimoniale',
+                'approved_by',
+                'published_by',
+                'id_albo_pretorio',
+                'titolo_studio_coniuge_uno',
+                'titolo_studio_coniuge_due',
+                'posizione_professionale_coniuge_uno',
+                'posizione_professionale_coniuge_due',
+                'condizione_non_professionale_coniuge_uno',
+                'condizione_non_professionale_coniuge_due',
+                'step',
+                'stato'
+            ], 'integer'],
+            [['created_at', 'updated_at', 'created_by', 'stato', 'numero_protocollo', 'numero_protocollo'], 'safe'],
+            [['data_matrimonio', 'coniuge_uno', 'coniuge_due', 'residenza', 'numero_protocollo', 'numero_protocollo'], 'string'],
             [['padre_coniuge_uno', 'madre_coniuge_uno', 'padre_coniuge_due', 'madre_coniuge_due', 'luogo_matrimonio'], 'string', 'max' => 255],
         ];
     }
@@ -138,7 +156,8 @@ class AttoDiMatrimonio extends \yii\db\ActiveRecord
             'published' => "Pubblicato",
             'approved_by' => "Approvato da",
             'published_by' => "Pubblicato da",
-            'id_albo_pretorio' => "Rif Albo Pretorio"
+            'id_albo_pretorio' => "Rif Albo Pretorio",
+            'id_cittadino' => "Cittadino"
         ];
     }
 

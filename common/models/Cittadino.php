@@ -8,6 +8,7 @@ use Yii;
  * This is the model class for table "cittadino".
  *
  * @property int $id
+ * @property string $fullname
  * @property string $nome
  * @property string $cognome
  * @property string $data_di_nascita
@@ -74,10 +75,10 @@ class Cittadino extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['nome', 'cognome', 'data_di_nascita', 'comune_di_nascita', 'documento_di_identita', 'tipo_documento', 'email', 'created_by', "created_at"], 'required'],
+            [['fullname', 'nome', 'cognome', 'data_di_nascita', 'comune_di_nascita', 'documento_di_identita', 'tipo_documento', 'email', 'created_by', "created_at"], 'required'],
             [['documento_di_identita', 'last_login', 'updated_at', "updated_by", "spid_reference"], 'safe'],
             [['tipo_documento', 'eta', 'stato_civile'], 'integer'],
-            [['nome', 'cognome', 'data_di_nascita', 'comune_di_nascita', 'email', 'professione', 'comune_di_residenza', 'indirizzo_di_residenza', 'last_login', 'spid_reference'], 'string', 'max' => 255],
+            [['nome', 'cognome', 'data_di_nascita', 'comune_di_nascita', 'email', 'professione', 'comune_di_residenza', 'indirizzo_di_residenza', 'last_login', 'spid_reference', 'fullname'], 'string', 'max' => 255],
             [['cittadinanza'], 'string', 'max' => 3],
             [['codice_fiscale'], 'string', 'max' => 16],
             [['telefono'], 'string', 'max' => 20],
@@ -123,8 +124,10 @@ class Cittadino extends \yii\db\ActiveRecord
         }
 
         if ($this->isNewRecord) {
-            $this->created_at = date("Y-m-d H:i:s");
-            $this->created_by = isset(Yii::$app->user->identity->username) ? Yii::$app->user->identity->id : "self";
+            $this->created_at   = date("Y-m-d H:i:s");
+            $this->created_by   = isset(Yii::$app->user->identity->username) ? Yii::$app->user->identity->id : "self";
+            $this->fullname     = $this->nome . " " . $this->cognome;
+            $this->codice_fiscale = strtolower($this->codice_fiscale);
         } else {
             $this->updated_at = date("Y-m-d H:i:s");
             $this->updated_by = Yii::$app->user->identity->username;

@@ -8,7 +8,7 @@ use Yii;
  * This is the model class for table "parcheggio_residenti".
  *
  * @property int $id
- * @property int $cittadino
+ * @property int $id_cittadino
  * @property string $indirizzo
  * @property int|null $qnt_auto
  * @property string $created_at
@@ -37,12 +37,12 @@ class ParcheggioResidenti extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['cittadino', 'indirizzo', 'created_at', 'created_by', 'targa', 'approved', 'durata', 'cf_richiedente'], 'required'],
+            [['id_cittadino', 'indirizzo', 'created_at', 'created_by', 'targa', 'approved', 'durata', 'cf_richiedente'], 'required'],
             [['qnt_auto', 'created_by', 'updated_by', 'payed', 'durata', 'approved_by'], 'integer'],
-            [['created_at', 'updated_at', 'veicolo', 'carta_circolazione', 'carta_identita', 'data_rilascio', 'approved_by'], 'safe'],
+            [['created_at', 'updated_at', 'veicolo', 'carta_circolazione', 'carta_identita', 'data_rilascio', 'approved_by', 'numero_protocollo'], 'safe'],
             [['price'], 'number'],
             [['carta_identita', 'carta_circolazione'], 'file', 'skipOnEmpty' => true, 'extensions' => 'pdf'],
-            [['veicolo', 'indirizzo'], 'string'],
+            [['veicolo', 'indirizzo', 'numero_protocollo'], 'string'],
         ];
     }
 
@@ -53,7 +53,7 @@ class ParcheggioResidenti extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'cittadino' => 'Cittadino',
+            'id_cittadino' => 'Cittadino',
             'cf_richiedente' => "Codice fiscale",
             'indirizzo' => 'Indirizzo',
             'qnt_auto' => 'N. Auto',
@@ -110,7 +110,8 @@ class ParcheggioResidenti extends \yii\db\ActiveRecord
         return NULL;
     }
 
-    public function getDurata(){
+    public function getDurata()
+    {
         return isset($this->durata_choices[$this->durata]) ?  $this->durata_choices[$this->durata] : "-";
     }
 }

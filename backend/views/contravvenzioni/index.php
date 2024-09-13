@@ -5,7 +5,6 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\grid\ActionColumn;
 use yii\grid\GridView;
-use common\components\Utils;
 
 /** @var yii\web\View $this */
 /** @var common\models\ContravvenzioneSearch $searchModel */

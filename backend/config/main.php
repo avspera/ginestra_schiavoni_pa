@@ -8,6 +8,7 @@ $params = array_merge(
 
 return [
     'id' => 'backend-ginestra-pa',
+    'language' => 'it',
     'basePath' => dirname(__DIR__),
     'controllerNamespace' => 'backend\controllers',
     'bootstrap' => ['log'],
