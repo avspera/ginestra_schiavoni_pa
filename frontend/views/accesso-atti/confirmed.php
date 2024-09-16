@@ -2,7 +2,19 @@
 
 use yii\helpers\Url;
 
-$numero_protocollo = "XXXX";
+$this->title = "Richiesta #" . $model->numero_protocollo . " del " . \common\components\Utils::formatDate($model->data_creazione) . " inviata correttamente";
+
+$this->params['breadcrumbs'][] = [
+    'label' => 'Accesso agli atti',
+    'template' => "<li class='breadcrumb-item'><span class='separator'>/</span>{link}</li>",
+    'url' => ["index"]
+];
+
+$this->params['breadcrumbs'][] = [
+    'label' => $this->title,
+    'template' => "<li class='breadcrumb-item'><span class='separator'>/</span>" . $this->title . "</li>",
+];
+
 ?>
 <div class="row justify-content-center">
     <div class="col-12 col-lg-10">
@@ -15,9 +27,9 @@ $numero_protocollo = "XXXX";
                 <h1 class="title-xxxlarge">Richiesta inviata</h1>
             </div>
 
-            <p class="subtitle-small">Grazie abbiamo ricevuto la tua richiesta per la pratica <strong><?= $numero_protocollo ?> Accesso agli atti</strong></p>
+            <p class="subtitle-small">Grazie abbiamo ricevuto la tua richiesta per la pratica <strong><?= $model->numero_protocollo ?></strong> Accesso agli atti</p>
             <p class="subtitle-smallpt-3 pt-lg-4 mb-0">Abbiamo inviato il riepilogo all’email: <br>
-                <strong>mario.rossi@gmail.com</strong>
+                <strong><?= $cittadino->email ?></strong>
             </p>
 
             <button type="button" class="btn btn-outline-primary fw-bold">
@@ -90,10 +102,11 @@ $numero_protocollo = "XXXX";
                             <div class="calendar-date">
                                 <?php
                                 $dataEsito = new DateTime($model->data_creazione);
-                                $dataEsito->modify('+30 days');
+                                $days = $model->type == $model->type_choices_flipped["urgenza"] ? "3" : "30";
+                                $dataEsito->modify('+' . $days . ' days');
                                 $anno   = $dataEsito->format("Y");
-                                $giorno = $dataEsito->format("d"); // Giorno del mese nel formato a due cifre
-                                $mese   = $dataEsito->format("M"); // Nome abbreviato del mese (Jan, Feb, Mar, ecc.)
+                                $giorno = $dataEsito->format("d");
+                                $mese   = $dataEsito->format("M");
                                 ?>
                                 <h3 class="calendar-date-day">
                                     <small class="calendar-date-day__year"><?= $anno ?></small>
@@ -103,25 +116,34 @@ $numero_protocollo = "XXXX";
                                 <div class="calendar-date-description rounded">
                                     <div class="calendar-date-description-content">
                                         <h4 class="h5 mb-0">Esito richiesta</h4>
-                                        <p class="info-text mt-1 mb-0">Tra 30 giorni ti comunicheremo</p>
+                                        <p class="info-text mt-1 mb-0">Tra <?= $days ?> giorni ti comunicheremo</p>
                                     </div>
                                 </div>
                             </div>
-                            <div class="calendar-date">
-                                <h3 class="calendar-date-day">
-                                    <small class="calendar-date-day__year">2022</small>
-                                    <span class="title-xxlarge-regular d-flex justify-content-center">10</span>
-                                    <small class="calendar-date-day__month">mar</small>
-                                </h3>
-                                <div class="calendar-date-description rounded">
-                                    <div class="calendar-date-description-content">
-                                        <h4 class="h5 mb-0">Pagamento</h4>
-                                        <p class="info-text mt-1 mb-0">Potrai effettuare</p>
+                            <?php if ($model->type !== $model->type_choices_flipped["standard"]) {
+                                $dataEsito = new DateTime($model->data_creazione);
+                                $days = $model->type == $model->type_choices_flipped["urgenza"] ? "3" : "10";
+                                $dataEsito->modify('+' . $days . ' days');
+                                $anno   = $dataEsito->format("Y");
+                                $giorno = $dataEsito->format("d");
+                                $mese   = $dataEsito->format("M");
+                            ?>
+                                <div class="calendar-date">
+                                    <h3 class="calendar-date-day">
+                                        <small class="calendar-date-day__year"><?= $anno ?></small>
+                                        <span class="title-xxlarge-regular d-flex justify-content-center"><?= $giorno ?></span>
+                                        <small class="calendar-date-day__month"><?= $mese ?></small>
+                                    </h3>
+                                    <div class="calendar-date-description rounded">
+                                        <div class="calendar-date-description-content">
+                                            <h4 class="h5 mb-0">Pagamento</h4>
+                                            <p class="info-text mt-1 mb-0">Potrai effettuare il pagamento entro <?= $days ?> giorni</p>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
+                            <?php } ?>
                         </div>
-                        <p class="mt-4 mt-lg-30 mb-10"><a class="t-primary" href="<?= Url::to(["accesso-atti/view", "id" => $model->id]) ?>">Consulta la richiesta</a> nella tua area riservata.</p>
+                        <p class="mt-4 mt-lg-30 mb-10"><a class="t-primary" href="<?= Url::to(["cittadino/view", "id" => $model->id_cittadino]) ?>">Consulta la richiesta</a> nella tua area riservata.</p>
                     </div>
                 </section>
 
@@ -134,7 +156,7 @@ $numero_protocollo = "XXXX";
                                     <a class="list-item icon-left t-primary title-small-semi-bold" href="#">
                                         <span class="list-item-title-icon-wrapper">
                                             <svg class="icon icon-sm align-self-start icon-color" aria-hidden="true">
-                                                <use href="../assets/bootstrap-italia/dist/svg/sprites.svg#it-settings"></use>
+                                                <use href="/bootstrap-italia/svg/sprites.svg#it-settings"></use>
                                             </svg>
                                             <span class="list-item-title title-small-semi-bold">Richiedi pass residenti</span>
                                         </span>

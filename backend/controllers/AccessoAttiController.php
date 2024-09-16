@@ -2,8 +2,11 @@
 
 namespace backend\controllers;
 
+use common\components\Utils;
 use common\models\AccessoAtti;
 use common\models\AccessoAttiSearch;
+use Pagamento;
+use yii\db\Exception;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -60,6 +63,43 @@ class AccessoAttiController extends Controller
         ]);
     }
 
+    public function actionChageStatus($id, $new_status)
+    {
+        if (empty($id) || empty($new_status)) return;
+
+        $model = $this->findModel($id);
+        $prevStatus = $model->stato_richiesta;
+
+        if ($new_status == $model->stato_richiesta_choices_flipped["approvata"]) {
+            if ($model->type == $model->type_choices["urgenza"]) {
+                $out = Pagamento::generate($model);
+                if ($out["status"] == 200) {
+                    $model->id_univoco_versamento = $out["id_univoco_versamento"];
+                }
+            }
+        }
+
+        $model->stato_richiesta = $model->stato_richiesta_choices[$new_status];
+
+        try {
+            $model->save(false);
+
+            $logParams["LogRichieste"] = [
+                'id_model'      => $model->id,
+                'model_type'    => "accesso-agli-atti",
+                "prev_status"    => $prevStatus,
+                'new_status'     => $model->stato_richiesta,
+                'action'        => "change_status",
+                'notes'         => $model->note,
+                'coming_from'   => "internal"
+            ];
+
+            Utils::writeLogs($logParams);
+        } catch (Exception $e) {
+            \Yii::$app->session->setFlash("error", "Ops...operazione non riuscita. ERRORE [ACCESSO-ATTI-103]: " . $e->getMessage());
+        }
+    }
+
     /**
      * Deletes an existing AccessoAtti model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
@@ -69,7 +109,20 @@ class AccessoAttiController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        $model = $this->findModel($id);
+        $logParams["LogRichieste"] = [
+            'id_model'      => $model->id,
+            'model_type'    => "accesso-agli-atti",
+            "prev_status"    => $model->stato_richiesta,
+            'new_status'     => Utils::getStatoRichiesta("cancellata"),
+            'action'        => "change_status",
+            'notes'         => $model->note,
+            'coming_from'   => "internal"
+        ];
+
+        $model->delete();
+
+        Utils::writeLogs($logParams);
 
         return $this->redirect(['index']);
     }

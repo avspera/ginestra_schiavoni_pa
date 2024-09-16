@@ -61,7 +61,7 @@ class AccessoAttiController extends Controller
         $model = $this->findModel($id);
 
         if ($model->stato_richiesta == Utils::getStatoRichiestaFlipped("da_completare")) {
-            return $this->redirect(["create", ["id" => $model->id]]);
+            return $this->redirect(["create", "id" => $model->id]);
         }
 
         return $this->render('view', [
@@ -76,13 +76,28 @@ class AccessoAttiController extends Controller
      */
     public function actionCreate($id = NULL)
     {
-        $model = new AccessoAtti();
-        $model->id = !empty($id) ? $id : Utils::generateRandomId();
-        $model->id_cittadino = 1; //or Yii::$app->user->identity->id;
-        $model->stato_richiesta = Utils::getStatoRichiestaFlipped("da_completare");
+        if (!empty($id)) {
+            $model = AccessoAtti::find()->where(["id" => $id])->one();
+        } else {
+            $model = new AccessoAtti();
+            $model->id_cittadino = 1;
+            $model->step = 1;
+
+            try {
+                $model->save(false);
+            } catch (Exception $e) {
+                Yii::$app->session->setFlash("error", "Impossibile procedere: " . $e->getMessage());
+            }
+        }
+
         if ($this->request->isPost || $this->request->isAjax) {
+
             $model->load($this->request->post());
-            $model->numero_protocollo = Utils::richiediNumeroProtocollo();
+
+            if ($model->step == 4) {
+                $model->stato_richiesta = Utils::getStatoRichiestaFlipped("in_lavorazione");
+            }
+
             try {
                 $model->save(false);
 
@@ -91,7 +106,9 @@ class AccessoAttiController extends Controller
                     return ["status" => 200];
                 }
 
-                return $this->redirect(['confirmed', 'id' => $model->id]);
+                $cittadino = \common\models\Cittadino::find()->select(["id", "email"])->where(["id" => $model->id_cittadino])->one();
+
+                return $this->render('confirmed', ['model' => $model, "cittadino" => $cittadino]);
             } catch (Exception $e) {
                 Yii::$app->session->setFlash('error', 'Ops...c\'è stato qualche problema. [ACCESSO-ATTI-105] <pre>' . json_encode($model->getErrors(), JSON_PRETTY_PRINT) . "</pre>");
 
@@ -100,13 +117,19 @@ class AccessoAttiController extends Controller
                     return ["status" => 100, "msg" => $e->getMessage()];
                 }
             }
-        } else {
-            $model->loadDefaultValues();
         }
 
         return $this->render('create', [
             'model' => $model,
         ]);
+    }
+
+    public function actionConfirmed($id)
+    {
+        $model = $this->findModel($id);
+        $cittadino = \common\models\Cittadino::find()->select(["id", "email"])->where(["id" => $model->id_cittadino])->one();
+
+        return $this->render('confirmed', ['model' => $model, "cittadino" => $cittadino]);
     }
 
     /**

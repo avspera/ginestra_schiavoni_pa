@@ -39,7 +39,9 @@ use yii\helpers\Url;
                                         <use xlink:href="<?= Yii::getAlias("@web") ?>/bootstrap-italia/svg/sprites.svg#it-user"></use>
                                     </svg>
                                 </span>
-                                <span class="d-none d-lg-block"><?= Yii::$app->user->isGuest ? "Accedi all'area personale"  : Yii::$app->user->identity->name ?></span>
+                                <span class="d-none d-lg-block">
+                                    <?= Yii::$app->user->isGuest ? "Accedi all'area personale"  : Yii::$app->user->identity->name ?>
+                                </span>
                             </a>
                         </div>
                     </div>

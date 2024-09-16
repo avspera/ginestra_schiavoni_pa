@@ -3,6 +3,7 @@
 namespace common\models;
 
 use Yii;
+use common\components\Utils;
 
 /**
  * This is the model class for table "accesso_atti".
@@ -11,6 +12,7 @@ use Yii;
  * @property string|null $numero_protocollo
  * @property int $id_cittadino
  * @property int $type
+ * @property int $privacy
  * @property double $payment
  * @property int $payed
  * @property string $oggetto_richiesta
@@ -31,8 +33,13 @@ class AccessoAtti extends \yii\db\ActiveRecord
     public $stato_richiesta_choices = [1 => 'In lavorazione', 2 => 'Approvata', 3 => 'Respinta', 4 => 'Completata'];
     public $stato_richiesta_choices_flipped = ['in_lavorazione' => 1, 'approvata' => 2, 'Respinta' => 3, 'Completata' => 4];
     public $type_choices = [1 => "Standard", 2 => "Diritti di urgenza"];
+    public $type_choices_flipped = ["standard" => 1, "urgenza" => 2];
     public $payment_choices_flipped = ["standard" => 0, "urgenza" => 150];
 
+    public function getType()
+    {
+        return isset($this->type_choices[$this->type]) ? $this->type_choices[$this->type] : "-";
+    }
     public function beforeSave($insert)
     {
         if (!parent::beforeSave($insert)) {
@@ -40,9 +47,27 @@ class AccessoAtti extends \yii\db\ActiveRecord
         }
 
         if ($this->isNewRecord) {
-            $this->data_creazione   = date("Y-m-d H:i:s");
+            $this->data_creazione       = date("Y-m-d H:i:s");
+            $this->stato_richiesta      = Utils::getStatoRichiestaFlipped("da_completare");
+            $logParams["LogRichieste"] = [
+                'id_model'      => $this->id,
+                'model_type'    => "accesso-agli-atti",
+                'prev_status'   => NULL,
+                'new_status'    => $this->stato_richiesta,
+                'action'        => "create",
+                'notes'         => $this->note,
+                'coming_from'   => "external"
+            ];
+
+            Utils::writeLogs($logParams);
         } else {
-            $this->data_aggiornamento = date("Y-m-d H:i:s");
+            $this->data_aggiornamento   = date("Y-m-d H:i:s");
+            $this->privacy              = 1;
+        }
+
+        if ($this->step == 4) {
+            $this->stato_richiesta == $this->stato_richiesta_choices_flipped["in_lavorazione"];
+            $this->numero_protocollo    = Utils::richiediNumeroProtocollo();
         }
 
         return true;
@@ -62,8 +87,8 @@ class AccessoAtti extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id', 'id_cittadino', 'oggetto_richiesta', 'data_richiesta', 'type'], 'required'],
-            [['id_cittadino'], 'integer'],
+            [['id', 'id_cittadino', 'oggetto_richiesta', 'data_richiesta', 'type', 'step', 'privacy'], 'required'],
+            [['id_cittadino', 'step', 'privacy'], 'integer'],
             [['oggetto_richiesta', 'stato_richiesta', 'note', 'id'], 'string'],
             [[
                 'data_richiesta',
@@ -100,7 +125,8 @@ class AccessoAtti extends \yii\db\ActiveRecord
             'messaggio_richiesta' => "Messaggio",
             'pagamento' => "Pagamento",
             'payed' => "Pagato",
-            'type' => "Tipo richiesta"
+            'type' => "Tipo richiesta",
+            'step' => "Step"
         ];
     }
 

@@ -8,6 +8,7 @@ use common\models\Contravvenzione;
 use common\models\ParcheggioResidenti;
 use Yii;
 use common\models\Cittadino;
+use common\models\LogRichieste;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\AccessControl;
@@ -97,6 +98,8 @@ class CittadinoController extends Controller
 
         $latestAttivita = array_merge($accesso_atti, $contravvenzioni, $atti_di_matrimonio, $parcheggio_residenti);
 
+        $latestMessages = LogRichieste::find()->where(["IN", "id_model", array_column($latestAttivita, 'id')])->orderBy(["created_at" => SORT_DESC])->all();
+
         // Ordina i risultati per data (decrescente)
         usort($latestAttivita, function ($a, $b) {
             return strtotime($b['date']) - strtotime($a['date']);
@@ -108,7 +111,8 @@ class CittadinoController extends Controller
             'contravvenzioni'       => $contravvenzioni,
             'atti_di_matrimonio'    => $atti_di_matrimonio,
             'parcheggio_residenti'  => $parcheggio_residenti,
-            'latest_attivita'        => $latestAttivita
+            'latest_attivita'       => $latestAttivita,
+            'latest_messages'       => $latestMessages
         ]);
     }
 

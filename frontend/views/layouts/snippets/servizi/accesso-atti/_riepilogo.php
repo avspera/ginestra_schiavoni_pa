@@ -1,3 +1,13 @@
+<?php
+$cittadino = Yii::$app->params["spidJsonUser"];
+?>
+
+<div class="progress-spinner progress-spinner-double progress-spinner-active d-none">
+    <div class="progress-spinner-inner"></div>
+    <div class="progress-spinner-inner"></div>
+    <span class="visually-hidden">Caricamento...</span>
+</div>
+
 <div class="callout callout-highlight ps-3 warning">
     <div class="callout-title mb-20 d-flex align-items-center">
         <svg class="icon icon-sm" aria-hidden="true">
@@ -22,7 +32,7 @@
                 <div class="card">
 
                     <div class="card-header border-bottom border-light p-0 mb-0 d-flex justify-content-between d-flex justify-content-end">
-                        <h4 class="title-large-semi-bold mb-3">Giulia Bianchi</h4>
+                        <h4 class="title-large-semi-bold mb-3"><?= $cittadino["fullname"] ?></h4>
                     </div>
 
                     <div class="card-body p-0">
@@ -30,7 +40,7 @@
                             <div class="text-paragraph-small">Codice Fiscale</div>
                             <div class="border-light border-0">
                                 <p class="data-text">
-                                    GLABNC72H25H501Y
+                                    <?= strtoupper($cittadino["codice_fiscale"]) ?>
                                 </p>
 
 
@@ -54,7 +64,7 @@
                             <div class="text-paragraph-small">Residenza</div>
                             <div class="border-light border-0">
                                 <p class="data-text">
-                                    Via Roma 16, 00100 Roma, It
+                                    <?= $cittadino["indirizzo"] ?>
                                 </p>
                             </div>
                         </div>
@@ -84,42 +94,33 @@
                             <div class="single-line-info border-light">
                                 <div class="text-paragraph-small">Oggetto della richiesta</div>
                                 <div class="border-light">
-                                    <p class="data-text">
-                                        1234 5678 9012 3456 78
-                                    </p>
+                                    <p class="data-text" id="AccessoAtti[oggetto_richiesta]"></p>
                                 </div>
                             </div>
                             <div class="single-line-info border-light">
                                 <div class="text-paragraph-small">Tipo di richiesta</div>
                                 <div class="border-light">
                                     <p class="data-text">
-                                        NORMALE
+                                        <?= $model->getType() ?>
                                     </p>
                                 </div>
                             </div>
                             <div class="single-line-info border-light">
                                 <div class="text-paragraph-small">Pagamento oneri</div>
                                 <div class="border-light">
-                                    <p class="data-text">
-                                        - || 150
-                                        <small>Pagamento in misura ridotta, perché il pagamento avviene dopo il 5° giorno dalla notifica.</small>
-                                    </p>
+                                    <p class="data-text" id="pagamento_oneri_summary"></p>
                                 </div>
                             </div>
                             <div class="single-line-info border-light">
                                 <div class="text-paragraph-small">Importo dovuto</div>
                                 <div class="border-light">
-                                    <p class="data-text">
-                                        38,42 €
-                                    </p>
+                                    <p class="data-text" id="importo_summary"></p>
                                 </div>
                             </div>
                             <div class="single-line-info border-light">
                                 <div class="text-paragraph-small">Ulteriori comunicazioni</div>
                                 <div class="border-light">
-                                    <p class="data-text">
-                                        askdjakldjalskdjalksjdlkasjdlkas
-                                    </p>
+                                    <p id="AccessoAtti[messaggio_richiesta]" class="data-text"> </p>
                                 </div>
                             </div>
                         </div>
@@ -132,31 +133,57 @@
     </div>
 </div>
 
-<div class="modal fade" tabindex="-1" id="modal-terms" aria-labelledby="modal-terms-modal-title" data-focus-mouse="false" aria-hidden="true" style="display: none;">
-    <div class="modal-dialog modal-dialog-centered small" role="document">
-        <div class="modal-content modal-dimensions">
-            <div class="cmp-modal__header modal-header pb-0">
-                <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Chiudi finestra modale">
-                </button>
-                <h2 class="cmp-modal__header-title title-mini" id="modal-terms-modal-title">Termini e condizioni</h2>
-                <p class="cmp-modal__header-info header-font">Cliccando su Conferma e invia confermi di aver preso visione dei termini e delle condizioni di servizio.</p>
-                <a href="#" class="cmp-modal__header-link text-success underline mt-1">Leggi termini e condizioni</a>
-            </div>
-            <div class="modal-body">
-            </div>
-            <div class="modal-footer pb-70 pt-0">
-                <button name="confirmAction" class="btn btn-primary w-100 mx-0 fw-bold mb-4" type="submit" data-bs-toggle="modal" data-bs-target="#" form="">Conferma e invia</button>
-                <button class="btn btn-outline-primary w-100 mx-0" data-bs-dismiss="modal" type="button">Annulla</button>
-            </div>
-        </div>
-    </div>
-</div>
-
 <script>
-    $(document).ready(function() {
-        $('button[name=confirmAction]').on('submit', function(event) {
-            event.preventDefault(); // Previene l'invio del form
-            window.location.href = "<?= Yii::$app->params["pagoPaPayTest"] ?>"
-        });
-    });
+    function showSpinner() {
+        const spinner = document.querySelector(".progress-spinner");
+        spinner.style.display = "block"; // Mostra lo spinner
+    }
+
+    function hideSpinner() {
+        const spinner = document.querySelector(".progress-spinner");
+        spinner.style.display = "none"; // Nascondi lo spinner
+    }
+
+    function loadSummaryData() {
+
+        showSpinner();
+
+        setTimeout(() => {
+            let step = <?= $step - 1 ?>;
+            const savedData = sessionStorage.getItem(`formDataStep${step}`);
+            if (savedData) {
+                const formData = JSON.parse(savedData);
+                Object.keys(formData).forEach(name => {
+                    const decodedName = decodeURIComponent(name);
+                    const element = document.querySelector(`[id="${decodedName}"]`);
+                    if (element) {
+                        element.innerText = formData[name];
+                    }
+                });
+            }
+
+            // Tipo di richiesta
+            const tipoRichiesta = sessionStorage.getItem("formDataStepTipoRichiesta");
+            if (tipoRichiesta) {
+                document.querySelector("#tipo_richiesta_summary").innerText = tipoRichiesta == 1 ? "Standard" : "Diritti di urgenza (entro 3 giorni lavorativi)";
+            }
+
+            // Pagamento oneri
+            const pagamentoOneri = sessionStorage.getItem("formDataStepTipoRichiesta");
+            if (pagamentoOneri == 1) {
+                document.querySelector("#pagamento_oneri_summary").innerText = "Nessuno";
+                document.querySelector("#importo_summary").innerText = "0,00";
+            } else {
+                document.querySelector("#pagamento_oneri_summary").innerText = "Diritti di urgenza";
+                document.querySelector("#importo_summary").innerText = "€ 150,00";
+            }
+
+            hideSpinner();
+        }, 2000); // Simuliamo un caricamento con un timeout di 1 secondo
+    }
+
+    // Chiama questa funzione quando la pagina viene caricata
+    window.onload = function() {
+        loadSummaryData();
+    }
 </script>

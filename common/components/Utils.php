@@ -7,7 +7,9 @@ use common\models\User;
 use common\models\Cittadino;
 use common\models\AlboPretorio;
 use common\models\Indirizzo;
+use common\models\LogRichieste;
 use yii\base\Security;
+use yii\db\Exception;
 
 class Utils
 {
@@ -132,14 +134,19 @@ class Utils
 
     public static function getStatoRichiesta($status)
     {
-        $stato_richiesta_choices = [0 => "Da completare", 1 => 'In lavorazione', 2 => 'Approvata', 3 => 'Respinta', 4 => 'Completata'];
+        $stato_richiesta_choices = [0 => "Da completare", 1 => 'In lavorazione', 2 => 'Approvata', 3 => 'Respinta', 4 => 'Completata', 5 => "Cancellata"];
 
         return isset($stato_richiesta_choices[$status]) ? $stato_richiesta_choices[$status] : "-";
     }
 
+    public static function getStatoRichiestaList()
+    {
+        return [0 => "Da completare", 1 => 'In lavorazione', 2 => 'Approvata', 3 => 'Respinta', 4 => 'Completata', 5 => "Cancellata"];
+    }
+
     public static function getStatoRichiestaFlipped($status)
     {
-        $stato_richiesta_choices = ["da_completare" => 0, 'in_lavorazione' => 1, 'approvata' => 2, 'respinta' => 3, 'completata' => 4];
+        $stato_richiesta_choices = ["da_completare" => 0, 'in_lavorazione' => 1, 'approvata' => 2, 'respinta' => 3, 'completata' => 4, "cancellata" => 5];
 
         return isset($stato_richiesta_choices[$status]) ? $stato_richiesta_choices[$status] : "-";
     }
@@ -147,5 +154,18 @@ class Utils
     public static function richiediNumeroProtocollo()
     {
         return self::generateRandomId();
+    }
+
+    public static function writeLogs($params)
+    {
+
+        $model = new LogRichieste();
+        $model->load($params);
+
+        try {
+            $model->save(false);
+        } catch (Exception $e) {
+            return false;
+        }
     }
 }
