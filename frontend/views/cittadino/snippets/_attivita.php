@@ -115,7 +115,7 @@ use yii\helpers\Url;
                                         ?>
                                         <?= " - " . $item["label"] ?>
                                         <div class="icon-wrapper">
-                                            <img class="icon-folder icon-warning" src="/images/folder-incomplete.svg" alt="folder Da completare" role="img">
+                                            <img class="icon-folder icon-warning" src="/bootstrap-italia/images/folder-incomplete.svg" alt="folder <?= Utils::getStatoRichiesta($item["stato_richiesta"]) ?>" role="img">
                                             <span class="u-main-alert"><?= Utils::getStatoRichiesta($item["stato_richiesta"]) ?></span>
                                         </div>
                                     </div>
@@ -163,9 +163,11 @@ use yii\helpers\Url;
                     } ?>
                 </div>
             </div>
-            <button type="button" class="btn d-block accordion-view-more mb-2 pt-3 t-primary title-xsmall-semi-bold ps-lg-3">
-                <span class="">Vedi altre pratiche</span>
-            </button>
+            <?php if (count($items) > 20) { ?>
+                <button type="button" class="btn d-block accordion-view-more mb-2 pt-3 t-primary title-xsmall-semi-bold ps-lg-3">
+                    <span class="">Vedi altre pratiche</span>
+                </button>
+            <?php } ?>
         </section>
 
         <section class="it-page-section mb-50 mb-lg-90" id="payments">

@@ -60,40 +60,39 @@ use yii\helpers\Url;
                         </div>
                     </div>
                     <div class="card-body p-0">
-
                         <?php
                         foreach ($latest_messages as $item) {
                             $id = $item->id_model;
 
-                            // Filtrare il modello corrispondente dai dati delle ultime attività
-                            $model = array_filter($latest_attivita, function ($elemento) use ($id) {
-                                return $elemento['id'] == $id;
-                            });
+                            // Usa array_column e array_search per rendere il filtro più efficiente
+                            $ids = array_column($latest_attivita, 'id');
+                            $key = array_search($id, $ids);
 
-                            $model = reset($model); // Prende il primo elemento filtrato
+                            if ($key !== false) {
+                                $model = $latest_attivita[$key];
                         ?>
-                            <div class="cmp-card-latest-messages mb-3" data-bs-toggle="modal" data-bs-target="#modal-message" id="<?= $id ?>">
-                                <div class="card shadow-sm px-4 pt-4 pb-4">
-                                    <span class="visually-hidden">Categoria:</span>
-                                    <div class="card-header border-0 p-0 m-0">
-                                        <time class="date-xsmall"><?= Utils::formatDate($model["date"]) ?></time>
-                                    </div>
-                                    <div class="card-body p-0 my-2">
-                                        <h3 class="title-small-semi-bold t-primary m-0 mb-1">
-                                            <?= Html::a($model["label"], Url::to([$model["url"], "id" => $id]), ["class" => "text-decoration-none"]) ?>
-                                        </h3>
-                                        <p class="text-paragraph text-truncate">La richiesta <?= isset($model["numero_protocollo"]) ? $model["numero_protocollo"] : $id ?> è in stato <?= Utils::getStatoRichiesta($model["stato_richiesta"]) ?></p>
+                                <div class="cmp-card-latest-messages mb-3" data-bs-toggle="modal" data-bs-target="#modal-message" id="<?= $id ?>">
+                                    <div class="card shadow-sm px-4 pt-4 pb-4">
+                                        <span class="visually-hidden">Categoria:</span>
+                                        <div class="card-header border-0 p-0 m-0">
+                                            <time class="date-xsmall"><?= Utils::formatDate($model["date"]) ?></time>
+                                        </div>
+                                        <div class="card-body p-0 my-2">
+                                            <h3 class="title-small-semi-bold t-primary m-0 mb-1">
+                                                <?= Html::a($model["label"], Url::to([$model["url"], "id" => $id]), ["class" => "text-decoration-none"]) ?>
+                                            </h3>
+                                            <p class="text-paragraph text-truncate">La richiesta <?= isset($model["numero_protocollo"]) ? $model["numero_protocollo"] : $id ?> è in stato <?= Utils::getStatoRichiesta($model["stato_richiesta"]) ?></p>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        <?php } ?>
+                        <?php }
+                        } ?>
 
                         <?php if (count($latest_messages) > 20) { ?>
                             <button type="button" class="btn btn-xs btn-me btn-label t-primary px-0">
                                 <span class="">Vedi altri messaggi</span>
                             </button>
                         <?php } ?>
-
                     </div>
                 </div>
             </div>
@@ -108,7 +107,6 @@ use yii\helpers\Url;
                         </div>
                     </div>
                     <div class="card-body p-0">
-
                         <?php foreach ($latest_attivita as $item) { ?>
                             <div class="cmp-icon-card mb-3">
                                 <div class="card pt-20 pb-4 ps-4 pr-30 drop-shadow">
@@ -132,9 +130,11 @@ use yii\helpers\Url;
                             </div>
                         <?php } ?>
 
-                        <button type="button" class="btn btn-xs btn-me btn-label t-primary px-0">
-                            <span class="">Vedi altre attività</span>
-                        </button>
+                        <?php if (count($latest_attivita) > 20) { ?>
+                            <button type="button" class="btn btn-xs btn-me btn-label t-primary px-0">
+                                <span class="">Vedi altre attività</span>
+                            </button>
+                        <?php } ?>
                     </div>
                 </div>
             </div>

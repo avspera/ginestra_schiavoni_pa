@@ -46,6 +46,11 @@
                                                         <span>Scegli durata</span>
                                                     </a>
                                                 </li>
+                                                <li class="nav-item">
+                                                    <a class="nav-link" href="#pagamento-choice">
+                                                        <span>Pagamento</span>
+                                                    </a>
+                                                </li>
                                             </ul>
                                         </div>
                                     </div>
@@ -81,6 +86,27 @@
                                                     <label for="parcheggioresidenti-durata">1 anno</label>
                                                 </div>
                                             </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="it-page-section" id="pagamento-choice">
+                    <div class="cmp-card mb-40">
+                        <div class="card has-bkg-grey shadow-sm p-big">
+                            <div class="card-header border-0 p-0 mb-lg-20 m-0">
+                                <div class="d-flex">
+                                    <h2 class="title-xxlarge mb-1 icon-required">Pagamento</h2>
+                                </div>
+                            </div>
+                            <div class="card-body p-0">
+                                <div class="cmp-card-radio">
+                                    <div class="card card-teaser">
+                                        <div class="card-body">
+                                            <p class="subtitle-small mb-0 mb-4">Il servizio è gratuito e non prevede alcun costo</p>
                                         </div>
                                     </div>
                                 </div>

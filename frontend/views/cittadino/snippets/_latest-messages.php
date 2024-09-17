@@ -57,38 +57,39 @@ use yii\helpers\Url;
                     <div class="card-body p-0">
 
                         <?php
+                        $ids = array_column($latest_attivita, 'id');
 
                         foreach ($items as $item) {
                             $id = $item->id_model;
-                            $model = array_filter($latest_attivita, function ($elemento) use ($id) {
-                                return $elemento['id'] == $id;
-                            });
-                            $model = reset($model);
+                            $key = array_search($id, $ids);
 
+                            if ($key !== false) {
+                                $model = $latest_attivita[$key];
                         ?>
-                            <div class="cmp-card-latest-messages mb-3" data-bs-toggle="modal" data-bs-target="#modal-message" id="<?= $id ?>">
-                                <div class="card shadow-sm px-4 pt-4 pb-4">
-                                    <span class="visually-hidden">Categoria:</span>
-                                    <div class="card-header border-0 p-0 m-0">
-                                        <date class="date-xsmall"><?= Utils::formatDate($model["date"]) ?></date>
-                                    </div>
-                                    <div class="card-body p-0 my-2">
-                                        <h3 class="title-small-semi-bold t-primary m-0 mb-1">
-                                            <?= Html::a($model["label"], Url::to([$model["url"], "id" => $id]), ["class" => "text-decoration-none"]) ?>
-                                        </h3>
-                                        <p class="text-paragraph text-truncate">La richiesta <?= isset($model["numero_protocollo"]) ? $model["numero_protocollo"] : $id  ?> è in stato <?= Utils::getStatoRichiesta($model["stato_richiesta"]) ?></p>
+                                <div class="cmp-card-latest-messages mb-3" data-bs-toggle="modal" data-bs-target="#modal-message" id="<?= $id ?>">
+                                    <div class="card shadow-sm px-4 pt-4 pb-4">
+                                        <span class="visually-hidden">Categoria:</span>
+                                        <div class="card-header border-0 p-0 m-0">
+                                            <time class="date-xsmall"><?= Utils::formatDate($model["date"]) ?></time>
+                                        </div>
+                                        <div class="card-body p-0 my-2">
+                                            <h3 class="title-small-semi-bold t-primary m-0 mb-1">
+                                                <?= Html::a($model["label"], Url::to([$model["url"], "id" => $id]), ["class" => "text-decoration-none"]) ?>
+                                            </h3>
+                                            <p class="text-paragraph text-truncate">La richiesta <?= isset($model["numero_protocollo"]) ? $model["numero_protocollo"] : $id  ?> è in stato <?= Utils::getStatoRichiesta($model["stato_richiesta"]) ?></p>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <?php
-                            if (count($items) > 20) {
-                            ?>
-                                <button type="button" class="btn btn-xs btn-me btn-label t-primary px-0">
-                                    <span class="">Vedi altri messaggi</span>
-                                </button>
-                            <?php } ?>
+                        <?php
+                            }
+                        }
+                        ?>
+                        <?php if (count($items) > 20) { ?>
+                            <button type="button" class="btn btn-xs btn-me btn-label t-primary px-0">
+                                <span class="">Vedi altri messaggi</span>
+                            </button>
+                        <?php } ?>
                     </div>
-                <?php } ?>
                 </div>
             </div>
         </div>

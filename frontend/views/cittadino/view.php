@@ -3,11 +3,6 @@
 /** @var yii\web\View $this */
 /** @var common\models\Cittadino $model */
 
-use yii\helpers\Url;
-use yii\helpers\Html;
-
-use common\components\Utils;
-
 $this->title = "Area privata di " . $model->fullname;
 
 // $this->params['breadcrumbs'][] = ['label' => 'Contravvenziones', 'url' => ['index']];
@@ -29,38 +24,39 @@ $this->params['breadcrumbs'][] = [
   <div class="col-12 p-0">
     <div class="cmp-nav-tab mb-4 mb-lg-5 mt-lg-4">
       <ul class="nav nav-tabs nav-tabs-icon-text w-100 flex-nowrap" id="myTab" role="tablist">
-        <li class="nav-item w-100" role="tab" aria-selected="false" tabindex="-1">
-          <a class="nav-link justify-content-start text-tab active show" href="#data-scrivania" aria-current="page" aria-controls="tab1" aria-selected="true" data-bs-toggle="tab" role="button" data-focus-mouse="false" tabindex="-1">
+        <li class="nav-item w-100" role="tab" aria-selected="false">
+          <a class="nav-link justify-content-start text-tab active show" href="#data-scrivania" aria-controls="tab1" aria-selected="true" data-bs-toggle="tab" role="button" data-focus-mouse="false">
             <svg class="icon me-1 mr-lg-10" aria-hidden="true">
               <use href="/bootstrap-italia/svg/sprites.svg#it-pa"></use>
             </svg>
             Scrivania
           </a>
         </li>
-        <li class="nav-item w-100" role="tab" aria-selected="false" tabindex="-1">
-          <a class="nav-link justify-content-start text-tab" href="#data-messages" aria-current="page" aria-controls="tab2" aria-selected="false" data-bs-toggle="tab" role="button" data-focus-mouse="false" tabindex="-1">
+        <li class="nav-item w-100" role="tab" aria-selected="false">
+          <a class="nav-link justify-content-start text-tab" href="#data-messages" aria-controls="tab2" aria-selected="false" data-bs-toggle="tab" role="button" data-focus-mouse="false">
             <svg class="icon me-1 mr-lg-10" aria-hidden="true">
               <use href="/bootstrap-italia/svg/sprites.svg#it-mail"></use>
             </svg>
             Messaggi
           </a>
         </li>
-        <li class="nav-item w-100" role="tab" aria-selected="false" tabindex="-1">
-          <a class="nav-link justify-content-start text-tab" href="#data-attivita" aria-current="page" aria-controls="tab3" aria-selected="false" data-bs-toggle="tab" role="button" data-focus-mouse="false" tabindex="-1">
+        <li class="nav-item w-100" role="tab" aria-selected="false">
+          <a class="nav-link justify-content-start text-tab" href="#data-attivita" aria-controls="tab3" aria-selected="false" data-bs-toggle="tab" role="button" data-focus-mouse="false">
             <svg class="icon me-1 mr-lg-10" aria-hidden="true">
               <use href="/bootstrap-italia/svg/sprites.svg#it-files"></use>
             </svg>
             Attività
           </a>
         </li>
-        <li class="nav-item w-100" role="tab" aria-selected="false" tabindex="-1">
-          <a class="nav-link justify-content-start text-tab" href="#data-ex-tab4" aria-current="page" aria-controls="tab4" aria-selected="false" data-bs-toggle="tab" role="button" data-focus-mouse="false" tabindex="-1">
+        <li class="nav-item w-100" role="tab" aria-selected="false">
+          <a class="nav-link justify-content-start text-tab" href="#data-ex-tab4" aria-controls="tab4" aria-selected="false" data-bs-toggle="tab" role="button" data-focus-mouse="false">
             <svg class="icon me-1 mr-lg-10" aria-hidden="true">
               <use href="/bootstrap-italia/svg/sprites.svg#it-settings"></use>
             </svg>
             Servizi
           </a>
         </li>
+
       </ul>
     </div>
   </div>
