@@ -21,7 +21,7 @@ use kartik\date\DatePicker;
 
     <div class="row">
         <div class="col-md-3"><?= $form->field($model, 'data_di_nascita')->textInput(["type" => "date"])->label("Data di nascita", ["class" => "control-label active"]); ?></div>
-        <div class="col-md-3"><?= $form->field($model, 'comune_di_nascita')->textInput(['maxlength' => true])->label("Comune di nascita", ["class" => "control-label active"]); ?></div>
+        <div class="col-md-3"><?= $form->field($model, 'luogo_di_nascita')->textInput(['maxlength' => true])->label("Comune di nascita", ["class" => "control-label active"]); ?></div>
         <div class="col-md-3"><?= $form->field($model, 'tipo_documento')->dropDownList($model->tipo_documento_choices, ['prompt' => "Scegli"])->label("Tipo di documento", ["class" => "control-label active"]); ?></div>
         <div class="col-md-3"><?= $form->field($model, 'documento_di_identita')->textInput(['maxlength' => true])->label("Numero documento", ["class" => "control-label active"]); ?></div>
     </div>

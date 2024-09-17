@@ -9,11 +9,10 @@ use Yii;
  *
  * @property int $id
  * @property int $id_cittadino
- * @property string $indirizzo
- * @property int|null $qnt_auto
  * @property string $created_at
  * @property string|null $updated_at
  * @property int $created_by
+ * @property int $stato_richiesta
  * @property int|null $updated_by
  * @property float|null $price
  * @property int $payed
@@ -21,7 +20,7 @@ use Yii;
  */
 class ParcheggioResidenti extends \yii\db\ActiveRecord
 {
-    public $durata_choices = [1 => "3 mesi", 2 => "6 mesi", 3 => "1 anno"];
+    public $durata_choices = [3 => "1 anno"];
 
     /**
      * {@inheritdoc}
@@ -37,12 +36,19 @@ class ParcheggioResidenti extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id_cittadino', 'indirizzo', 'created_at', 'created_by', 'targa', 'approved', 'durata', 'cf_richiedente'], 'required'],
-            [['qnt_auto', 'created_by', 'updated_by', 'payed', 'durata', 'approved_by'], 'integer'],
-            [['created_at', 'updated_at', 'veicolo', 'carta_circolazione', 'carta_identita', 'data_rilascio', 'approved_by', 'numero_protocollo'], 'safe'],
+            [['id_cittadino', 'created_at', 'created_by', 'approved', 'durata'], 'required'],
+            [['created_by', 'updated_by', 'payed', 'durata', 'approved_by'], 'integer'],
+            [[
+                'created_at',
+                'updated_at',
+                'veicolo',
+                'stato_richiesta',
+                'data_rilascio',
+                'approved_by',
+                'numero_protocollo'
+            ], 'safe'],
             [['price'], 'number'],
-            [['carta_identita', 'carta_circolazione'], 'file', 'skipOnEmpty' => true, 'extensions' => 'pdf'],
-            [['veicolo', 'indirizzo', 'numero_protocollo'], 'string'],
+            [['veicolo', 'numero_protocollo'], 'string'],
         ];
     }
 
@@ -54,19 +60,13 @@ class ParcheggioResidenti extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'id_cittadino' => 'Cittadino',
-            'cf_richiedente' => "Codice fiscale",
-            'indirizzo' => 'Indirizzo',
-            'qnt_auto' => 'N. Auto',
             'created_at' => 'Creato il',
             'updated_at' => 'Aggiornato il',
             'created_by' => 'Creato da',
             'updated_by' => 'Modificato da',
             'price' => 'Prezzo',
             'payed' => 'Pagato',
-            'targa' => "Targa",
             'veicolo' => "Veicolo",
-            'carta_identita' => "Carta di identità",
-            'carta_circolazione' => "Carta di circolazione",
             'approved' => "Approvato",
             'data_rilascio' => "Data rilascio",
             'durata' => "Durata",
@@ -91,6 +91,22 @@ class ParcheggioResidenti extends \yii\db\ActiveRecord
         return true;
     }
 
+    public function afterSave($insert, $changedAttributes)
+    {
+        $logParams = [
+            'LogRichieste' => [
+                'id_model'      => $this->id,
+                'model_type'    => "parcheggio-residenti",
+                'prev_status'   => $insert ? NULL : ($changedAttributes['stato_richiesta'] ?? NULL),
+                'new_status'    => $this->stato_richiesta,
+                'action'        => $insert ? "create" : "update",
+                'notes'         => "",
+                'coming_from'   => "external",
+            ]
+        ];
+
+        \common\components\Utils::writeLogs($logParams);
+    }
     public function uploadFiles($attachments)
     {
         $path = Yii::getAlias('@frontend') . '/web/uploads/parcheggio-residenti/';
@@ -113,5 +129,10 @@ class ParcheggioResidenti extends \yii\db\ActiveRecord
     public function getDurata()
     {
         return isset($this->durata_choices[$this->durata]) ?  $this->durata_choices[$this->durata] : "-";
+    }
+
+    public function getDurataChoices()
+    {
+        return $this->durata_choices;
     }
 }

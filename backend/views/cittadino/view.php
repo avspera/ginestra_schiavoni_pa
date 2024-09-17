@@ -55,7 +55,7 @@ $this->params['breadcrumbs'][] = [
                 }
             ],
             'data_di_nascita:date',
-            'comune_di_nascita',
+            'luogo_di_nascita',
             'documento_di_identita',
             [
                 'attribute' => 'tipo_documento',

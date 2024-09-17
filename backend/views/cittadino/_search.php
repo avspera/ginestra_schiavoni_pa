@@ -24,7 +24,7 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'data_di_nascita') ?>
 
-    <?= $form->field($model, 'comune_di_nascita') ?>
+    <?= $form->field($model, 'luogo_di_nascita') ?>
 
     <?php // echo $form->field($model, 'documento_di_identita') ?>
 

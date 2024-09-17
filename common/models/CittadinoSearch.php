@@ -18,7 +18,7 @@ class CittadinoSearch extends Cittadino
     {
         return [
             [['id', 'tipo_documento', 'eta', 'stato_civile'], 'integer'],
-            [['nome', 'cognome', 'data_di_nascita', 'comune_di_nascita', 'documento_di_identita', 'last_login', 'email', 'updated', 'professione', 'comune_di_residenza', 'indirizzo_di_residenza', 'cittadinanza', 'codice_fiscale', 'telefono'], 'safe'],
+            [['nome', 'cognome', 'data_di_nascita', 'luogo_di_nascita', 'documento_di_identita', 'last_login', 'email', 'updated', 'professione', 'comune_di_residenza', 'indirizzo_di_residenza', 'cittadinanza', 'codice_fiscale', 'telefono'], 'safe'],
         ];
     }
 
@@ -70,7 +70,7 @@ class CittadinoSearch extends Cittadino
         $query->andFilterWhere(['like', 'nome', $this->nome])
             ->andFilterWhere(['like', 'cognome', $this->cognome])
             ->andFilterWhere(['like', 'data_di_nascita', $this->data_di_nascita])
-            ->andFilterWhere(['like', 'comune_di_nascita', $this->comune_di_nascita])
+            ->andFilterWhere(['like', 'luogo_di_nascita', $this->luogo_di_nascita])
             ->andFilterWhere(['like', 'email', $this->email])
             ->andFilterWhere(['like', 'professione', $this->professione])
             ->andFilterWhere(['like', 'comune_di_residenza', $this->comune_di_residenza])

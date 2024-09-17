@@ -54,7 +54,6 @@ $this->params['breadcrumbs'][] = [
             ],
             'indirizzo',
             'qnt_auto',
-            'targa',
             'veicolo',
             [
                 'attribute' => 'price',
@@ -74,7 +73,7 @@ $this->params['breadcrumbs'][] = [
             ],
             'data_rilascio:date',
             [
-                'attribute' => 'carta_identita',
+                'attribute' => 'patente_di_guida',
                 'value' => function ($model) {
                     if (!empty($model->carta_identita)) {
                         $html = "<ul class='upload-file-list'>";

@@ -202,7 +202,7 @@ CREATE TABLE `cittadino` (
   `nome` varchar(255) NOT NULL,
   `cognome` varchar(255) NOT NULL,
   `data_di_nascita` varchar(255) NOT NULL,
-  `comune_di_nascita` varchar(255) NOT NULL,
+  `luogo_di_nascita` varchar(255) NOT NULL,
   `tipo_documento` int NOT NULL,
   `last_login` datetime DEFAULT NULL,
   `email` varchar(255) NOT NULL,
@@ -227,7 +227,7 @@ CREATE TABLE `cittadino` (
 LOCK TABLES `cittadino` WRITE;
 /*!40000 ALTER TABLE `cittadino` DISABLE KEYS */;
 
-INSERT INTO `cittadino` (`id`, `nome`, `cognome`, `data_di_nascita`, `comune_di_nascita`, `tipo_documento`, `last_login`, `email`, `updated`, `professione`, `eta`, `comune_di_residenza`, `indirizzo_di_residenza`, `cittadinanza`, `stato_civile`, `codice_fiscale`, `telefono`, `created_by`, `created_at`, `updated_at`, `updated_by`, `documento_di_identita`, `spid_reference`)
+INSERT INTO `cittadino` (`id`, `nome`, `cognome`, `data_di_nascita`, `luogo_di_nascita`, `tipo_documento`, `last_login`, `email`, `updated`, `professione`, `eta`, `comune_di_residenza`, `indirizzo_di_residenza`, `cittadinanza`, `stato_civile`, `codice_fiscale`, `telefono`, `created_by`, `created_at`, `updated_at`, `updated_by`, `documento_di_identita`, `spid_reference`)
 VALUES
 	(1,'Antonio Vincenzo','Spera','18-01-1987','Salerno',1,NULL,'speradeveloper@gmail.com',NULL,'Libero Professionista',36,'Nocera Inferiore','Via Parco dei Tigli 38','Ita',1,'sprnnv87a18h703l','3339128349',1,'2023-11-14 14:15:31','2023-11-14 14:26:24',0,'123123123',NULL),
 	(2,'Tom','Delonge','18-01-1987','Salerno',1,NULL,'speradeveloper@gmail.com',NULL,'Libero Professionista',36,'Nocera Inferiore','Via Parco dei Tigli 38','Ita',1,'sprnnv87a18h703l','3339128349',1,'2023-11-14 14:15:31','2023-11-14 14:26:24',0,'123123123',NULL);

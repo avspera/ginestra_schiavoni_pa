@@ -9,9 +9,13 @@ use common\models\ParcheggioResidenti;
 use Yii;
 use common\models\Cittadino;
 use common\models\LogRichieste;
+use common\models\Veicolo;
+use yii\db\Exception;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\AccessControl;
+use yii\web\UploadedFile;
+use common\components\Utils;
 
 /**
  * UsersController implements the CRUD actions for User model.
@@ -35,7 +39,7 @@ class CittadinoController extends Controller
                             'delete',
                             'send-credentials',
                             'generate-random-password',
-                            'set-status'
+                            'set-status',
                         ],
                         'allow' => true,
                         'roles' => ['@'],
@@ -45,6 +49,8 @@ class CittadinoController extends Controller
                             'check-email',
                             'create',
                             'view',
+                            'add-veicolo',
+                            'upload-attachment',
                         ],
                         'allow' => true,
                         'allow' => ['?'],
@@ -89,7 +95,7 @@ class CittadinoController extends Controller
             ->all();
 
         $parcheggio_residenti   = ParcheggioResidenti::find()
-            ->select(["id", "numero_protocollo", "stato as stato_richiesta", "created_at as date", new \yii\db\Expression("'Parcheggio per residenti' as label"), new \yii\db\Expression("'parcheggio-residenti/view' as url")])
+            ->select(["id", "numero_protocollo", "stato_richiesta", "created_at as date", new \yii\db\Expression("'Parcheggio per residenti' as label"), new \yii\db\Expression("'parcheggio-residenti/view' as url")])
             ->where(["id_cittadino" => $id])
             ->limit(3)
             ->orderBy(["created_at" => SORT_ASC])
@@ -116,6 +122,60 @@ class CittadinoController extends Controller
         ]);
     }
 
+    public function actionUploadAttachmnt($id)
+    {
+        $cittadino = $this->findModel($id);
+
+        if (Yii::$app->request->isPost) {
+            if ($cittadino->load(Yii::$app->request->post())) {
+                $patente = UploadedFile::getInstances($cittadino, "patente_di_guida");
+                if (!empty($patente)) {
+                    $path = Yii::getAlias('@frontend') . '/web/uploads/cittadino/' . $cittadino->id . "/";
+                    $cittadino->patante_di_guida = Utils::uploadFiles($cittadino, "patante_di_guida", $path);
+                    
+                    try {
+                        $cittadino->save();
+                    } catch (Exception $e) {
+                        Yii::$app->session->setFlash("error", "Impossibile caricare allegato");
+                    }
+                }
+            }
+
+            return $this->redirect(Yii::$app->request->referrer);
+        }
+    }
+
+    public function actionAddVeicolo()
+    {
+        if (Yii::$app->request->isPost) {
+            $veicolo = new Veicolo();
+            $veicolo->load(Yii::$app->request->post());
+
+            $path = Yii::getAlias('@frontend') . '/web/uploads/cittadino/' . $veicolo->id_cittadino . "/";
+
+            $allegato_1 = UploadedFile::getInstances($veicolo, "allegato_1");
+            if (!empty($allegato_1)) {
+                $veicolo->allegato_1 = Utils::uploadFiles($veicolo, "allegato_1", $path);
+            }
+
+            $allegato_2 = UploadedFile::getInstances($veicolo, "allegato_2");
+            if (!empty($allegato_2)) {
+                $veicolo->allegato_2 = Utils::uploadFiles($veicolo, "allegato_2", $path);
+            }
+
+            try {
+                $veicolo->created_at = date("Y-m-d H:i:s");
+
+                if (!$veicolo->save()) {
+                    Yii::$app->session->setFlash("error", "Impossibile aggiungere veicolo." . json_encode($veicolo->getErrors()));
+                }
+            } catch (Exception $e) {
+                Yii::$app->session->setFlash("error", "Impossibile aggiungere veicolo.");
+            }
+
+            return $this->redirect($this->request->referrer);
+        }
+    }
     /**
      * Finds the User model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.

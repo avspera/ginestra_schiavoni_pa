@@ -32,7 +32,7 @@ $this->params['breadcrumbs'][] = [
                             'nome',
                             'cognome',
                             'data_di_nascita:date',
-                            'comune_di_nascita',
+                            'luogo_di_nascita',
                             //'documento_di_identita',
                             //'tipo_documento',
                             //'last_login',

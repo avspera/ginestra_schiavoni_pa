@@ -2,7 +2,6 @@
 
 /** @var yii\web\View $this */
 
-use yii\helpers\Html;
 use yii\helpers\Url;
 
 $this->title = Yii::$app->name;

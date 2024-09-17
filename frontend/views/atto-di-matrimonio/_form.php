@@ -10,6 +10,7 @@ use yii\widgets\ActiveForm;
 
 <div class="atto-di-matrimonio-form">
 
+
     <?php $form = ActiveForm::begin(); ?>
 
     <div class="col-12">

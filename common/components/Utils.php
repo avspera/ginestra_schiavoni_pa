@@ -10,6 +10,7 @@ use common\models\Indirizzo;
 use common\models\LogRichieste;
 use yii\base\Security;
 use yii\db\Exception;
+use yii\web\UploadedFile;
 
 class Utils
 {
@@ -167,5 +168,28 @@ class Utils
         } catch (Exception $e) {
             return false;
         }
+    }
+
+    public static function uploadFiles($model, $attribute, $path)
+    {
+        if (!is_dir($path)) {
+            mkdir($path, 0777, true);
+        }
+
+        $files = UploadedFile::getInstances($model, $attribute);
+
+        $dbInsert = [];
+        foreach ($files as $file) {
+            $filename = time() . '-' . $file->baseName . '.' . $file->extension;
+            if ($file->saveAs($path . $filename)) {
+                $dbInsert[] = $filename;
+            }
+        }
+
+        if (!empty($dbInsert)) {
+            return implode(",", $dbInsert);
+        }
+
+        return false;
     }
 }

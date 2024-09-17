@@ -7,12 +7,14 @@
             <span class="text-button-sm t-primary">Indietro</span>
         </button>
 
-        <button onclick="showFreezeModal()" type="button" class="btn btn-outline-primary bg-white btn-sm steppers-btn-save d-none d-lg-block saveBtn">
-            <span class="text-button-sm t-primary">Salva Richiesta</span>
-        </button>
+        <?php if ($step <= 3) { ?>
+            <button onclick="showFreezeModal()" type="button" class="btn btn-outline-primary bg-white btn-sm steppers-btn-save d-none d-lg-block saveBtn">
+                <span class="text-button-sm t-primary">Salva Richiesta</span>
+            </button>
+        <?php } ?>
 
         <?php if ($step < 4) { ?>
-            <button onclick="goAhead(<?= $step ?>)" type="button" class="btn btn-primary btn-sm steppers-btn-confirm" data-bs-toggle="modal" data-bs-target="#modal-save-1">
+            <button onclick="freezeAction('<?= $step ?>')" type="button" class="btn btn-primary btn-sm steppers-btn-confirm" data-bs-toggle="modal" data-bs-target="#modal-save-1">
                 <span class="text-button-sm">Avanti</span>
                 <svg class="icon icon-white icon-sm" aria-hidden="true">
                     <use href="<?= Yii::getAlias("@web") ?>/bootstrap-italia/svg/sprites.svg#it-chevron-right"></use>
@@ -63,7 +65,7 @@
             <div class="modal-body">
             </div>
             <div class="modal-footer pb-70 pt-0">
-                <button class="btn btn-outline-success w-100 mx-0" onclick="freezeAction('<?= $step ?>')" type="button">Conferma e salva</button>
+                <button class="btn btn-outline-success w-100 mx-0" onclick="freezeAction('<?= $step ?>', true)" type="button">Conferma e salva</button>
                 <button class="btn btn-outline-primary w-100 mx-0" data-bs-dismiss="modal" type="button">Annulla</button>
             </div>
         </div>
@@ -71,11 +73,12 @@
 </div>
 
 <script>
-    function freezeAction(step) {
+    function freezeAction(step, showAlert = false) {
         let attributes = $("form").serialize();
+        step = Number.isNaN(step) ? 1 : Number.parseInt(step);
 
         $.ajax({
-            url: '<?= yii\helpers\Url::to(["accesso-atti/create", "id" => $model->id]) ?>',
+            url: '<?= "/" . Yii::$app->controller->id . "/save-step-data?id=" . $model->id . "&step=" . $step ?>',
             type: 'post',
             dataType: 'json',
             data: attributes,
@@ -87,8 +90,12 @@
                             </div>`;
                     $("#result-message").append(html);
                 } else {
-                    $("#alert-message").removeClass("d-none");
-                    $("#modal-freeze").modal("hide");
+                    if (showAlert) {
+                        $("#alert-message").removeClass("d-none");
+                        $("#modal-freeze").modal("hide");
+                    } else {
+                        window.location.href = `create?id=<?= $model->id ?>&step=${step + 1}`;
+                    }
                     clearFormDataSteps();
                 }
             },
@@ -99,43 +106,7 @@
     }
 
     function confirmAction(step) {
-        const savedData = sessionStorage.getItem(`formDataStep${step}`);
-
-        if (savedData) {
-            const formData = JSON.parse(savedData);
-
-            const transformedData = {};
-            for (const key in formData) {
-                if (formData.hasOwnProperty(key)) {
-                    const decodedKey = decodeURIComponent(key);
-                    transformedData[decodedKey] = formData[key];
-                }
-            }
-
-            $.ajax({
-                url: '<?= yii\helpers\Url::to(["accesso-atti/create", "id" => $model->id]) ?>',
-                type: 'post',
-                dataType: 'json',
-                data: transformedData,
-                success: function(data) {
-                    if (data.status == 100) {
-                        let html = `<div class="alert alert-warning alert-dismissible fade show" role="alert">
-                        <strong>Attenzione!</strong> ${data.msg}
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                        </div>`;
-                        $("#result-message").append(html);
-                    } else {
-                        $("#alert-message").removeClass("d-none");
-                        $("#modal-freeze").modal("hide");
-                        clearFormDataSteps();
-                        window.location.href = "confirmed?id=" + <?= $model->id ?>
-                    }
-                },
-                error: function(richiesta, stato, errori) {
-                    alert("Attenzione: " + stato);
-                }
-            });
-        }
+        $("form.main-form").submit();
     }
 
 
@@ -144,9 +115,9 @@
     }
 
     document.addEventListener('DOMContentLoaded', function() {
-        loadFormData();
+        //loadFormData();
 
-        document.querySelectorAll('input, textarea, select').forEach(element => {
+        document.querySelectorAll('form[id^="new-"] input, form[id^="new-"] textarea, form[id^="new-"] select').forEach(element => {
             element.addEventListener('change', function() {
                 saveFormData();
             });
@@ -202,7 +173,8 @@
     }
 
     function goAhead(step) {
-        saveFormData();
-        window.location.href = `create?id=<?= $model->id ?>&step=${step + 1}`;
+        // saveFormData();
+        freezeAction(step);
+        //window.location.href = `create?id=<?= $model->id ?>&step=${step + 1}`;
     }
 </script>

@@ -17,8 +17,8 @@ class ParcheggioResidentiSearch extends ParcheggioResidenti
     public function rules()
     {
         return [
-            [['id', 'qnt_auto', 'created_by', 'updated_by', 'payed'], 'integer'],
-            [['created_at', 'updated_at', 'veicolo', 'targa'], 'safe'],
+            [['id', 'created_by', 'updated_by', 'payed'], 'integer'],
+            [['created_at', 'updated_at', 'veicolo'], 'safe'],
             [['indirizzo', 'id_cittadino',], 'string'],
             [['price'], 'number'],
         ];
@@ -62,8 +62,6 @@ class ParcheggioResidentiSearch extends ParcheggioResidenti
         $query->andFilterWhere([
             'id' => $this->id,
             'id_cittadino' => $this->id_cittadino,
-            'indirizzo' => $this->indirizzo,
-            'qnt_auto' => $this->qnt_auto,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
             'created_by' => $this->created_by,

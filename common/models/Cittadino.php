@@ -12,13 +12,14 @@ use Yii;
  * @property string $nome
  * @property string $cognome
  * @property string $data_di_nascita
- * @property string $comune_di_nascita
+ * @property string $luogo_di_nascita
  * @property string $documento_di_identita
  * @property int $tipo_documento
  * @property string $last_login
  * @property string $email
  * @property string|null $updated
  * @property string|null $professione
+ * @property string|null $patente_di_guida
  * @property int|null $eta
  * @property string|null $comune_di_residenza
  * @property string|null $indirizzo_di_residenza
@@ -31,6 +32,7 @@ use Yii;
  * @property int $created_by
  * @property int|null $updated_by
  * @property string $spid_reference
+ * @property string|null $sesso
  */
 class Cittadino extends \yii\db\ActiveRecord
 {
@@ -75,13 +77,14 @@ class Cittadino extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['fullname', 'nome', 'cognome', 'data_di_nascita', 'comune_di_nascita', 'documento_di_identita', 'tipo_documento', 'email', 'created_by', "created_at"], 'required'],
-            [['documento_di_identita', 'last_login', 'updated_at', "updated_by", "spid_reference"], 'safe'],
+            [['fullname', 'nome', 'cognome', 'data_di_nascita', 'luogo_di_nascita', 'documento_di_identita', 'tipo_documento', 'email', 'created_by', "created_at"], 'required'],
+            [['documento_di_identita', 'last_login', 'updated_at', "updated_by", "spid_reference", "sesso"], 'safe'],
             [['tipo_documento', 'eta', 'stato_civile'], 'integer'],
-            [['nome', 'cognome', 'data_di_nascita', 'comune_di_nascita', 'email', 'professione', 'comune_di_residenza', 'indirizzo_di_residenza', 'last_login', 'spid_reference', 'fullname'], 'string', 'max' => 255],
+            [['nome', 'cognome', 'data_di_nascita', 'luogo_di_nascita', 'email', 'professione', 'comune_di_residenza', 'indirizzo_di_residenza', 'last_login', 'spid_reference', 'fullname'], 'string', 'max' => 255],
             [['cittadinanza'], 'string', 'max' => 3],
             [['codice_fiscale'], 'string', 'max' => 16],
             [['telefono'], 'string', 'max' => 20],
+            [['patente_di_guida'], 'file', 'skipOnEmpty' => true, 'accept' => ['pdf', 'jpg', 'png']],
         ];
     }
 
@@ -95,7 +98,7 @@ class Cittadino extends \yii\db\ActiveRecord
             'nome' => 'Nome',
             'cognome' => 'Cognome',
             'data_di_nascita' => 'Data Di Nascita',
-            'comune_di_nascita' => 'Comune Di Nascita',
+            'luogo_di_nascita' => 'Comune Di Nascita',
             'documento_di_identita' => 'Documento Identita',
             'tipo_documento' => 'Tipo Documento',
             'last_login' => 'Last Login',
@@ -112,7 +115,8 @@ class Cittadino extends \yii\db\ActiveRecord
             'created_at' => "Aggiunto il",
             'updated_at' => "Modificato il",
             'last_login' => "Ultimo accesso",
-            'spid_reference' => "ID SPID"
+            'spid_reference' => "ID SPID",
+            'patente_di_guida' => 'Patente di guida'
         ];
     }
 
@@ -149,18 +153,18 @@ class Cittadino extends \yii\db\ActiveRecord
     public static function getFakeCittadino()
     {
         return [
-            "id" => "123456789",
-            "name" => "Mario Rossi",
-            "email" => "mario@example.com",
-            "fiscal_code" => "RSSMRA80A01H501X",
-            "attributes" => [
-                "spid_level" => "1",
-                "spid_mobile_phone" => "+393331234567",
-                "spid_address" => "Via Roma 123",
-                "spid_postal_code" => "00100",
-                "spid_city" => "Roma",
-                "spid_country" => "IT"
-            ]
+            "id" => 1,
+            'fullname' => "Giulia Rossi",
+            'name' => "Giulia",
+            "surname" => "Rossi",
+            'codice_fiscale' => 'GLABNC72H25H501Y',
+            'indirizzo' => 'Via Roma 16, 00100 Roma, It',
+            'domicilio' => "Piazza Risorgimento 16, 00100 Roma, It",
+            'data_di_nascita' => '1987-01-18',
+            'luogo_di_nascita' => "Salerno",
+            'sesso' => "Donna",
+            'telefono' => "+39 331 1234567",
+            'email' => "prova@prova.it"
         ];
     }
 }
