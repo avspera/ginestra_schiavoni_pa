@@ -2,8 +2,12 @@
 
 namespace backend\controllers;
 
+use common\components\Utils;
+use common\models\Cittadino;
 use common\models\ParcheggioResidenti;
 use common\models\ParcheggioResidentiSearch;
+use common\models\Veicolo;
+use yii\db\Exception;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -41,6 +45,7 @@ class ParcheggioResidentiController extends Controller
     {
         $searchModel = new ParcheggioResidentiSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
+        $dataProvider->sort->defaultOrder = ["data_richiesta" => SORT_DESC];
 
         return $this->render('index', [
             'searchModel' => $searchModel,
@@ -56,8 +61,13 @@ class ParcheggioResidentiController extends Controller
      */
     public function actionView($id)
     {
+        $model = $this->findModel($id);
+        $cittadino  = Cittadino::findOne(["id" => $model->id_cittadino]);
+        $veicolo    = Veicolo::findOne(["id" => $model->veicolo]);
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'model' => $model,
+            'cittadino' => $cittadino,
+            'veicolo' => $veicolo,
         ]);
     }
 
@@ -171,6 +181,26 @@ class ParcheggioResidentiController extends Controller
         ]);
     }
 
+    public function  actionChangeStatus($id, $new_status)
+    {
+        $model = $this->findModel($id);
+        $model->stato_richiesta = $new_status;
+
+        if ($new_status == Utils::getStatoRichiestaFlipped("approvata")) {
+            $model->data_rilascio = date("Y-m-d H:i:s");
+            $model->data_scadenza = Utils::calcolaDataScadenza($model->data_rilascio, "+1 year");
+        }
+
+        try {
+            if ($model->save()) {
+                \Yii::$app->session->setFlash("success", "Operazione completata correttamente");
+            }
+        } catch (Exception $e) {
+            \Yii::$app->session->setFlash("error", "Ops...c'è stato qualche problema.");
+        }
+
+        return $this->redirect(\Yii::$app->request->referrer);
+    }
     /**
      * Deletes an existing ParcheggioResidenti model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
@@ -180,9 +210,17 @@ class ParcheggioResidentiController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        $model = $this->findModel($id);
+        $model->stato_richiesta = \common\components\Utils::getStatoRichiestaFlipped("cancellata");
 
-        return $this->redirect(['index']);
+        try {
+            $model->save();
+            \Yii::$app->session->setFlash("success", "Operazione completata correttamente");
+        } catch (Exception $e) {
+            \Yii::$app->session->setFlash("error", "Ops...c'è stato qualche problema.");
+        }
+
+        return $this->redirect(\Yii::$app->request->referrer);
     }
 
     /**

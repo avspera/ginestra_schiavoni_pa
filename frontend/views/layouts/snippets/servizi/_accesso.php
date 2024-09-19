@@ -1,5 +1,12 @@
 <?php
-$spidUrl = Yii::$app->params["spidTestUrl"];
+$params     = Yii::$app->params["spidParamsTest"];
+$spidUrl    = $params["spidLoginEndPoint"] . "?authorityId=" . $params["authorityId"] .
+    "&scope=" . $params["scope"] .
+    "&state=" . $params["state"] .
+    "&response_type=" . $params["response_type"] .
+    "&client_id=" . $params["client_id"] .
+    "&redirect_uri=" . $params["redirect_uri"];
+print_r($spidUrl);die;
 ?>
 <div class="row">
     <div class="col-12 col-lg-8 offset-lg-2">
@@ -9,7 +16,7 @@ $spidUrl = Yii::$app->params["spidTestUrl"];
                 <p class="subtitle-small mb-3">Accedi con SPID, il sistema Pubblico di Identità Digitale.</p>
             </div>
             <div class="button-wrapper mb-2">
-                <a href="#" class="italia-it-button italia-it-button-size-m button-spid" spid-idp-button="#spid-idp-button-medium-get" aria-haspopup="true" aria-expanded="false">
+                <a href="<?= $spidUrl ?>" class="italia-it-button italia-it-button-size-m button-spid" spid-idp-button="#spid-idp-button-medium-get" aria-haspopup="true" aria-expanded="false">
                     <span class="italia-it-button-icon"><img src="<?= Yii::getAlias("@web") . "/spid/" ?>img/spid-ico-circle-bb.svg" onerror="this.src='<?= Yii::getAlias('@web') . '/spid/' ?>img/spid-ico-circle-bb.png'; this.onerror=null;" alt=""></span>
                     <span class="italia-it-button-text">Entra con SPID</span>
                 </a>

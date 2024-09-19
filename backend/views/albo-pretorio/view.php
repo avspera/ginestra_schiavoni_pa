@@ -106,17 +106,6 @@ $this->params['breadcrumbs'][] = [
                     },
                     'format' => "raw"
                 ],
-                [
-                    'attribute' => 'coniuge_due',
-                    'value' => function ($model) {
-                        if (is_numeric($model->coniuge_due)) {
-                            return Utils::getCittadino($model->coniuge_due);
-                        } else {
-                            return $model->coniuge_due;
-                        }
-                    },
-                    'format' => "raw"
-                ],
                 'data_matrimonio:date',
                 [
                     'attribute' => 'residenza',

@@ -97,3 +97,11 @@ a.desc:after {
 .jumbotron{
     margin-top:50px;
 }
+
+.bg-green {
+    background-color: #dff0d8;
+}
+
+.bg-orange {
+    background-color: #f9e79f;
+}

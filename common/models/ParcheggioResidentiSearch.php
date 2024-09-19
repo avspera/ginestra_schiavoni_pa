@@ -19,7 +19,7 @@ class ParcheggioResidentiSearch extends ParcheggioResidenti
         return [
             [['id', 'created_by', 'updated_by', 'payed'], 'integer'],
             [['created_at', 'updated_at', 'veicolo'], 'safe'],
-            [['indirizzo', 'id_cittadino',], 'string'],
+            [['id_cittadino',], 'string'],
             [['price'], 'number'],
         ];
     }
@@ -69,6 +69,12 @@ class ParcheggioResidentiSearch extends ParcheggioResidenti
             'price' => $this->price,
             'payed' => $this->payed,
         ]);
+
+        if (!empty($this->stato_richiesta)) {
+            $query->andFilterWhere(["stato_richiesta" => $this->stato_richiesta]);
+        } else {
+            $query->andFilterWhere(["<>", "stato_richiesta", \common\components\Utils::getStatoRichiestaFlipped("cancellata")]);
+        }
 
         return $dataProvider;
     }

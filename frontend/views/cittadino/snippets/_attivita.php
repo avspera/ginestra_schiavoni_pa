@@ -114,9 +114,14 @@ use yii\helpers\Url;
                                         }
                                         ?>
                                         <?= " - " . $item["label"] ?>
+
                                         <div class="icon-wrapper">
-                                            <img class="icon-folder icon-warning" src="/bootstrap-italia/images/folder-incomplete.svg" alt="folder <?= Utils::getStatoRichiesta($item["stato_richiesta"]) ?>" role="img">
-                                            <span class="u-main-alert"><?= Utils::getStatoRichiesta($item["stato_richiesta"]) ?></span>
+                                            <?php
+                                            $icons = Utils::getStatoRichiestaIcons($item["stato_richiesta"]);
+                                            $stato_richiesta = Utils::getStatoRichiesta($item["stato_richiesta"]);
+                                            ?>
+                                            <img class="icon-folder icon-<?= $icons["class"] ?>" src="/bootstrap-italia/images/<?= $icons["image"] ?>" alt="folder <?= $stato_richiesta ?>" role="img">
+                                            <span class="u-main-alert"><?= $stato_richiesta ?></span>
                                         </div>
                                     </div>
                                 </button>
@@ -227,7 +232,8 @@ use yii\helpers\Url;
                                 <div class="button-wrapper">
                                     Pagamento permesso ZTL
                                     <div class="icon-wrapper">
-                                        <img class="icon-folder" src="/images/folder-pay.svg" alt="folder Pagato" role="img">
+
+                                        <img class="icon-folder" src="/bootstrap-italia/images/folder-pay.svg" alt="folder Pagato" role="img">
                                         <span class="">Pagato</span>
                                     </div>
                                 </div>

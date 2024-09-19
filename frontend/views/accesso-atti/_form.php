@@ -111,7 +111,7 @@ $step = isset($_GET["step"]) ? $_GET["step"] : $model->step;
                     <?= $form->field($model, "stato_richiesta")->hiddenInput()->label(false); ?>
 
                     <?php if ($step == 1) { ?>
-                        <?= $this->render("/layouts/snippets/servizi/_privacy", ["model" => $model]) ?>
+                        <?= $this->render("/layouts/snippets/servizi/_privacy", ["model" => $model, "step" => $step]) ?>
                     <?php } else if ($step == 2) { ?>
                         <?= $this->render("/layouts/snippets/servizi/_dati-generali", ["model" => $model, "form" => $form]) ?>
                     <?php } else if ($step == 3) { ?>

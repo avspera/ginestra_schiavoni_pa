@@ -82,6 +82,8 @@ class ParcheggioResidentiController extends Controller
      */
     public function actionCreate($id = NULL)
     {
+        $cittadino = \common\models\Cittadino::find()->where(["id" => 1])->one();
+
         if (!empty($id)) {
             $model = ParcheggioResidenti::find()->where(["id" => $id])->one();
         } else {
@@ -89,7 +91,7 @@ class ParcheggioResidentiController extends Controller
             $model->id_cittadino = 1;
             $model->step = 1;
             $model->stato_richiesta = \common\components\Utils::getStatoRichiestaFlipped("da_completare");
-
+            $model->created_by          = $cittadino->id;
             try {
                 $model->save(false);
             } catch (Exception $e) {
@@ -97,13 +99,12 @@ class ParcheggioResidentiController extends Controller
             }
         }
 
-        $cittadino = \common\models\Cittadino::find()->where(["id" => 1])->one();
-
         if ($this->request->isPost) {
             if ($model->load($this->request->post())) {
-                $model->created_by = $cittadino->id;
+
                 $model->stato_richiesta     = \common\components\Utils::getStatoRichiestaFlipped("in_lavorazione");
                 $model->numero_protocollo   = \common\components\Utils::richiediNumeroProtocollo();
+                $model->data_richiesta      = date("Y-m-d H:i:s");
 
                 if ($model->save(false)) {
                     RichiesteTmp::deleteAll(["external_id" => $id, "tipo_richiesta" => "parcheggio-residenti"]);
@@ -147,7 +148,7 @@ class ParcheggioResidentiController extends Controller
 
     public function actionSaveStepData($id, $step)
     {
-        $out = ["status" => 100, "mag" => "No Post call"];
+        $out = ["status" => 100, "msg" => "No Post call"];
 
         if (Yii::$app->request->isPost) {
 
@@ -169,12 +170,12 @@ class ParcheggioResidentiController extends Controller
             }
             try {
                 if ($existing->save()) {
-                    $out = ["status" => 200, "mag" => "Data saved"];
+                    $out = ["status" => 200, "msg" => "Data saved"];
                 } else {
-                    $out = ["status" => 200, "mag" => json_encode($existing->getErrors())];
+                    $out = ["status" => 200, "msg" => json_encode($existing->getErrors())];
                 }
             } catch (Exception $e) {
-                $out = ["status" => 100, "mag" => "No data saved"];
+                $out = ["status" => 100, "msg" => "No data saved"];
             }
 
             return json_encode($out);

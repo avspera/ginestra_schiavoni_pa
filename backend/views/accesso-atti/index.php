@@ -5,6 +5,7 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\grid\ActionColumn;
 use yii\grid\GridView;
+use common\components\Utils;
 
 /** @var yii\web\View $this */
 /** @var common\models\ContravvenzioneSearch $searchModel */
@@ -28,6 +29,16 @@ $this->params['breadcrumbs'][] = [
             <div class="card-body lightgrey-bg-c1">
                 <?= GridView::widget([
                     'dataProvider' => $dataProvider,
+                    'rowOptions' => function ($model) {
+                        if ($model->stato_richiesta == Utils::getStatoRichiestaFlipped('in_lavorazione')) {
+                            return ['class' => 'bg-green']; // Aggiungi la classe 'bg-green' alle righe corrispondenti
+                        }
+
+                        if ($model->stato_richiesta == Utils::getStatoRichiestaFlipped('da_completare')) {
+                            return ['class' => 'bg-orange']; // Aggiungi la classe 'bg-green' alle righe corrispondenti
+                        }
+                        return [];
+                    },
                     'columns' => [
                         ['class' => 'yii\grid\SerialColumn'],
 

@@ -82,12 +82,12 @@ class SiteController extends Controller
     {
         return $this->render("privacy");
     }
-    
+
     public function actionMap()
     {
         return $this->render("map");
     }
-    
+
     /**
      * Logs in a user.
      *
@@ -106,44 +106,8 @@ class SiteController extends Controller
 
         $model->password = '';
 
-        $settings = array(
-            'sp_entityid' => 'https://loginspid.aruba.it', // preferred: https protocol, no trailing slash, example: https://sp.example.com/
-            'sp_key_file' => '',
-            'sp_cert_file' => '',
-            'sp_comparison' => 'exact', // one of: "exact", "minimum", "better" or "maximum"
-            'sp_assertionconsumerservice' => [
-                // order is important ! the 0-base index in this array will be used as ID in the calls
-                'https://loginspid.aruba.it' . '/acs',
-            ],
-            'sp_singlelogoutservice' => [
-                // order is important ! the 0-base index in this array will be used as ID in the calls
-                ['https://loginspid.aruba.it' . '/slo', 'POST'],
-                ['https://loginspid.aruba.it' . '/slo', 'REDIRECT']
-            ],
-            'sp_org_name' => 'your organization full name',
-            'sp_org_display_name' => 'your organization display name',
-            // 'sp_key_cert_values' => [ // Optional: remove this if you want to generate .key & .crt files manually
-            //     'countryName' => 'IT',
-            //     'stateOrProvinceName' => 'IT',
-            //     'localityName' => 'Agropoli',
-            //     'commonName' => 'Spera',
-            //     'emailAddress' => 'speradeveloper@gmail.com',
-            // ],
-            'idp_metadata_folder' => '../../idp_metadata/',
-            'sp_attributeconsumingservice' => [
-                // order is important ! the 0-base index in this array will be used as ID in the calls
-                ["fiscalNumber"],
-                ["name", "familyName", "fiscalNumber", "email", "spidCode"],
-            ],
-            // Time in seconds of skew that is acceptable between client and server when checking OnBefore and NotOnOrAfter
-            // assertion condition validity timestamps, and IssueInstant response / assertion timestamps. Optional.
-            // Default is 0. Acceptable range: 0-300 (inclusive)
-            'accepted_clock_skew_seconds' => 100
-        );
-
         return $this->render('login', [
             'model' => $model,
-            'settings' => $settings
         ]);
     }
 

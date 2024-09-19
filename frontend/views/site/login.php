@@ -4,13 +4,6 @@
 /** @var yii\bootstrap5\ActiveForm $form */
 /** @var \common\models\LoginForm $model */
 
-$spidLoginUrl = Yii::$app->params["spidLoginEndPoint"] . "?authorityId=" . Yii::$app->params["spidAuthorityId"] .
-    "&scope=" . Yii::$app->params["spidScope"] .
-    "&state=" . Yii::$app->params["spidState"] .
-    "&response_type=" . Yii::$app->params["spidResponseType"] .
-    "&client_id=" . Yii::$app->params["spidClientId"] .
-    "&redirect_uri=" . Yii::$app->params["spidRedirectUri"];
-
 $this->registerJsFile(
     '@web/spid/js/spid-idps.js',
     ['depends' => [\yii\web\JqueryAsset::class]]

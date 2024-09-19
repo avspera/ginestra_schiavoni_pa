@@ -79,17 +79,7 @@ $this->params['breadcrumbs'][] = [
                     return $model->getCondizioneNonProfessionale($model->condizione_non_professionale_coniuge_uno);
                 }
             ],
-            [
-                'attribute' => 'coniuge_due',
-                'value' => function ($model) {
-                    if (is_numeric($model->coniuge_due)) {
-                        return Utils::getCittadino($model->coniuge_due);
-                    } else {
-                        return $model->coniuge_due;
-                    }
-                },
-                'format' => "raw"
-            ],
+            
             'padre_coniuge_due',
             'madre_coniuge_due',
             [

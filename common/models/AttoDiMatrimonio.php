@@ -8,16 +8,13 @@ use Yii;
  * This is the model class for table "atto_di_matrimonio".
  *
  * @property int $id
- * @property int $coniuge_uno
- * @property int $coniuge_due
+ * @property int|null $coniuge
  * @property string $data_matrimonio
+ * @property string|null $data_richiesta
  * @property int $residenza
+ * @property int $privacy
  * @property int $step
- * @property int|null $stato
- * @property string|null $padre_coniuge_uno
- * @property string|null $madre_coniuge_uno
- * @property string|null $padre_coniuge_due
- * @property string|null $madre_coniuge_due
+ * @property int|null $stato_richiesta
  * @property string $created_at
  * @property string|null $updated_at
  * @property int $created_by
@@ -25,20 +22,16 @@ use Yii;
  * @property int|null $tipo_rito
  * @property string|null $luogo_matrimonio
  * @property int $regime_matrimoniale
- * @property int|null $titolo_studio_coniuge_uno
- * @property int|null $titolo_studio_coniuge_due
- * @property int|null $posizione_professionale_coniuge_uno
- * @property int|null $posizione_professionale_coniuge_due
- * @property int|null $condizione_non_professionale_coniuge_uno
- * @property int|null $condizione_non_professionale_coniuge_due
  * @property int $approved,
  * @property int $published
  * @property int $id_cittadino
+ * @property int $durata
  * @property int|null $published_by,
  * @property int|null $id_albo_pretorio
  */
 class AttoDiMatrimonio extends \yii\db\ActiveRecord
 {
+    public $durata_choices = [1 => "15 giorni"];
     public $tipo_rito_choices = [1 => "Civile",  2 => "Religioso", 3 => "Entrambi"];
     public $regime_matrimoniale_choices = [1 => "Comunione dei beni",  2 => "Separazione dei beni"];
     public $titolo_studio_choices = [
@@ -52,7 +45,7 @@ class AttoDiMatrimonio extends \yii\db\ActiveRecord
         7 => "Nessun titolo",
         8 => "Licenza elementare",
         "A" => "Diploma di qualifica professionale e qualifiche regionali di 2-3 anni",
-        "B" => "Attestato IFP di qualifica professionale triennale (operatore) / Diploma professionale quadriennale IFP di tecnico",
+        "B" => "Attestato_richiesta IFP di qualifica professionale triennale (operatore) / Diploma professionale quadriennale IFP di tecnico",
         "C" => "Diploma di maturità",
         "D" => "Certificato di specializzazione tecnica superiore (IFTS)",
         "E" => "Diploma di tecnico superiore (ITS)",
@@ -100,7 +93,7 @@ class AttoDiMatrimonio extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id_cittadino', 'step', 'coniuge_uno', 'coniuge_due', 'data_matrimonio', 'residenza', 'created_at', 'regime_matrimoniale'], 'required'],
+            [['id_cittadino', 'step', 'data_matrimonio', 'residenza', 'durata', 'created_at', 'regime_matrimoniale', 'privacy'], 'required'],
             [[
                 'created_by',
                 'updated_by',
@@ -109,18 +102,24 @@ class AttoDiMatrimonio extends \yii\db\ActiveRecord
                 'approved_by',
                 'published_by',
                 'id_albo_pretorio',
-                'titolo_studio_coniuge_uno',
-                'titolo_studio_coniuge_due',
-                'posizione_professionale_coniuge_uno',
-                'posizione_professionale_coniuge_due',
-                'condizione_non_professionale_coniuge_uno',
-                'condizione_non_professionale_coniuge_due',
                 'step',
-                'stato'
+                'stato_richiesta',
+                'privacy',
+                'coniuge',
+                'durata'
             ], 'integer'],
-            [['created_at', 'updated_at', 'created_by', 'stato', 'numero_protocollo', 'numero_protocollo'], 'safe'],
-            [['data_matrimonio', 'coniuge_uno', 'coniuge_due', 'residenza', 'numero_protocollo', 'numero_protocollo'], 'string'],
-            [['padre_coniuge_uno', 'madre_coniuge_uno', 'padre_coniuge_due', 'madre_coniuge_due', 'luogo_matrimonio'], 'string', 'max' => 255],
+            [[
+                'created_at',
+                'updated_at',
+                'created_by',
+                'stato_richiesta',
+                'numero_protocollo',
+                'data_richiesta',
+                'numero_protocollo',
+                'data_scadenza'
+            ], 'safe'],
+            [['data_matrimonio', 'residenza', 'numero_protocollo', 'numero_protocollo', 'data_scadenza'], 'string'],
+            [['luogo_matrimonio'], 'string', 'max' => 255],
         ];
     }
 
@@ -131,14 +130,8 @@ class AttoDiMatrimonio extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'coniuge_uno' => 'Nome e Cognome',
-            'coniuge_due' => 'Nome e Cognome',
             'data_matrimonio' => 'Data Matrimonio',
             'residenza' => 'Residenza',
-            'padre_coniuge_uno' => 'Padre Coniuge uno',
-            'madre_coniuge_uno' => 'Madre Coniuge uno',
-            'padre_coniuge_due' => 'Padre Coniuge due',
-            'madre_coniuge_due' => 'Madre Coniuge due',
             'created_at' => 'Creato il',
             'updated_at' => 'Aggiornato il',
             'created_by' => 'Creato da',
@@ -146,18 +139,13 @@ class AttoDiMatrimonio extends \yii\db\ActiveRecord
             'tipo_rito' => 'Tipo Rito',
             'luogo_matrimonio' => 'Luogo Matrimonio',
             'regime_matrimoniale' => 'Regime Matrimoniale',
-            'titolo_studio_coniuge_uno' => 'Titolo Studio Coniuge uno',
-            'titolo_studio_coniuge_due' => 'Titolo Studio Coniuge due',
-            'posizione_professionale_coniuge_uno' => 'Posizione Professionale Coniuge uno',
-            'posizione_professionale_coniuge_due' => 'Posizione Professionale Coniuge due',
-            'condizione_non_professionale_coniuge_uno' => 'Condizione Non Professionale Coniuge uno',
-            'condizione_non_professionale_coniuge_due' => 'Condizione Non Professionale Coniuge due',
             'approved' => "Approvato",
             'published' => "Pubblicato",
             'approved_by' => "Approvato da",
             'published_by' => "Pubblicato da",
             'id_albo_pretorio' => "Rif Albo Pretorio",
-            'id_cittadino' => "Cittadino"
+            'id_cittadino' => "Cittadino",
+            'data_scadenza' => "Data scadenza"
         ];
     }
 
@@ -174,13 +162,34 @@ class AttoDiMatrimonio extends \yii\db\ActiveRecord
             $this->approved   = 0;
         } else {
             $this->updated_at = date("Y-m-d H:i:s");
-            $this->updated_by = Yii::$app->user->identity->id;
+            $this->created_by = isset(Yii::$app->user->identity->id) ? Yii::$app->user->identity->id : 0;
         }
 
 
         return true;
     }
 
+    public function afterSave($insert, $changedAttributes)
+    {
+        $logParams = [
+            'LogRichieste' => [
+                'id_model'      => $this->id,
+                'model_type'    => "atto-di-matrimonio",
+                'prev_status'   => $insert ? NULL : ($changedAttributes['stato_richiesta'] ?? NULL),
+                'new_status'    => $this->stato_richiesta,
+                'action'        => $insert ? "create" : "update",
+                'notes'         => "",
+                'coming_from'   => "external",
+            ]
+        ];
+
+        \common\components\Utils::writeLogs($logParams);
+    }
+
+    public function getDurata()
+    {
+        return isset($this->durata_choices[$this->durata]) ? $this->durata_choices[$this->durata] : "-";
+    }
     public function getTipoRito()
     {
         return isset($this->tipo_rito_choices[$this->tipo_rito]) ? $this->tipo_rito_choices[$this->tipo_rito] : "-";

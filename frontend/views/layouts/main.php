@@ -95,7 +95,7 @@ AppAsset::register($this);
             </div>
         </div>
 
-        <?php $this->render("snippets/_help") ?>
+        <?= $this->render("snippets/_help") ?>
     </main>
 
     <?= $this->render("snippets/_footer") ?>

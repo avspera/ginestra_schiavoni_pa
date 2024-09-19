@@ -16,6 +16,7 @@ use yii\web\NotFoundHttpException;
 use yii\filters\AccessControl;
 use yii\web\UploadedFile;
 use common\components\Utils;
+use common\models\Coniuge;
 
 /**
  * UsersController implements the CRUD actions for User model.
@@ -50,6 +51,7 @@ class CittadinoController extends Controller
                             'create',
                             'view',
                             'add-veicolo',
+                            'add-coniuge',
                             'upload-attachment',
                         ],
                         'allow' => true,
@@ -74,7 +76,7 @@ class CittadinoController extends Controller
             ->select(["id", "numero_protocollo", "stato_richiesta", "data_creazione as date", new \yii\db\Expression("'Accesso agli atti' as label"), new \yii\db\Expression("'accesso-atti/view' as url")])
             ->where(["id_cittadino" => $id])
             ->limit(3)
-            ->orderBy(["data_creazione" => SORT_ASC])
+            ->orderBy(["data_creazione" => SORT_DESC])
             ->asArray()
             ->all();
 
@@ -82,15 +84,15 @@ class CittadinoController extends Controller
             ->select(["id", "stato as stato_richiesta", "created_at as date", new \yii\db\Expression("'Contravvenzione' as label"), new \yii\db\Expression("'contravvenzioni/view' as url")])
             ->where(["id_cittadino" => $id])
             ->limit(3)
-            ->orderBy(["created_at" => SORT_ASC])
+            ->orderBy(["created_at" => SORT_DESC])
             ->asArray()
             ->all();
 
         $atti_di_matrimonio     = AttoDiMatrimonio::find()
-            ->select(["id", "numero_protocollo", "stato as stato_richiesta", "created_at as date", new \yii\db\Expression("'Atto di matrimonio' as label"), new \yii\db\Expression("'atto-di-matrimonio/view' as url")])
+            ->select(["id", "numero_protocollo", "stato_richiesta", "created_at as date", new \yii\db\Expression("'Atto di matrimonio' as label"), new \yii\db\Expression("'atto-di-matrimonio/view' as url")])
             ->where(["id_cittadino" => $id])
             ->limit(3)
-            ->orderBy(["created_at" => SORT_ASC])
+            ->orderBy(["created_at" => SORT_DESC])
             ->asArray()
             ->all();
 
@@ -98,7 +100,7 @@ class CittadinoController extends Controller
             ->select(["id", "numero_protocollo", "stato_richiesta", "created_at as date", new \yii\db\Expression("'Parcheggio per residenti' as label"), new \yii\db\Expression("'parcheggio-residenti/view' as url")])
             ->where(["id_cittadino" => $id])
             ->limit(3)
-            ->orderBy(["created_at" => SORT_ASC])
+            ->orderBy(["created_at" => SORT_DESC])
             ->asArray()
             ->all();
 
@@ -122,6 +124,11 @@ class CittadinoController extends Controller
         ]);
     }
 
+    public function actionPagamento($id = NULL)
+    {
+        return $this->render("snippets/_pagamento");
+    }
+
     public function actionUploadAttachmnt($id)
     {
         $cittadino = $this->findModel($id);
@@ -132,7 +139,7 @@ class CittadinoController extends Controller
                 if (!empty($patente)) {
                     $path = Yii::getAlias('@frontend') . '/web/uploads/cittadino/' . $cittadino->id . "/";
                     $cittadino->patante_di_guida = Utils::uploadFiles($cittadino, "patante_di_guida", $path);
-                    
+
                     try {
                         $cittadino->save();
                     } catch (Exception $e) {
@@ -142,6 +149,33 @@ class CittadinoController extends Controller
             }
 
             return $this->redirect(Yii::$app->request->referrer);
+        }
+    }
+
+    public function actionAddConiuge()
+    {
+        if (Yii::$app->request->isPost) {
+            $coniuge = new Coniuge();
+            $coniuge->load(Yii::$app->request->post());
+
+            $path = Yii::getAlias('@frontend') . '/web/uploads/cittadino/' . $coniuge->id_cittadino . "/";
+
+            $carta_di_identita = UploadedFile::getInstances($coniuge, "carta_di_identita");
+            if (!empty($carta_di_identita)) {
+                $coniuge->carta_di_identita = Utils::uploadFiles($coniuge, "carta_di_identita", $path);
+            }
+
+            try {
+                $coniuge->created_at = date("Y-m-d H:i:s");
+
+                if (!$coniuge->save()) {
+                    Yii::$app->session->setFlash("error", "Impossibile aggiungere coniuge." . json_encode($coniuge->getErrors()));
+                }
+            } catch (Exception $e) {
+                Yii::$app->session->setFlash("error", "Impossibile aggiungere veicolo.");
+            }
+
+            return $this->redirect($this->request->referrer);
         }
     }
 
@@ -176,6 +210,7 @@ class CittadinoController extends Controller
             return $this->redirect($this->request->referrer);
         }
     }
+
     /**
      * Finds the User model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.

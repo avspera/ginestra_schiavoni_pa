@@ -347,12 +347,7 @@ $veicolo        = \common\models\Veicolo::find()->where(["id" => $model->veicolo
                                             <div class="text-paragraph-small">Periodo di validità</div>
                                             <div class="border-light">
                                                 <p class="data-text">
-                                                    <?php
-                                                    $today = date("Y-m-d");
-                                                    $dataEsito = new DateTime($today);
-                                                    $dataEsito->modify('+1 year');
-                                                    ?>
-                                                    <?= Utils::formatDate($today) . " - " . $dataEsito->format("d/m/Y")  ?>
+                                                    <?= !empty($model->data_scadenza) ? Utils::formatDate($model->data_scadenza) : " - " ?>
                                                 </p>
                                             </div>
                                         </div>

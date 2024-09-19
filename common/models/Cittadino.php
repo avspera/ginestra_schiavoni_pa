@@ -33,11 +33,46 @@ use Yii;
  * @property int|null $updated_by
  * @property string $spid_reference
  * @property string|null $sesso
+ * @property int|null $titolo_studio
+ * @property int|null $condizione_non_professionale
+ * @property int|null $posizione_professionale
  */
 class Cittadino extends \yii\db\ActiveRecord
 {
 
+    public $condizione_non_professionale_choices = [
+        0 => "Non applicabile (es: età pre-scolare)",
+        1 => "Casalinga",
+        2 => "Studente",
+        3 => "Disoccupato/ in cerca di prima occupazione",
+        4 => "Pensionato/ ritirato dal lavoro",
+        5 => "Altra condizione non professionale",
+        6 => "Non conosciuta / non fornita"
+    ];
+
+    public $titolo_studio_choices = [
+        0 => "Non applicabile",
+        1 => "Nessun titolo/licenza elementare",
+        2 => "Licenza media",
+        3 => "Diploma scuola superiore",
+        4 => "Laurea Triennale",
+        5 => "Laurea",
+        6 => "Dottorato/specializz. Post-laurea",
+        7 => "Nessun titolo",
+        8 => "Licenza elementare",
+        "A" => "Diploma di qualifica professionale e qualifiche regionali di 2-3 anni",
+        "B" => "Attestato_richiesta IFP di qualifica professionale triennale (operatore) / Diploma professionale quadriennale IFP di tecnico",
+        "C" => "Diploma di maturità",
+        "D" => "Certificato di specializzazione tecnica superiore (IFTS)",
+        "E" => "Diploma di tecnico superiore (ITS)",
+        "F" => "Laurea di primo livello (3 anni), Diploma universitario (2-3 anni), Diploma accademico di primo livello",
+        "G" => "Laurea magistrale/specialistica o Diploma di laurea vecchio ordinamento (4-6 anni); Diploma accademico di secondo livello o Diploma accademico del vecchio ordinamento",
+        "H" => "Dottorato",
+        "Z" => "Non conosciuto/non fornito"
+    ];
+
     public $tipo_documento_choices = [1 => "Carta di identità", 2 => "Patente di guida", 3 => "Passaporto"];
+
     public $stato_civile_choices = [
         1 => "Celibe/Nubile",
         2 => "Coniugato/a",
@@ -78,9 +113,9 @@ class Cittadino extends \yii\db\ActiveRecord
     {
         return [
             [['fullname', 'nome', 'cognome', 'data_di_nascita', 'luogo_di_nascita', 'documento_di_identita', 'tipo_documento', 'email', 'created_by', "created_at"], 'required'],
-            [['documento_di_identita', 'last_login', 'updated_at', "updated_by", "spid_reference", "sesso"], 'safe'],
+            [['documento_di_identita', 'last_login', 'updated_at', "updated_by", "spid_reference", "sesso", 'titolo_studio'], 'safe'],
             [['tipo_documento', 'eta', 'stato_civile'], 'integer'],
-            [['nome', 'cognome', 'data_di_nascita', 'luogo_di_nascita', 'email', 'professione', 'comune_di_residenza', 'indirizzo_di_residenza', 'last_login', 'spid_reference', 'fullname'], 'string', 'max' => 255],
+            [['nome', 'cognome', 'data_di_nascita', 'luogo_di_nascita', 'email', 'posizione_professionale', 'condizione_non_professionale', 'titolo_di_studio', 'comune_di_residenza', 'indirizzo_di_residenza', 'last_login', 'spid_reference', 'fullname'], 'string', 'max' => 255],
             [['cittadinanza'], 'string', 'max' => 3],
             [['codice_fiscale'], 'string', 'max' => 16],
             [['telefono'], 'string', 'max' => 20],
@@ -166,5 +201,20 @@ class Cittadino extends \yii\db\ActiveRecord
             'telefono' => "+39 331 1234567",
             'email' => "prova@prova.it"
         ];
+    }
+
+    public function getTitoloStudio($label)
+    {
+        return isset($this->titolo_studio_choices[$label]) ? $this->titolo_studio_choices[$label] : "-";
+    }
+
+    public function getPosizioneProfessionale($label)
+    {
+        return isset($this->posizione_professionale_choices[$label]) ? $this->posizione_professionale_choices[$label] : "-";
+    }
+
+    public function getCondizioneNonProfessionale($label)
+    {
+        return isset($this->condizione_non_professionale_choices[$label]) ? $this->condizione_non_professionale_choices[$label] : "-";
     }
 }

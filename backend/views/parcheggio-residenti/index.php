@@ -17,6 +17,7 @@ $this->params['breadcrumbs'][] = [
     'template' => "<li class='breadcrumb-item'><span class='separator'>/</span>" . $this->title . "</li>",
 ];
 ?>
+
 <div class="parcheggio-residenti-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
@@ -31,26 +32,28 @@ $this->params['breadcrumbs'][] = [
                     <div class="table table-responsive">
                         <?= GridView::widget([
                             'dataProvider' => $dataProvider,
+                            'rowOptions' => function ($model) {
+                                if ($model->stato_richiesta == Utils::getStatoRichiestaFlipped('in_lavorazione')) {
+                                    return ['class' => 'bg-green']; // Aggiungi la classe 'bg-green' alle righe corrispondenti
+                                }
+
+                                if ($model->stato_richiesta == Utils::getStatoRichiestaFlipped('da_completare')) {
+                                    return ['class' => 'bg-orange']; // Aggiungi la classe 'bg-green' alle righe corrispondenti
+                                }
+                                return [];
+                            },
                             'columns' => [
                                 'id',
                                 [
-                                    'attribute' => 'cittadino',
+                                    'attribute' => 'id_cittadino',
                                     'value' => function ($model) {
-                                        if (is_numeric($model->cittadino)) {
-                                            return Utils::getCittadino($model->cittadino);
+                                        if (is_numeric($model->id_cittadino)) {
+                                            return Utils::getCittadino($model->id_cittadino);
                                         } else {
-                                            return $model->cittadino;
+                                            return $model->id_cittadino;
                                         }
                                     }
                                 ],
-                                'indirizzo',
-                                'qnt_auto',
-                                // [
-                                //     'attribute' => "price",
-                                //     'value' => function ($model) {
-                                //         return Utils::formatCurrency($model->price);
-                                //     }
-                                // ],
                                 [
                                     'attribute' => 'durata',
                                     'value' => function ($model) {
@@ -63,11 +66,13 @@ $this->params['breadcrumbs'][] = [
                                         return $model->payed ? "SI" : "NO";
                                     }
                                 ],
-                                'created_at:date',
-                                //'updated_at',
-                                //'created_by',
-                                //'updated_by',
-
+                                [
+                                    'attribute' => "stato_richiesta",
+                                    'value' => function ($model) {
+                                        return Utils::getStatoRichiesta($model->stato_richiesta);
+                                    }
+                                ],
+                                'data_richiesta:date',
                                 [
                                     'class' => ActionColumn::className(),
                                     'urlCreator' => function ($action, ParcheggioResidenti $model, $key, $index, $column) {

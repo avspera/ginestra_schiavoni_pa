@@ -11,6 +11,7 @@ use Yii;
  * @property int $id_cittadino
  * @property string $created_at
  * @property string|null $updated_at
+ * @property string|null $data_scadenza
  * @property int $created_by
  * @property int $stato_richiesta
  * @property int|null $updated_by
@@ -37,7 +38,7 @@ class ParcheggioResidenti extends \yii\db\ActiveRecord
     {
         return [
             [['id_cittadino', 'created_at', 'created_by', 'approved', 'durata'], 'required'],
-            [['created_by', 'updated_by', 'payed', 'durata', 'approved_by'], 'integer'],
+            [['created_by', 'updated_by', 'payed', 'durata', 'approved_by', 'veicolo',], 'integer'],
             [[
                 'created_at',
                 'updated_at',
@@ -45,10 +46,12 @@ class ParcheggioResidenti extends \yii\db\ActiveRecord
                 'stato_richiesta',
                 'data_rilascio',
                 'approved_by',
-                'numero_protocollo'
+                'numero_protocollo',
+                'data_richiesta',
+                'data_scadenza',
             ], 'safe'],
             [['price'], 'number'],
-            [['veicolo', 'numero_protocollo'], 'string'],
+            [['numero_protocollo'], 'string'],
         ];
     }
 
@@ -59,7 +62,7 @@ class ParcheggioResidenti extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'id_cittadino' => 'Cittadino',
+            'id_cittadino' => 'Richiedente',
             'created_at' => 'Creato il',
             'updated_at' => 'Aggiornato il',
             'created_by' => 'Creato da',
@@ -69,6 +72,7 @@ class ParcheggioResidenti extends \yii\db\ActiveRecord
             'veicolo' => "Veicolo",
             'approved' => "Approvato",
             'data_rilascio' => "Data rilascio",
+            'data_richiesta' => "Data richiesta",
             'durata' => "Durata",
             'approved_by' => "Approvato da",
         ];
@@ -134,5 +138,10 @@ class ParcheggioResidenti extends \yii\db\ActiveRecord
     public function getDurataChoices()
     {
         return $this->durata_choices;
+    }
+
+    public function getVeicolo()
+    {
+        return Veicolo::find()->where(["id" => $this->veicolo])->one();
     }
 }

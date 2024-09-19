@@ -59,6 +59,10 @@ class Veicolo extends \yii\db\ActiveRecord
             return false;
         }
 
+        if (!empty($this->targa)) {
+            $this->targa = strtoupper($this->targa);
+        }
+
         return true;
     }
 
@@ -83,7 +87,7 @@ class Veicolo extends \yii\db\ActiveRecord
             [['targa'], 'string', 'max' => 20],
             [['allegato_1', 'allegato_2'], 'string', 'max' => 255],
             [['modello', 'marca'], 'string', 'max' => 100],
-            [['id_cittadino'], 'exist', 'skipOnError' => true, 'targetClass' => Cittadino::class, 'targetAttribute' => ['id_cittadino' => 'id']],
+            [['id_cittadino'], 'exist', 'skipOnError' => false, 'targetClass' => Cittadino::class, 'targetAttribute' => ['id_cittadino' => 'id']],
         ];
     }
 

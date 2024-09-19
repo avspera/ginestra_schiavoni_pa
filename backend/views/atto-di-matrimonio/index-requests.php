@@ -31,23 +31,12 @@ $this->params['breadcrumbs'][] = [
                         ['class' => 'yii\grid\SerialColumn'],
                         'id',
                         [
-                            'attribute' => 'coniuge_uno',
+                            'attribute' => 'coniuge',
                             'value' => function ($model) {
-                                if (is_numeric($model->coniuge_uno)) {
-                                    return Utils::getCittadino($model->coniuge_uno);
+                                if (is_numeric($model->coniuge)) {
+                                    return Utils::getCittadino($model->coniuge);
                                 } else {
-                                    return $model->coniuge_uno;
-                                }
-                            },
-                            'format' => "raw"
-                        ],
-                        [
-                            'attribute' => 'coniuge_due',
-                            'value' => function ($model) {
-                                if (is_numeric($model->coniuge_due)) {
-                                    return Utils::getCittadino($model->coniuge_due);
-                                } else {
-                                    return $model->coniuge_due;
+                                    return $model->coniuge;
                                 }
                             },
                             'format' => "raw"
@@ -58,11 +47,11 @@ $this->params['breadcrumbs'][] = [
                             'class' => ActionColumn::className(),
                             'template' => "{view} {update}",
                             'buttons' => [
-                                'view' => function($url, $model){
-                                    return Html::a("<button class='btn btn-xs btn-success'>Vedi</button>", Url::to(["view-request", "id" => $model->id])); 
+                                'view' => function ($url, $model) {
+                                    return Html::a("<button class='btn btn-xs btn-success'>Vedi</button>", Url::to(["view-request", "id" => $model->id]));
                                 },
-                                'update' => function($url, $model){
-                                    return Html::a("<button class='btn btn-xs btn-warning'>Modifica</button>", Url::to(["update-request", "id" => $model->id])); 
+                                'update' => function ($url, $model) {
+                                    return Html::a("<button class='btn btn-xs btn-warning'>Modifica</button>", Url::to(["update-request", "id" => $model->id]));
                                 }
                             ]
                         ],

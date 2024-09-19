@@ -50,6 +50,12 @@ return [
             'showScriptName' => false,
             'rules' => [],
         ],
+        'urlManagerFrontend' => [
+            'class' => 'yii\web\UrlManager',
+            'baseUrl' => 'https://comuneginestradeglischiavonibn.it/',
+            'enablePrettyUrl' => true,
+            'showScriptName' => false,
+        ],
     ],
     'params' => $params,
 ];

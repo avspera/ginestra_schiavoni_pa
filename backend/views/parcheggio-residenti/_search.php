@@ -28,23 +28,12 @@ use yii\widgets\ActiveForm;
                 <div>
                     <div class="row">
                         <div class="col-md-4">
-                            <div class="form-group field-parcheggio-residenti-targa">
-                                <label class="control-label active" for="parcheggio-residenti-targa">Targa</label>
-                                <input type="text" value="<?= $model->targa ?>" id="parcheggioresidentisearch-targa" class="form-control" name="ParcheggioResidentiSearch[targa]" data-focus-mouse="false">
-                            </div>
-                        </div>
-                        <div class="col-md-4">
                             <div class="form-group field-parcheggio-residenti-veicolo">
                                 <label class="control-label active" for="parcheggio-residenti-targa">Veicolo</label>
                                 <input type="text" value="<?= $model->veicolo ?>" id="parcheggioresidentisearch-veicolo" class="form-control" name="ParcheggioResidentiSearch[veicolo]" data-focus-mouse="false">
                             </div>
                         </div>
-                        <div class="col-md-4">
-                            <div class="form-group field-parcheggio-residenti-indirizzo">
-                                <label class="control-label active" for="parcheggio-residenti-indirizzo">Indirizzo</label>
-                                <input type="text" value="<?= $model->indirizzo ?>" id="parcheggioresidentisearch-indirizzo" class="form-control" name="ParcheggioResidentiSearch[indirizzo]" data-focus-mouse="false">
-                            </div>
-                        </div>
+                        
                     </div>
 
                     <div class="float-start col-md-6 col-xs-12">

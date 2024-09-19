@@ -152,6 +152,20 @@ class Utils
         return isset($stato_richiesta_choices[$status]) ? $stato_richiesta_choices[$status] : "-";
     }
 
+    public static function getStatoRichiestaIcons($status)
+    {
+        $stato_richiesta_choices = [
+            0 => ["class" => "warning", "image" => "folder-incomplete.svg"],
+            1 => ["class" => "warning", "image" => "folder-incomplete.svg"],
+            2 => ["class" => "success", "image" => "folder-concluded.svg"],
+            3 => ["class" => "danger", "image" => "folder-incomplete.svg"],
+            4 => ["class" => "success", "image" => "folder-concluded.svg"],
+            4 => ["class" => "danger", "image" => "folder-incomplete.svg"],
+        ];
+
+        return isset($stato_richiesta_choices[$status]) ? $stato_richiesta_choices[$status] : "-";
+    }
+
     public static function richiediNumeroProtocollo()
     {
         return self::generateRandomId();
@@ -191,5 +205,28 @@ class Utils
         }
 
         return false;
+    }
+
+    public static function printAttachments($model, $attribute)
+    {
+        if (!empty($model->$attribute)) {
+            $attachments = explode(",", $model->$attribute);
+            $html = "";
+            $url = Yii::$app->urlManagerFrontend->createAbsoluteUrl(['/uploads/cittadino/' . $model->id_cittadino]);
+            foreach ($attachments as $item) {
+                $safeItem = yii\helpers\Html::encode($item);
+                $fullUrl = $url . "/" . $safeItem;
+                $html .= yii\helpers\Html::a("Vedi allegato", yii\helpers\Url::to($fullUrl), ["class" => "link"]) . "<br>";
+            }
+            return $html;
+        }
+        return "-";
+    }
+
+    public static function calcolaDataScadenza($inputDate, $addTime)
+    {
+        $newDate = new \DateTime($inputDate);
+        $newDate->modify($addTime);
+        return $newDate->format('Y-m-d H:i:s');
     }
 }

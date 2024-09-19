@@ -296,10 +296,9 @@ $veicolo        = Veicolo::find()->where(["id" => $datiGenerali["ParcheggioResid
                                         <p class="data-text">
                                             <?php
                                             $today = date("Y-m-d");
-                                            $dataEsito = new DateTime($today);
-                                            $dataEsito->modify('+1 year');
+                                            $dataEsito = Utils::calcolaDataScadenza($today, "+1 year")
                                             ?>
-                                            <?= Utils::formatDate($today) . " - " . $dataEsito->format("d/m/Y")  ?>
+                                            <?= Utils::formatDate($today) . " - " . Utils::formatDate($dataEsito)  ?>
                                         </p>
                                     </div>
                                 </div>

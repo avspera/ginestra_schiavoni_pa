@@ -7,6 +7,8 @@ if (!empty($datiPrivacy)) {
 
 $model->privacy = isset($datiPrivacy["ParcheggioResidenti"]["privacy"]) ? $datiPrivacy["ParcheggioResidenti"]["privacy"] : "";
 
+$class = basename(str_replace('\\', '/', get_class($model)))
+
 ?>
 <div class="row justify-content-center">
     <div class="col-12 col-lg-8 pb-4 pb-lg-8">
@@ -19,8 +21,8 @@ $model->privacy = isset($datiPrivacy["ParcheggioResidenti"]["privacy"]) ? $datiP
 
         <div class="form-check mt-4 mb-3 mt-md-40 mb-lg-40">
             <div class="checkbox-body d-flex align-items-center">
-                <input <?= $model->privacy ? "checked" : "" ?> type="checkbox" id="parcheggioresidenti-privacy" name="ParcheggioResidenti[privacy]">
-                <label class="title-small-semi-bold pt-1" for="parcheggioresidenti-privacy">Ho letto e compreso l’informativa sulla privacy</label>
+                <input <?= $model->privacy ? "checked" : "" ?> type="checkbox" id="<?= strtolower($class) ?>-privacy" name="<?= $class ?>[privacy]">
+                <label class="title-small-semi-bold pt-1" for="<?= strtolower($class) ?>-privacy">Ho letto e compreso l’informativa sulla privacy</label>
             </div>
         </div>
 
@@ -32,8 +34,9 @@ $model->privacy = isset($datiPrivacy["ParcheggioResidenti"]["privacy"]) ? $datiP
 
 <script>
     function checkPrivacy() {
-        // Usa 'getElementById' per ottenere lo stato del checkbox
-        let isChecked = document.getElementById("parcheggioresidenti-privacy").checked;
+
+        let selector = '<?= strtolower($class) ?>-privacy';
+        let isChecked = document.getElementById(selector).checked;
 
         if (!isChecked) {
             alert("Devi accettare l'informativa sulla privacy");

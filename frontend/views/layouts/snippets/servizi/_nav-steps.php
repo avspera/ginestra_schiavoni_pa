@@ -72,6 +72,51 @@
     </div>
 </div>
 
+<div class="cmp-modal">
+    <div class="modal fade" tabindex="-1" id="modal-save-1" aria-labelledby="modal-save-1-modal-title" data-focus-mouse="false" style="display: none;" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered small" role="document">
+            <div class="modal-content modal-dimensions">
+                <div class="cmp-modal__header modal-header pb-0">
+                    <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Chiudi finestra modale">
+                    </button>
+                    <h2 class="cmp-modal__header-title title-mini" id="modal-save-1-modal-title">Salva i dati in area personale</h2>
+                    <p class="cmp-modal__header-info header-font">Vuoi salvare
+                        le informazioni anche nella tua area personale? Potrai usarle anche in altre occasioni.</p>
+                </div>
+                <div class="modal-body">
+                </div>
+                <div class="modal-footer pb-70 pt-0">
+                    <button class="btn btn-primary w-100 mx-0 fw-bold mb-4" type="submit" data-bs-toggle="modal" data-bs-target="#modal-save-2" form="">Salva nella mia
+                        area personale</button>
+                    <button class="btn btn-outline-primary w-100 mx-0" data-bs-dismiss="modal fw-bold" type="button">Salva solo per questa pratica</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="cmp-modal">
+    <div class="modal fade" tabindex="-1" role="dialog" id="modal-save-2" aria-labelledby="modal-save-2-modal-title">
+        <div class="modal-dialog modal-dialog-centered small" role="document">
+            <div class="modal-content modal-dimensions">
+                <div class="cmp-modal__header modal-header pb-0">
+                    <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Chiudi finestra modale">
+                    </button>
+                    <h2 class="cmp-modal__header-title title-mini" id="modal-save-2-modal-title">Salva i dati in area personale</h2>
+                    <p class="cmp-modal__header-info header-font">Vuoi salvare le informazioni anche nella tua area personale? Potrai riutilizzarle in futuro per altre pratiche.</p>
+                </div>
+                <div class="modal-body">
+                    <div class="d-flex justify-content-center align-items-center pb-70">
+                        <svg class="icon icon-success icon-md">
+                            <use href="<?= Yii::getAlias("@web") ?>/bootstrap-italia/svg/sprites.svg#it-check-circle"></use>
+                        </svg>
+                        <span class="cmp-modal__success-message">Salvataggio effettuato</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
     function freezeAction(step, showAlert = false) {
         let attributes = $("form").serialize();
